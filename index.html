@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aprende Django con Teacher Jim</title>
+  <meta name="description" content="Tutoriales paso a paso en español para aprender Python y Django desde cero. Instala herramientas, crea entornos virtuales y construye tu primera web app con autenticación.">
+  <meta name="author" content="Teacher Jim">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Aprende Django con Teacher Jim">
+  <meta property="og:description" content="De cero a tu primera web app con Django, paso a paso y sin saltos mágicos.">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:image" content="assets/img/hero-portal.svg">
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/tutorial.css">
+  <link rel="stylesheet" href="assets/css/syntax-theme.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="app-bar">
+    <div class="app-bar__inner">
+      <a class="app-bar__brand" href="index.html">
+        <img class="app-bar__logo" src="assets/icons/favicon.svg" alt="" width="36" height="36">
+        Teacher Jim
+      </a>
+
+      <nav class="app-bar__nav" aria-label="Navegación principal">
+        <a href="index.html" class="is-active">Inicio</a>
+        <a href="#tutoriales">Tutoriales</a>
+        <a href="#ruta">Ruta de aprendizaje</a>
+        <a href="tutoriales/05-errores-django.html">Errores comunes</a>
+      </nav>
+
+      <div class="app-bar__actions">
+        <button class="icon-btn" type="button" data-search-open aria-label="Buscar tutoriales">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+        </button>
+
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro">
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+          </svg>
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+          </svg>
+        </button>
+
+        <button class="icon-btn menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Abrir menú de navegación">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="4" x2="20" y1="12" y2="12"></line>
+            <line x1="4" x2="20" y1="6" y2="6"></line>
+            <line x1="4" x2="20" y1="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" data-mobile-nav aria-label="Navegación móvil">
+    <a href="index.html">Inicio</a>
+    <a href="#tutoriales">Tutoriales</a>
+    <a href="#ruta">Ruta de aprendizaje</a>
+    <a href="tutoriales/05-errores-django.html">Errores comunes</a>
+  </nav>
+
+  <main id="main-content">
+
+    <section class="hero">
+      <div class="container">
+        <div class="hero__grid">
+          <div class="hero__content">
+            <p class="hero__eyebrow">Aprende construyendo</p>
+            <h1 class="hero__title">Aprende Django con Teacher Jim</h1>
+            <p class="hero__subtitle">De cero a tu primera web app con Django, paso a paso y sin saltos mágicos.</p>
+            <p class="hero__text">Instala tus herramientas, crea entornos controlados, conecta vistas y URLs, construye una aplicación To-Do con autenticación y aprende a resolver los errores que realmente aparecen cuando programas.</p>
+
+            <div class="hero__ctas">
+              <a class="btn btn--primary" href="tutoriales/01-instalar-vscode-python.html">Empezar desde cero</a>
+              <a class="btn btn--secondary" href="#tutoriales">Ver todos los tutoriales</a>
+            </div>
+
+            <div class="hero__stats">
+              <div class="stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
+                </svg>
+                <span>5 tutoriales</span>
+              </div>
+              <div class="stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M15 3h6v6"></path>
+                  <path d="M10 14 21 3"></path>
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                </svg>
+                <span>Proyecto real</span>
+              </div>
+              <div class="stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 20V10"></path>
+                  <path d="M18 20V4"></path>
+                  <path d="M6 20v-4"></path>
+                </svg>
+                <span>Progreso guardado</span>
+              </div>
+              <div class="stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="16 18 22 12 16 6"></polyline>
+                  <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+                <span>Python + Django</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero__visual">
+            <img src="assets/img/hero-portal.svg" alt="Ilustración de portal interdimensional con terminal y fragmentos de código" width="480" height="480">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="continue-banner" data-continue-banner>
+          <p><strong>Continuar donde quedaste</strong> — retoma tu último tutorial sin perder el hilo.</p>
+          <a class="btn btn--primary btn--sm" href="#" data-continue-link>Continuar</a>
+        </div>
+
+        <div class="section__header" id="tutoriales">
+          <span class="section__eyebrow">Misiones</span>
+          <h2 class="section__title">Elige tu misión</h2>
+          <p class="section__subtitle">Cinco rutas guiadas, desde instalar Python hasta depurar errores reales. Marca tus pasos y vuelve cuando quieras.</p>
+        </div>
+
+        <div class="search-filter">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          <input type="search" data-tutorial-filter placeholder="Buscar por Django, Python, login, errores..." aria-label="Filtrar tutoriales">
+        </div>
+
+        <div class="card-grid" data-tutorial-grid>
+
+          <article class="tutorial-card" data-tutorial-card="tutorial-01" data-total-steps="10" data-keywords="python vscode instalar terminal extensión">
+            <span class="tutorial-card__number">Tutorial 01</span>
+            <svg class="tutorial-card__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+              <path d="M9 9h6v6H9z"></path>
+            </svg>
+            <h3 class="tutorial-card__title">Instala VS Code y Python</h3>
+            <p class="tutorial-card__desc">Prepara tu computadora desde cero y verifica que Python realmente funciona antes de comenzar.</p>
+            <div class="tutorial-card__meta">
+              <span class="chip">Inicial</span>
+              <span class="chip">~45 min</span>
+            </div>
+            <div class="tutorial-card__progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar__fill" style="width: 0%"></div>
+              </div>
+              <span class="progress-bar__label">0% completado</span>
+            </div>
+            <a class="btn btn--outline btn--sm" href="tutoriales/01-instalar-vscode-python.html">Comenzar tutorial</a>
+          </article>
+
+          <article class="tutorial-card" data-tutorial-card="tutorial-02" data-total-steps="10" data-keywords="entorno virtual venv django pip requirements">
+            <span class="tutorial-card__number">Tutorial 02</span>
+            <svg class="tutorial-card__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+            </svg>
+            <h3 class="tutorial-card__title">Entornos controlados + Django</h3>
+            <p class="tutorial-card__desc">Aprende por qué existe un entorno virtual, créalo correctamente e instala Django sin contaminar otros proyectos.</p>
+            <div class="tutorial-card__meta">
+              <span class="chip">Inicial</span>
+              <span class="chip">~35 min</span>
+            </div>
+            <div class="tutorial-card__progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar__fill" style="width: 0%"></div>
+              </div>
+              <span class="progress-bar__label">0% completado</span>
+            </div>
+            <a class="btn btn--outline btn--sm" href="tutoriales/02-entornos-django.html">Comenzar tutorial</a>
+          </article>
+
+          <article class="tutorial-card" data-tutorial-card="tutorial-03" data-total-steps="11" data-keywords="django url views templates vista proyecto app">
+            <span class="tutorial-card__number">Tutorial 03</span>
+            <svg class="tutorial-card__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+              <path d="M3 9h18"></path>
+              <path d="M9 21V9"></path>
+            </svg>
+            <h3 class="tutorial-card__title">Tu primera ventana en Django</h3>
+            <p class="tutorial-card__desc">Conecta proyecto, aplicación, URL, vista y template hasta mostrar tu primera página real en el navegador.</p>
+            <div class="tutorial-card__meta">
+              <span class="chip">Inicial</span>
+              <span class="chip">~50 min</span>
+            </div>
+            <div class="tutorial-card__progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar__fill" style="width: 0%"></div>
+              </div>
+              <span class="progress-bar__label">0% completado</span>
+            </div>
+            <a class="btn btn--outline btn--sm" href="tutoriales/03-primera-ventana-django.html">Comenzar tutorial</a>
+          </article>
+
+          <article class="tutorial-card tutorial-card--featured" data-tutorial-card="tutorial-04" data-total-steps="21" data-keywords="todo login autenticación csrf modelo formulario usuario">
+            <span class="tutorial-card__badge">Proyecto principal</span>
+            <span class="tutorial-card__number">Tutorial 04</span>
+            <svg class="tutorial-card__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <polyline points="16 11 18 13 22 9"></polyline>
+            </svg>
+            <h3 class="tutorial-card__title">Web App To-Do + Login</h3>
+            <p class="tutorial-card__desc">Construye una aplicación de tareas con usuarios, correo, nombre, contraseña, autenticación y animaciones.</p>
+            <div class="tutorial-card__meta">
+              <span class="chip">Proyecto guiado</span>
+              <span class="chip">~3 h</span>
+            </div>
+            <div class="tutorial-card__progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar__fill" style="width: 0%"></div>
+              </div>
+              <span class="progress-bar__label">0% completado</span>
+            </div>
+            <a class="btn btn--primary btn--sm" href="tutoriales/04-todo-app-autenticacion.html">Comenzar proyecto</a>
+          </article>
+
+          <article class="tutorial-card" data-tutorial-card="tutorial-05" data-total-steps="0" data-keywords="errores django migraciones csrf template debug 404 403">
+            <span class="tutorial-card__number">Tutorial 05</span>
+            <svg class="tutorial-card__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 16v-4"></path>
+              <path d="M12 8h.01"></path>
+            </svg>
+            <h3 class="tutorial-card__title">Errores comunes de Django</h3>
+            <p class="tutorial-card__desc">Aprende a diagnosticar fallos de instalación, rutas, templates, migraciones, CSRF, módulos y servidor.</p>
+            <div class="tutorial-card__meta">
+              <span class="chip">Consulta rápida</span>
+              <span class="chip">~30 min</span>
+            </div>
+            <div class="tutorial-card__progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar__fill" style="width: 0%"></div>
+              </div>
+              <span class="progress-bar__label">0% completado</span>
+            </div>
+            <a class="btn btn--outline btn--sm" href="tutoriales/05-errores-django.html">Consultar errores</a>
+          </article>
+
+        </div>
+
+        <div class="empty-state hidden" data-empty-state>
+          <img src="assets/img/empty-state.svg" alt="" width="120" height="120">
+          <p>No encontramos tutoriales con ese término. Prueba con <strong>django</strong>, <strong>login</strong> o <strong>errores</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="ruta">
+      <div class="container">
+        <div class="section__header">
+          <span class="section__eyebrow">Tu camino</span>
+          <h2 class="section__title">Ruta de aprendizaje</h2>
+          <p class="section__subtitle">Cinco fases que conectan cada tutorial. No saltes verificaciones: cada etapa prepara la siguiente.</p>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline__step">
+            <div class="timeline__dot" aria-hidden="true">1</div>
+            <p class="timeline__label">Preparar</p>
+            <p class="timeline__desc">Instalar herramientas.</p>
+          </div>
+          <div class="timeline__step">
+            <div class="timeline__dot" aria-hidden="true">2</div>
+            <p class="timeline__label">Aislar</p>
+            <p class="timeline__desc">Crear entorno virtual.</p>
+          </div>
+          <div class="timeline__step">
+            <div class="timeline__dot" aria-hidden="true">3</div>
+            <p class="timeline__label">Conectar</p>
+            <p class="timeline__desc">Comprender flujo Django.</p>
+          </div>
+          <div class="timeline__step">
+            <div class="timeline__dot" aria-hidden="true">4</div>
+            <p class="timeline__label">Construir</p>
+            <p class="timeline__desc">Crear aplicación real.</p>
+          </div>
+          <div class="timeline__step">
+            <div class="timeline__dot" aria-hidden="true">5</div>
+            <p class="timeline__label">Depurar</p>
+            <p class="timeline__desc">Resolver errores.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section__header">
+          <span class="section__eyebrow">Metodología</span>
+          <h2 class="section__title">Cómo se aprende aquí</h2>
+          <p class="section__subtitle">Cada tutorial sigue el mismo ritmo: acción, explicación, verificación. Sin magia, sin saltos.</p>
+        </div>
+
+        <div class="principles-grid">
+          <div class="principle">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 15 6 6"></path>
+              <path d="m15 9 6-6"></path>
+              <path d="M21 16v5h-5"></path>
+              <path d="M21 8V3h-5"></path>
+              <path d="M3 16v5h5"></path>
+              <path d="M3 8V3h5"></path>
+            </svg>
+            <h3>Acción pequeña</h3>
+            <p>Un paso a la vez. Ejecutas, guardas y compruebas antes de seguir.</p>
+          </div>
+          <div class="principle">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <h3>Explicación directa</h3>
+            <p>Sabes qué hace cada comando y en qué archivo va el código.</p>
+          </div>
+          <div class="principle">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <h3>Verificación inmediata</h3>
+            <p>Checkpoints claros: si no ves el resultado esperado, paras y revisas.</p>
+          </div>
+          <div class="principle">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path>
+              <path d="M12 9v4"></path>
+              <path d="M12 17h.01"></path>
+            </svg>
+            <h3>Error con solución</h3>
+            <p>Cuando algo falla, tienes diagnóstico y pasos concretos para corregirlo.</p>
+          </div>
+        </div>
+
+        <div class="cta-banner">
+          <h2>Tu primera aplicación no necesita ser perfecta. Necesita funcionar y ayudarte a entender.</h2>
+          <a class="btn btn--primary" href="tutoriales/01-instalar-vscode-python.html">Comenzar Tutorial 1</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Aprende Django con Teacher Jim</h3>
+          <p>Construido para aprender haciendo. Tutoriales en español para estudiantes que quieren entender Django, no solo copiar código.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tutoriales</h4>
+          <ul>
+            <li><a href="tutoriales/01-instalar-vscode-python.html">Instalar VS Code y Python</a></li>
+            <li><a href="tutoriales/02-entornos-django.html">Entornos + Django</a></li>
+            <li><a href="tutoriales/03-primera-ventana-django.html">Primera ventana</a></li>
+            <li><a href="tutoriales/04-todo-app-autenticacion.html">To-Do + Login</a></li>
+            <li><a href="tutoriales/05-errores-django.html">Errores comunes</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Repositorio</h4>
+          <ul>
+            <li><a href="https://github.com/TU-USUARIO/TU-REPOSITORIO" rel="noopener noreferrer">GitHub</a></li>
+            <li><a href="#tutoriales">Todos los tutoriales</a></li>
+            <li><a href="#ruta">Ruta de aprendizaje</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span data-current-year>2026</span> Aprende Django con Teacher Jim</p>
+        <a class="back-to-top" href="#" data-back-to-top>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+            <path d="m18 15-6-6-6 6"></path>
+          </svg>
+          Volver arriba
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="search-overlay" data-search-overlay role="dialog" aria-modal="true" aria-label="Búsqueda de tutoriales">
+    <div class="search-box">
+      <input type="search" data-search-input placeholder="Buscar tutoriales..." aria-label="Buscar tutoriales">
+      <div class="search-results" data-search-results></div>
+    </div>
+  </div>
+
+  <script src="assets/js/theme.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/search.js" defer></script>
+  <script src="assets/js/tutorial-progress.js" defer></script>
+</body>
+</html>

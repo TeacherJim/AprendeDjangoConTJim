@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial 02: Entornos controlados + Django | Aprende Django con Teacher Jim</title>
+  <meta name="description" content="Crea un entorno virtual aislado, instala Django 6.0 y aprende a congelar dependencias en requirements.txt sin contaminar otros proyectos.">
+  <meta name="author" content="Teacher Jim">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Tutorial 02: Entornos controlados + Django">
+  <meta property="og:description" content="Aprende por qué existe el entorno virtual, créalo correctamente e instala Django sin mezclar versiones.">
+  <meta property="og:locale" content="es_ES">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/tutorial.css">
+  <link rel="stylesheet" href="../assets/css/syntax-theme.css">
+</head>
+<body data-tutorial-id="tutorial-02">
+
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="app-bar">
+    <div class="app-bar__inner">
+      <a class="app-bar__brand" href="../index.html">
+        <img class="app-bar__logo" src="../assets/icons/favicon.svg" alt="" width="36" height="36">
+        Teacher Jim
+      </a>
+
+      <nav class="app-bar__nav" aria-label="Navegación principal">
+        <a href="../index.html">Inicio</a>
+        <a href="../index.html#tutoriales">Tutoriales</a>
+        <a href="../index.html#ruta">Ruta de aprendizaje</a>
+        <a href="05-errores-django.html">Errores comunes</a>
+      </nav>
+
+      <div class="app-bar__actions">
+        <button class="icon-btn" type="button" data-search-open aria-label="Buscar tutoriales">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+        </button>
+
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro">
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+          </svg>
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+          </svg>
+        </button>
+
+        <button class="icon-btn menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Abrir menú de navegación">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="4" x2="20" y1="12" y2="12"></line>
+            <line x1="4" x2="20" y1="6" y2="6"></line>
+            <line x1="4" x2="20" y1="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" data-mobile-nav aria-label="Navegación móvil">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#tutoriales">Tutoriales</a>
+    <a href="../index.html#ruta">Ruta de aprendizaje</a>
+    <a href="05-errores-django.html">Errores comunes</a>
+  </nav>
+
+  <main id="main-content">
+    <div class="tutorial-layout">
+
+      <aside class="toc-sidebar">
+        <button class="toc-toggle" type="button" data-toc-toggle aria-expanded="false">Mapa de la misión</button>
+        <nav class="toc-panel" data-toc-panel aria-label="Contenido del tutorial">
+          <h2>Contenido</h2>
+          <ul class="toc-list">
+            <li><a href="#resultado-final">Resultado final</a></li>
+            <li><a href="#antes-de-empezar">Antes de empezar</a></li>
+            <li><a href="#step-1">Paso 1: Carpeta del proyecto</a></li>
+            <li><a href="#step-2">Paso 2: Crear .venv</a></li>
+            <li><a href="#step-3">Paso 3: Activar entorno</a></li>
+            <li><a href="#step-4">Paso 4: Verificar intérprete</a></li>
+            <li><a href="#step-5">Paso 5: Actualizar pip</a></li>
+            <li><a href="#step-6">Paso 6: Instalar Django</a></li>
+            <li><a href="#step-7">Paso 7: Versión Django</a></li>
+            <li><a href="#step-8">Paso 8: pip list</a></li>
+            <li><a href="#step-9">Paso 9: requirements.txt</a></li>
+            <li><a href="#step-10">Paso 10: Desactivar</a></li>
+            <li><a href="#mini-reto">Mini reto</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="tutorial-main">
+
+        <nav class="breadcrumb" aria-label="Ruta de navegación">
+          <a href="../index.html">Inicio</a>
+          <span aria-hidden="true">/</span>
+          <a href="../index.html#tutoriales">Tutoriales</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Entornos controlados + Django</span>
+        </nav>
+
+        <header class="tutorial-header">
+          <p class="tutorial-header__number">Tutorial 02</p>
+          <h1>Entornos controlados + Django</h1>
+          <p class="tutorial-header__desc">Cada proyecto Django necesita sus propias dependencias aisladas del resto de tu computadora. En esta misión creas un entorno virtual, instalas Django 6.0 y aprendes a documentar lo que instalaste.</p>
+          <div class="tutorial-meta">
+            <span class="chip">Inicial</span>
+            <span class="chip">~40 min</span>
+            <span class="chip">10 pasos</span>
+          </div>
+        </header>
+
+        <section class="tutorial-section" id="resultado-final">
+          <h2>Resultado final</h2>
+          <p>Al terminar este tutorial tendrás:</p>
+          <ul>
+            <li>Una carpeta de proyecto llamada <code>mi_primer_django</code> con un entorno virtual <code>.venv</code> dentro.</li>
+            <li>Django 6.0.x instalado solo dentro de ese entorno, no en todo el sistema.</li>
+            <li>La capacidad de activar y desactivar el entorno virtual cuando trabajes.</li>
+            <li>Un archivo <code>requirements.txt</code> que lista las dependencias exactas del proyecto.</li>
+          </ul>
+          <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Concepto clave</p>
+              <p>Un entorno virtual es como darle a cada proyecto su propia mochila de herramientas. El Proyecto A puede llevar Django 6.0 y el Proyecto B otra versión, sin que se peleen en la misma computadora.</p>
+            </div>
+          </div>
+          <div class="tree-structure">Sin entorno virtual:
+  Computadora
+  ├── Proyecto A → Django X
+  └── Proyecto B → Django X  (misma versión forzada)
+
+Con entornos virtuales:
+  Computadora
+  ├── Proyecto A
+  │   └── .venv → dependencias de A
+  └── Proyecto B
+      └── .venv → dependencias de B</div>
+        </section>
+
+        <section class="tutorial-section" id="antes-de-empezar">
+          <h2>Antes de empezar</h2>
+          <p>Confirma que completaste el Tutorial 01 o que cumples estos requisitos:</p>
+          <ul class="checklist">
+            <li>Python 3.12 o superior responde en la terminal (<code>python --version</code> o <code>python3 --version</code>).</li>
+            <li>VS Code está instalado con la extensión Python de Microsoft.</li>
+            <li>Sabes abrir una terminal integrada en VS Code.</li>
+            <li>Entiendes que los comandos de este tutorial se ejecutan en la terminal, no en el editor de texto.</li>
+          </ul>
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>El error más frecuente en este tutorial es instalar Django sin activar el entorno virtual. Si no ves <code>(.venv)</code> al inicio de tu línea de comandos, detente antes de instalar nada.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="tutorial-section" id="mapa-mision">
+          <h2>Mapa de la misión</h2>
+          <p>Diez pasos en orden. Marca cada uno al completarlo.</p>
+          <ol>
+            <li>Crear la carpeta <code>mi_primer_django</code>.</li>
+            <li>Crear el entorno virtual con <code>python -m venv .venv</code>.</li>
+            <li>Activar el entorno (PowerShell, CMD o macOS/Linux).</li>
+            <li>Verificar que el intérprete apunta al <code>.venv</code>.</li>
+            <li>Actualizar <code>pip</code>.</li>
+            <li>Instalar Django 6.0 con restricción de versión.</li>
+            <li>Comprobar la versión con <code>django --version</code>.</li>
+            <li>Revisar paquetes instalados con <code>pip list</code>.</li>
+            <li>Generar <code>requirements.txt</code> con <code>pip freeze</code>.</li>
+            <li>Desactivar el entorno y checkpoint final.</li>
+          </ol>
+        </section>
+
+        <!-- PASO 1 -->
+        <article class="tutorial-step" id="step-1">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">1</span>
+            <h2>Crear la carpeta del proyecto</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-1" aria-label="Marcar paso 1 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear una carpeta dedicada donde vivirá tu primer proyecto Django y entrar en ella desde la terminal.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Django no se instala "en el aire". Necesitas un directorio de trabajo donde colocarás el entorno virtual, el código y más adelante el proyecto. Separar carpetas evita mezclar archivos de distintos experimentos.</p>
+
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal — carpeta de proyectos
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <p class="code-window__terminal-label">Terminal — Documentos, home del usuario u otra ubicación de tu elección</p>
+            <div class="code-window__body">
+              <pre><code class="language-powershell">mkdir mi_primer_django
+cd mi_primer_django</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>La carpeta puede estar donde prefieras. Lo importante es recordar la ruta. En VS Code: <em>File → Open Folder</em> y selecciona <code>mi_primer_django</code>.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>El prompt de la terminal muestra que estás dentro de <code>mi_primer_django</code>. La carpeta está vacía por ahora.</p>
+
+          <div class="tree-structure">mi_primer_django/
+└── (vacía)</div>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Ejecuta <code>pwd</code> en macOS/Linux o <code>cd</code> sin argumentos en Windows PowerShell. La ruta debe terminar en <code>mi_primer_django</code>.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 2 -->
+        <article class="tutorial-step" id="step-2">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">2</span>
+            <h2>Crear el entorno virtual .venv</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-2" aria-label="Marcar paso 2 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Generar un entorno virtual llamado <code>.venv</code> dentro de la carpeta del proyecto.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>El módulo <code>venv</code> de Python crea una copia aislada del intérprete y un espacio para instalar paquetes sin afectar el Python global de tu sistema ni otros proyectos.</p>
+
+          <p class="step-label">Código</p>
+          <div class="os-tabs">
+            <div class="os-tabs__nav" role="tablist" aria-label="Comandos por sistema operativo">
+              <button class="os-tab-btn is-active" type="button" data-os-tab="win-ps" role="tab" aria-selected="true">Windows PowerShell</button>
+              <button class="os-tab-btn" type="button" data-os-tab="mac-linux" role="tab" aria-selected="false">macOS / Linux</button>
+            </div>
+
+            <div class="os-tab-panel is-active" data-os-panel="win-ps" role="tabpanel">
+              <div class="code-window">
+                <header class="code-window__header">
+                  <div class="code-window__filename">
+                    <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                    PowerShell — mi_primer_django
+                  </div>
+                  <div class="code-window__actions">
+                    <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                      <span class="copy-btn__text">Copiar</span>
+                    </button>
+                    <span class="code-window__vscode">
+                      <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                    </span>
+                  </div>
+                </header>
+                <div class="code-window__body">
+                  <pre><code class="language-powershell">python -m venv .venv</code></pre>
+                </div>
+              </div>
+              <p>Si <code>python</code> no funciona, prueba <code>py -m venv .venv</code>.</p>
+            </div>
+
+            <div class="os-tab-panel" data-os-panel="mac-linux" role="tabpanel">
+              <div class="code-window">
+                <header class="code-window__header">
+                  <div class="code-window__filename">
+                    <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                    Terminal — mi_primer_django
+                  </div>
+                  <div class="code-window__actions">
+                    <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                      <span class="copy-btn__text">Copiar</span>
+                    </button>
+                    <span class="code-window__vscode">
+                      <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                    </span>
+                  </div>
+                </header>
+                <div class="code-window__body">
+                  <pre><code class="language-bash">python3 -m venv .venv</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>El comando se ejecuta dentro de <code>mi_primer_django</code>. El punto en <code>.venv</code> indica que la carpeta del entorno se crea aquí mismo (convención habitual).</p>
+
+          <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Desglose del comando</p>
+              <p><code>python</code> — invoca el intérprete.</p>
+              <p><code>-m venv</code> — ejecuta el módulo estándar <code>venv</code> como programa.</p>
+              <p><code>.venv</code> — nombre de la carpeta del entorno (puede ser otro nombre, pero <code>.venv</code> es la convención que usaremos en todo el curso).</p>
+            </div>
+          </div>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>El comando termina sin errores. Aparece una carpeta <code>.venv</code> (puede estar oculta en el explorador de archivos; VS Code sí la muestra).</p>
+
+          <div class="tree-structure">mi_primer_django/
+└── .venv/
+    ├── Scripts/     (Windows)
+    ├── bin/         (macOS/Linux)
+    ├── Lib/ o lib/
+    └── pyvenv.cfg</div>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>En VS Code, el explorador de archivos muestra la carpeta <code>.venv</code>. Si el comando falló, no continúes: revisa que Python esté instalado (Tutorial 01).</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><code>No module named venv</code> — Tu instalación de Python no incluye venv. En Linux a veces necesitas instalar <code>python3-venv</code> desde el gestor de paquetes de tu distribución.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 3 -->
+        <article class="tutorial-step" id="step-3">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">3</span>
+            <h2>Activar el entorno virtual</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-3" aria-label="Marcar paso 3 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Activar el entorno virtual para que la terminal use el Python y los paquetes de <code>.venv</code>, no los globales.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Crear el entorno no basta: hasta que no lo activas, <code>pip install</code> podría instalar paquetes en el Python del sistema. La activación cambia qué intérprete responde cuando escribes <code>python</code>.</p>
+
+          <p class="step-label">Código</p>
+          <div class="os-tabs">
+            <div class="os-tabs__nav" role="tablist" aria-label="Activación por sistema operativo">
+              <button class="os-tab-btn is-active" type="button" data-os-tab="win-ps" role="tab" aria-selected="true">Windows PowerShell</button>
+              <button class="os-tab-btn" type="button" data-os-tab="win-cmd" role="tab" aria-selected="false">Windows CMD</button>
+              <button class="os-tab-btn" type="button" data-os-tab="mac-linux" role="tab" aria-selected="false">macOS / Linux</button>
+            </div>
+
+            <div class="os-tab-panel is-active" data-os-panel="win-ps" role="tabpanel">
+              <div class="code-window">
+                <header class="code-window__header">
+                  <div class="code-window__filename">
+                    <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                    PowerShell — mi_primer_django
+                  </div>
+                  <div class="code-window__actions">
+                    <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                      <span class="copy-btn__text">Copiar</span>
+                    </button>
+                    <span class="code-window__vscode">
+                      <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                    </span>
+                  </div>
+                </header>
+                <div class="code-window__body">
+                  <pre><code class="language-powershell">.venv\Scripts\Activate.ps1</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="os-tab-panel" data-os-panel="win-cmd" role="tabpanel">
+              <div class="code-window">
+                <header class="code-window__header">
+                  <div class="code-window__filename">
+                    <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                    CMD — mi_primer_django
+                  </div>
+                  <div class="code-window__actions">
+                    <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                      <span class="copy-btn__text">Copiar</span>
+                    </button>
+                    <span class="code-window__vscode">
+                      <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                    </span>
+                  </div>
+                </header>
+                <div class="code-window__body">
+                  <pre><code class="language-powershell">.venv\Scripts\activate.bat</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="os-tab-panel" data-os-panel="mac-linux" role="tabpanel">
+              <div class="code-window">
+                <header class="code-window__header">
+                  <div class="code-window__filename">
+                    <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                    Terminal — mi_primer_django
+                  </div>
+                  <div class="code-window__actions">
+                    <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                      <span class="copy-btn__text">Copiar</span>
+                    </button>
+                    <span class="code-window__vscode">
+                      <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                    </span>
+                  </div>
+                </header>
+                <div class="code-window__body">
+                  <pre><code class="language-bash">source .venv/bin/activate</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>El inicio de tu línea de comandos muestra un prefijo como <code>(.venv)</code>:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">Salida esperada</div>
+              <div class="code-window__actions">
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">(.venv) PS C:\Users\TuNombre\mi_primer_django></code></pre>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común en PowerShell</p>
+              <p>Si ves: <code>running scripts is disabled on this system</code> o un mensaje sobre <code>ExecutionPolicy</code>, PowerShell está bloqueando el script de activación.</p>
+              <p><strong>Opción prudente 1:</strong> Usa CMD en lugar de PowerShell y ejecuta <code>.venv\Scripts\activate.bat</code>.</p>
+              <p><strong>Opción prudente 2:</strong> En PowerShell, para la sesión actual únicamente (no cambia la política global del sistema):</p>
+            </div>
+          </div>
+
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                PowerShell — política de ejecución (solo esta sesión)
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-powershell">Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+.venv\Scripts\Activate.ps1</code></pre>
+            </div>
+          </div>
+
+          <div class="callout callout--warning">
+            <div>
+              <p class="callout__label">Cuidado aquí</p>
+              <p>No recomiendo desactivar la seguridad de PowerShell de forma permanente en todo el sistema sin entender las consecuencias. Para aprender Django, activar el entorno en CMD o usar <code>-Scope Process</code> es suficiente.</p>
+            </div>
+          </div>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Debes ver <code>(.venv)</code> al inicio del prompt. Sin ese prefijo, no instales Django todavía.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 4 -->
+        <article class="tutorial-step" id="step-4">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">4</span>
+            <h2>Verificar el intérprete activo</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-4" aria-label="Marcar paso 4 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Confirmar que el comando <code>python</code> apunta al ejecutable dentro de <code>.venv</code>, no al Python global.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Es la prueba definitiva de que el entorno está activo. Si la ruta no incluye <code>.venv</code>, cualquier <code>pip install</code> irá al lugar equivocado.</p>
+
+          <p class="step-label">Código</p>
+          <div class="os-tabs">
+            <div class="os-tabs__nav" role="tablist">
+              <button class="os-tab-btn is-active" type="button" data-os-tab="win-ps" role="tab" aria-selected="true">Windows</button>
+              <button class="os-tab-btn" type="button" data-os-tab="mac-linux" role="tab" aria-selected="false">macOS / Linux</button>
+            </div>
+
+            <div class="os-tab-panel is-active" data-os-panel="win-ps" role="tabpanel">
+              <div class="code-window">
+                <header class="code-window__header">
+                  <div class="code-window__filename">
+                    <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                    PowerShell — con (.venv) activo
+                  </div>
+                  <div class="code-window__actions">
+                    <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                      <span class="copy-btn__text">Copiar</span>
+                    </button>
+                    <span class="code-window__vscode">
+                      <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                    </span>
+                  </div>
+                </header>
+                <div class="code-window__body">
+                  <pre><code class="language-powershell">where python</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="os-tab-panel" data-os-panel="mac-linux" role="tabpanel">
+              <div class="code-window">
+                <header class="code-window__header">
+                  <div class="code-window__filename">
+                    <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                    Terminal — con (.venv) activo
+                  </div>
+                  <div class="code-window__actions">
+                    <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                      <span class="copy-btn__text">Copiar</span>
+                    </button>
+                    <span class="code-window__vscode">
+                      <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                    </span>
+                  </div>
+                </header>
+                <div class="code-window__body">
+                  <pre><code class="language-bash">which python</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>La primera ruta listada debe contener <code>.venv</code>:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">Ejemplo en Windows</div>
+              <div class="code-window__actions">
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">C:\Users\TuNombre\mi_primer_django\.venv\Scripts\python.exe</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>En VS Code, abre la paleta (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>), busca <em>Python: Select Interpreter</em> y elige el que incluye <code>.venv</code>. Así el editor y la terminal coinciden.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p>La ruta apunta a <code>AppData</code> o <code>Program Files</code> sin pasar por <code>.venv</code>. El entorno no está activo. Vuelve al paso 3.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 5 -->
+        <article class="tutorial-step" id="step-5">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">5</span>
+            <h2>Actualizar pip</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-5" aria-label="Marcar paso 5 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Actualizar el gestor de paquetes <code>pip</code> dentro del entorno virtual antes de instalar Django.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Una versión reciente de <code>pip</code> resuelve mejor las dependencias y evita errores al instalar paquetes grandes como Django. Solo actualizamos dentro del <code>.venv</code> activo.</p>
+
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal — (.venv) activo
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <p class="code-window__terminal-label">Terminal — mi_primer_django, entorno virtual activado</p>
+            <div class="code-window__body">
+              <pre><code class="language-powershell">python -m pip install --upgrade pip</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Se ejecuta en la terminal con <code>(.venv)</code> visible. El flag <code>-m pip</code> garantiza que usas el pip del Python activo.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Verás mensajes de descarga e instalación. Al final, algo como <code>Successfully installed pip-24.x</code> o un mensaje indicando que pip ya estaba actualizado.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Ejecuta <code>python -m pip --version</code>. La ruta del pip debe incluir <code>.venv</code>.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 6 -->
+        <article class="tutorial-step" id="step-6">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">6</span>
+            <h2>Instalar Django 6.0</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-6" aria-label="Marcar paso 6 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Instalar Django restringiendo la versión a la rama 6.0 para mantener consistencia con el resto del curso.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Sin restricción, <code>pip</code> podría instalar una versión distinta y los ejemplos del curso no coincidirían. Limitar a <code>&gt;=6.0,&lt;6.1</code> asegura Django 6.0.x.</p>
+
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal — (.venv) activo
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-powershell">python -m pip install "Django>=6.0,&lt;6.1"</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Terminal con entorno activo. Las comillas protegen los caracteres <code>&gt;</code> y <code>&lt;</code> en PowerShell y bash.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p><code>pip</code> descarga Django y sus dependencias (como <code>asgiref</code>, <code>sqlparse</code>, <code>tzdata</code>). Al final: <code>Successfully installed Django-6.0.x ...</code></p>
+
+          <div class="callout callout--warning">
+            <div>
+              <p class="callout__label">Cuidado aquí</p>
+              <p>Si no ves <code>(.venv)</code> en el prompt, detente. Instalar ahora pondría Django en el Python global y crearía problemas difíciles de diagnosticar después.</p>
+            </div>
+          </div>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>El comando terminó sin errores. No cierres la terminal todavía; el siguiente paso confirma la versión.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><code>Could not find a version that satisfies the requirement</code> — Revisa tu conexión a internet o que escribiste bien las comillas y los símbolos de versión.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 7 -->
+        <article class="tutorial-step" id="step-7">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">7</span>
+            <h2>Verificar la versión de Django</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-7" aria-label="Marcar paso 7 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Ejecutar el comando de Django para mostrar qué versión quedó instalada.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Instalar no garantiza que el comando responda. Esta verificación confirma que Django está en el entorno correcto y listo para crear proyectos.</p>
+
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal — (.venv) activo
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-powershell">python -m django --version</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">Salida esperada</div>
+              <div class="code-window__actions">
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">6.0.2</code></pre>
+            </div>
+          </div>
+          <p>El número exacto puede variar (6.0.0, 6.0.1, etc.) siempre que empiece por <code>6.0</code>.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>La salida es <code>6.0.x</code>. Si ves <code>No module named django</code>, el paso 6 falló o el entorno no estaba activo. Repite desde el paso 3.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><code>django-admin is not recognized</code> — No uses <code>django-admin</code> directamente todavía. Prefiere <code>python -m django</code>; así te aseguras de usar el Django del entorno activo.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 8 -->
+        <article class="tutorial-step" id="step-8">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">8</span>
+            <h2>Revisar paquetes con pip list</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-8" aria-label="Marcar paso 8 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Listar todos los paquetes instalados en el entorno virtual activo.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Django no viaja solo: trae dependencias. Ver la lista completa te enseña qué hay dentro de tu "mochila" y te ayuda a detectar instalaciones accidentales en el entorno equivocado.</p>
+
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal — (.venv) activo
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-powershell">python -m pip list</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Verás una tabla con al menos:</p>
+          <ul>
+            <li><code>Django</code> — versión 6.0.x</li>
+            <li><code>asgiref</code></li>
+            <li><code>sqlparse</code></li>
+            <li><code>tzdata</code> (en Windows)</li>
+            <li><code>pip</code></li>
+          </ul>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p><code>Django</code> aparece en la lista con versión 6.0.x. Si la lista es muy corta o no incluye Django, algo falló en el paso 6.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 9 -->
+        <article class="tutorial-step" id="step-9">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">9</span>
+            <h2>Generar requirements.txt</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-9" aria-label="Marcar paso 9 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Exportar la lista exacta de paquetes y versiones a un archivo <code>requirements.txt</code>.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Si compartes el proyecto o lo abres en otra computadora, <code>requirements.txt</code> permite recrear el mismo entorno con <code>pip install -r requirements.txt</code>. Es la forma estándar de documentar dependencias en Python.</p>
+
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal — (.venv) activo
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-powershell">python -m pip freeze &gt; requirements.txt</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p class="file-path">mi_primer_django/requirements.txt</p>
+          <p>El archivo se crea en la raíz de <code>mi_primer_django</code>, al mismo nivel que <code>.venv</code>.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Aparece el archivo en el explorador de VS Code. Al abrirlo, verás líneas como:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                requirements.txt
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">asgiref==3.8.1
+Django==6.0.2
+sqlparse==0.5.3
+tzdata==2025.1</code></pre>
+            </div>
+          </div>
+          <p>Las versiones exactas pueden variar según cuándo instales.</p>
+
+          <div class="tree-structure">mi_primer_django/
+├── .venv/
+├── requirements.txt
+└── (listo para el proyecto Django)</div>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p><code>requirements.txt</code> existe y contiene una línea que empieza por <code>Django==6.0</code>.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 10 -->
+        <article class="tutorial-step" id="step-10">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">10</span>
+            <h2>Desactivar el entorno y checkpoint final</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-10" aria-label="Marcar paso 10 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Salir del entorno virtual con <code>deactivate</code> y confirmar que todo lo construido sigue en su sitio.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Desactivar devuelve la terminal al Python global. Es buena práctica saber entrar y salir del entorno. La carpeta <code>.venv</code> no desaparece: solo dejas de usarla hasta la próxima activación.</p>
+
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal — (.venv) activo
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-powershell">deactivate</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>El prefijo <code>(.venv)</code> desaparece del prompt. Si ejecutas <code>python -m django --version</code> ahora, probablemente fallará porque Django vive dentro del entorno, no en el sistema global. Eso es correcto.</p>
+
+          <p class="step-label">Lista de verificación final</p>
+          <ul class="checklist">
+            <li>Existe la carpeta <code>mi_primer_django/.venv</code>.</li>
+            <li>Puedes activar el entorno y ver <code>(.venv)</code> en el prompt.</li>
+            <li>Con el entorno activo, <code>python -m django --version</code> muestra 6.0.x.</li>
+            <li><code>requirements.txt</code> existe y lista Django.</li>
+            <li>Sabes activar y desactivar el entorno en tu sistema operativo.</li>
+          </ul>
+
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Mensaje de Teacher Jim</p>
+              <p>En el Tutorial 03 volverás a activar este mismo entorno y crearás tu primer proyecto Django. No borres <code>mi_primer_django</code>. Cada vez que trabajes en él, activa <code>.venv</code> primero.</p>
+            </div>
+          </div>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Marca este paso como hecho y pulsa "Marcar como completado" en la barra lateral. Luego continúa al Tutorial 03.</p>
+            </div>
+          </div>
+        </article>
+
+        <section class="mini-challenge" id="mini-reto">
+          <h3>Mini reto</h3>
+          <p>Practica el ciclo completo sin mirar los pasos:</p>
+          <ol>
+            <li>Desactiva el entorno si sigue activo.</li>
+            <li>Vuelve a activarlo.</li>
+            <li>Verifica con <code>where python</code> o <code>which python</code> que apunta a <code>.venv</code>.</li>
+            <li>Ejecuta <code>python -m django --version</code>.</li>
+            <li>Desactiva de nuevo.</li>
+          </ol>
+          <p>Si puedes hacerlo en menos de dos minutos sin errores, dominas la mecánica básica del entorno virtual.</p>
+        </section>
+
+        <nav class="tutorial-nav" aria-label="Navegación entre tutoriales">
+          <a class="btn btn--secondary" href="01-instalar-vscode-python.html">Anterior: VS Code y Python</a>
+          <a class="btn btn--secondary" href="../index.html">Volver al inicio</a>
+          <a class="btn btn--primary" href="03-primera-ventana-django.html">Siguiente: Primera ventana Django</a>
+        </nav>
+
+      </div>
+
+      <aside class="progress-rail" aria-label="Progreso del tutorial">
+        <div class="progress-rail__card">
+          <h3>Tu progreso</h3>
+          <div class="reading-progress" aria-hidden="true">
+            <div class="reading-progress__bar" data-scroll-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label">Lectura</p>
+          <div class="reading-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="reading-progress__bar" data-reading-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label" data-step-progress-label>0 de 10 pasos (0%)</p>
+          <button class="btn btn--primary complete-tutorial-btn" type="button" data-complete-tutorial>Marcar como completado</button>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Aprende Django con Teacher Jim</h3>
+          <p>Construido para aprender haciendo. Tutoriales en español para estudiantes que quieren entender Django, no solo copiar código.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tutoriales</h4>
+          <ul>
+            <li><a href="01-instalar-vscode-python.html">Instalar VS Code y Python</a></li>
+            <li><a href="02-entornos-django.html">Entornos + Django</a></li>
+            <li><a href="03-primera-ventana-django.html">Primera ventana</a></li>
+            <li><a href="04-todo-app-autenticacion.html">To-Do + Login</a></li>
+            <li><a href="05-errores-django.html">Errores comunes</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Repositorio</h4>
+          <ul>
+            <li><a href="https://github.com/TU-USUARIO/TU-REPOSITORIO" rel="noopener noreferrer">GitHub</a></li>
+            <li><a href="../index.html#tutoriales">Todos los tutoriales</a></li>
+            <li><a href="../index.html#ruta">Ruta de aprendizaje</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span data-current-year>2026</span> Aprende Django con Teacher Jim</p>
+        <a class="back-to-top" href="#" data-back-to-top>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+            <path d="m18 15-6-6-6 6"></path>
+          </svg>
+          Volver arriba
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="search-overlay" data-search-overlay role="dialog" aria-modal="true" aria-label="Búsqueda de tutoriales">
+    <div class="search-box">
+      <input type="search" data-search-input placeholder="Buscar tutoriales..." aria-label="Buscar tutoriales">
+      <div class="search-results" data-search-results></div>
+    </div>
+  </div>
+
+  <div id="copy-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="../assets/js/theme.js" defer></script>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/tutorial-progress.js" defer></script>
+  <script src="../assets/js/code-copy.js" defer></script>
+  <script src="../assets/js/search.js" defer></script>
+  <script src="../assets/vendor/prism/prism.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-python.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-bash.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-markup.min.js" defer></script>
+</body>
+</html>

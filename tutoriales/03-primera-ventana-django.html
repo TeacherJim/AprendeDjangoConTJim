@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial 03: Tu primera ventana en Django | Aprende Django con Teacher Jim</title>
+  <meta name="description" content="Crea tu primer proyecto Django, una aplicación core, conecta URL, vista y template, y muestra tu primera página real en el navegador.">
+  <meta name="author" content="Teacher Jim">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Tutorial 03: Tu primera ventana en Django">
+  <meta property="og:description" content="Conecta proyecto, aplicación, URL, vista y template hasta ver Mi primera página con Django en el navegador.">
+  <meta property="og:locale" content="es_ES">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/tutorial.css">
+  <link rel="stylesheet" href="../assets/css/syntax-theme.css">
+</head>
+<body data-tutorial-id="tutorial-03">
+
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="app-bar">
+    <div class="app-bar__inner">
+      <a class="app-bar__brand" href="../index.html">
+        <img class="app-bar__logo" src="../assets/icons/favicon.svg" alt="" width="36" height="36">
+        Teacher Jim
+      </a>
+
+      <nav class="app-bar__nav" aria-label="Navegación principal">
+        <a href="../index.html">Inicio</a>
+        <a href="../index.html#tutoriales">Tutoriales</a>
+        <a href="../index.html#ruta">Ruta de aprendizaje</a>
+        <a href="05-errores-django.html">Errores comunes</a>
+      </nav>
+
+      <div class="app-bar__actions">
+        <button class="icon-btn" type="button" data-search-open aria-label="Buscar tutoriales">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+        </button>
+
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro">
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+          </svg>
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+          </svg>
+        </button>
+
+        <button class="icon-btn menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Abrir menú de navegación">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="4" x2="20" y1="12" y2="12"></line>
+            <line x1="4" x2="20" y1="6" y2="6"></line>
+            <line x1="4" x2="20" y1="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" data-mobile-nav aria-label="Navegación móvil">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#tutoriales">Tutoriales</a>
+    <a href="../index.html#ruta">Ruta de aprendizaje</a>
+    <a href="05-errores-django.html">Errores comunes</a>
+  </nav>
+
+  <main id="main-content">
+    <div class="tutorial-layout">
+
+      <aside class="toc-sidebar">
+        <button class="toc-toggle" type="button" data-toc-toggle aria-expanded="false">Mapa de la misión</button>
+        <nav class="toc-panel" data-toc-panel aria-label="Contenido del tutorial">
+          <h2>Contenido</h2>
+          <ul class="toc-list">
+            <li><a href="#resultado-final">Resultado final</a></li>
+            <li><a href="#antes-de-empezar">Antes de empezar</a></li>
+            <li><a href="#step-1">Paso 1: Activar entorno</a></li>
+            <li><a href="#step-2">Paso 2: startproject</a></li>
+            <li><a href="#step-3">Paso 3: runserver</a></li>
+            <li><a href="#step-4">Paso 4: startapp core</a></li>
+            <li><a href="#step-5">Paso 5: INSTALLED_APPS</a></li>
+            <li><a href="#step-6">Paso 6: Vista home</a></li>
+            <li><a href="#step-7">Paso 7: core/urls.py</a></li>
+            <li><a href="#step-8">Paso 8: include URLs</a></li>
+            <li><a href="#step-9">Paso 9: Template HTML</a></li>
+            <li><a href="#step-10">Paso 10: Arrancar servidor</a></li>
+            <li><a href="#step-11">Paso 11: Verificar página</a></li>
+            <li><a href="#flujo-django">Flujo de una petición</a></li>
+            <li><a href="#mini-reto">Mini reto</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="tutorial-main">
+
+        <nav class="breadcrumb" aria-label="Ruta de navegación">
+          <a href="../index.html">Inicio</a>
+          <span aria-hidden="true">/</span>
+          <a href="../index.html#tutoriales">Tutoriales</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Tu primera ventana en Django</span>
+        </nav>
+
+        <header class="tutorial-header">
+          <p class="tutorial-header__number">Tutorial 03</p>
+          <h1>Tu primera ventana en Django</h1>
+          <p class="tutorial-header__desc">Hasta ahora preparaste Python, el entorno virtual y Django. Ahora conectas las piezas que hacen funcionar una página web: proyecto, aplicación, URL, vista y template. Al terminar verás tu propio texto en el navegador, no la página de bienvenida por defecto.</p>
+          <div class="tutorial-meta">
+            <span class="chip">Inicial</span>
+            <span class="chip">~50 min</span>
+            <span class="chip">11 pasos</span>
+          </div>
+        </header>
+
+        <section class="tutorial-section" id="resultado-final">
+          <h2>Resultado final</h2>
+          <p>Al terminar este tutorial tendrás:</p>
+          <ul>
+            <li>Un proyecto Django llamado <code>config</code> dentro de <code>mi_primer_django</code>.</li>
+            <li>Una aplicación <code>core</code> registrada en <code>INSTALLED_APPS</code>.</li>
+            <li>Una vista <code>home</code> que pasa datos a un template HTML.</li>
+            <li>La URL <code>/home/</code> mostrando el texto <strong>Mi primera página con Django</strong> en tu navegador.</li>
+          </ul>
+          <div class="tree-structure">mi_primer_django/
+├── .venv/
+├── requirements.txt
+├── manage.py
+├── config/
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── asgi.py
+│   └── wsgi.py
+└── core/
+    ├── migrations/
+    ├── templates/
+    │   └── core/
+    │       └── home.html
+    ├── __init__.py
+    ├── admin.py
+    ├── apps.py
+    ├── models.py
+    ├── tests.py
+    ├── urls.py
+    └── views.py</div>
+          <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Concepto clave</p>
+              <p>En Django, el <strong>proyecto</strong> (<code>config</code>) es la configuración global. La <strong>aplicación</strong> (<code>core</code>) es donde vive la lógica de una parte concreta de tu sitio. Una petición del navegador recorre URL, vista y template antes de volver como HTML.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="tutorial-section" id="antes-de-empezar">
+          <h2>Antes de empezar</h2>
+          <p>Confirma que completaste el Tutorial 02 o que cumples estos requisitos:</p>
+          <ul class="checklist">
+            <li>Existe la carpeta <code>mi_primer_django</code> con <code>.venv</code> y <code>requirements.txt</code>.</li>
+            <li>Django 6.0.x está instalado dentro del entorno virtual.</li>
+            <li><code>django-admin --version</code> responde con 6.0.x cuando el entorno está activo.</li>
+            <li>VS Code está abierto con <code>mi_primer_django</code> como carpeta raíz.</li>
+            <li>Sabes activar el entorno virtual y ves <code>(.venv)</code> en el prompt.</li>
+          </ul>
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Este tutorial conecta muchas piezas nuevas. No copies archivos sin leer qué hace cada línea. Si algo falla, revisa el paso anterior antes de seguir. La mayoría de errores vienen de un archivo mal nombrado o de olvidar registrar la app en <code>settings.py</code>.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="tutorial-section" id="mapa-mision">
+          <h2>Mapa de la misión</h2>
+          <p>Once pasos en orden. Cada uno construye sobre el anterior.</p>
+          <ol>
+            <li>Activar el entorno virtual en <code>mi_primer_django</code>.</li>
+            <li>Crear el proyecto Django con <code>django-admin startproject config .</code></li>
+            <li>Probar el servidor de desarrollo y ver la página de bienvenida.</li>
+            <li>Crear la aplicación <code>core</code> con <code>startapp</code>.</li>
+            <li>Registrar <code>core</code> en <code>INSTALLED_APPS</code>.</li>
+            <li>Escribir la vista <code>home</code> en <code>core/views.py</code>.</li>
+            <li>Crear <code>core/urls.py</code> con <code>app_name</code> y la ruta.</li>
+            <li>Conectar las URLs de <code>core</code> en <code>config/urls.py</code>.</li>
+            <li>Crear el template <code>core/templates/core/home.html</code>.</li>
+            <li>Arrancar el servidor de desarrollo.</li>
+            <li>Verificar que el navegador muestra <strong>Mi primera página con Django</strong>.</li>
+          </ol>
+        </section>
+
+        <!-- PASO 1 -->
+        <article class="tutorial-step" id="step-1">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">1</span>
+            <h2>Activar el entorno virtual</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-1" aria-label="Marcar paso 1 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Abrir VS Code en <code>mi_primer_django</code> y activar el entorno virtual antes de ejecutar cualquier comando de Django.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Sin el entorno activo, <code>django-admin</code> y <code>manage.py</code> pueden no encontrarse o usar una versión de Django distinta a la que instalaste en el Tutorial 02. Este paso es un recordatorio, no una opción.</p>
+
+          <p class="step-label">Código</p>
+          <div class="os-tabs">
+            <div class="os-tabs__nav" role="tablist" aria-label="Activar entorno por sistema operativo">
+              <button class="os-tab-btn is-active" type="button" data-os-tab="win-ps" role="tab" aria-selected="true">Windows PowerShell</button>
+              <button class="os-tab-btn" type="button" data-os-tab="win-cmd" role="tab" aria-selected="false">Windows CMD</button>
+              <button class="os-tab-btn" type="button" data-os-tab="mac-linux" role="tab" aria-selected="false">macOS / Linux</button>
+            </div>
+
+            <div class="os-tab-panel is-active" data-os-panel="win-ps" role="tabpanel">
+              <div class="code-window">
+                <header class="code-window__header">
+                  <div class="code-window__filename">
+                    <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                    PowerShell
+                  </div>
+                  <div class="code-window__actions">
+                    <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                      <span class="copy-btn__text">Copiar</span>
+                    </button>
+                    <span class="code-window__vscode">
+                      <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                    </span>
+                  </div>
+                </header>
+                <div class="code-window__body">
+                  <pre><code class="language-powershell">cd $HOME\Documents\mi_primer_django
+code .
+.\.venv\Scripts\Activate.ps1</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="os-tab-panel" data-os-panel="win-cmd" role="tabpanel">
+              <div class="code-window">
+                <header class="code-window__header">
+                  <div class="code-window__filename">
+                    <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                    CMD
+                  </div>
+                  <div class="code-window__actions">
+                    <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                      <span class="copy-btn__text">Copiar</span>
+                    </button>
+                    <span class="code-window__vscode">
+                      <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                    </span>
+                  </div>
+                </header>
+                <div class="code-window__body">
+                  <pre><code class="language-bash">cd %USERPROFILE%\Documents\mi_primer_django
+code .
+.venv\Scripts\activate.bat</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="os-tab-panel" data-os-panel="mac-linux" role="tabpanel">
+              <div class="code-window">
+                <header class="code-window__header">
+                  <div class="code-window__filename">
+                    <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                    Terminal
+                  </div>
+                  <div class="code-window__actions">
+                    <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                      <span class="copy-btn__text">Copiar</span>
+                    </button>
+                    <span class="code-window__vscode">
+                      <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                    </span>
+                  </div>
+                </header>
+                <div class="code-window__body">
+                  <pre><code class="language-bash">cd ~/Documents/mi_primer_django
+code .
+source .venv/bin/activate</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Terminal integrada de VS Code, dentro de la carpeta <code>mi_primer_django</code>. Ajusta la ruta si guardaste el proyecto en otra ubicación.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>El prompt muestra <code>(.venv)</code> al inicio de la línea:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Prompt activado
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">(.venv) PS C:\Users\TuUsuario\Documents\mi_primer_django></code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Ejecuta <code>django-admin --version</code>. Debe mostrar <code>6.0.x</code>. Si no ves <code>(.venv)</code>, no continúes al paso 2.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 2 -->
+        <article class="tutorial-step" id="step-2">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">2</span>
+            <h2>Crear el proyecto con startproject</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-2" aria-label="Marcar paso 2 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Generar la estructura base del proyecto Django con el nombre <code>config</code> en la carpeta actual.</p>
+
+          <p class="step-label">Por qué</p>
+          <p><code>django-admin startproject</code> crea los archivos de configuración que Django necesita: <code>settings.py</code>, <code>urls.py</code>, <code>wsgi.py</code> y el script <code>manage.py</code>. El punto al final (<code>.</code>) indica que quieres crear el proyecto aquí, no en una subcarpeta nueva.</p>
+
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                terminal (.venv activo)
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">django-admin startproject config .</code></pre>
+            </div>
+          </div>
+
+          <div class="callout callout--why">
+            <div>
+              <p class="callout__label">Qué significa el punto</p>
+              <p><code>django-admin startproject config</code> sin punto crea una carpeta <code>config</code> dentro de otra carpeta <code>config</code>. El punto final dice: "usa la carpeta actual (<code>mi_primer_django</code>) como raíz del proyecto". Así <code>manage.py</code> queda al mismo nivel que <code>.venv</code> y <code>requirements.txt</code>.</p>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Terminal con entorno activo, estando en <code>mi_primer_django</code>.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Aparecen nuevos archivos y carpetas en el explorador de VS Code:</p>
+          <div class="tree-structure">mi_primer_django/
+├── .venv/
+├── requirements.txt
+├── manage.py              ← nuevo
+└── config/                ← nuevo (paquete de configuración)
+    ├── __init__.py
+    ├── settings.py
+    ├── urls.py
+    ├── asgi.py
+    └── wsgi.py</div>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Confirma que existe <code>manage.py</code> en la raíz de <code>mi_primer_django</code> y la carpeta <code>config/</code> con <code>settings.py</code> dentro.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>CommandError: '.\\config' already exists</strong> — Ya ejecutaste el comando antes. Si el proyecto está bien, continúa al paso 3. Si quieres empezar de cero, borra <code>manage.py</code> y la carpeta <code>config/</code> (no borres <code>.venv</code> ni <code>requirements.txt</code>).</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 3 -->
+        <article class="tutorial-step" id="step-3">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">3</span>
+            <h2>Probar el servidor de desarrollo</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-3" aria-label="Marcar paso 3 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Arrancar el servidor de desarrollo de Django y abrir la página de bienvenida por defecto en el navegador.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Antes de escribir tu propia página, confirmas que el proyecto funciona. <code>manage.py</code> es el asistente de Django para este proyecto: migraciones, servidor, creación de apps y más.</p>
+
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                terminal (.venv activo)
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py runserver</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Terminal con entorno activo, en la carpeta que contiene <code>manage.py</code>.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>La terminal muestra algo como:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Salida del servidor
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 18 unapplied migration(s)...
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.</code></pre>
+            </div>
+          </div>
+          <p>Abre <a href="http://127.0.0.1:8000/" rel="noopener noreferrer">http://127.0.0.1:8000/</a> en tu navegador. Verás la página de cohete de Django con el mensaje "The install worked successfully!".</p>
+          <p>Detén el servidor con <kbd>Ctrl</kbd>+<kbd>C</kbd> (o <kbd>Ctrl</kbd>+<kbd>Break</kbd> en Windows) antes de continuar al paso 4.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>La página de bienvenida de Django carga sin error 404 ni pantalla en blanco. El aviso de migraciones pendientes es normal; las aplicaremos en tutoriales posteriores.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--warning">
+            <div>
+              <p class="callout__label">Importante</p>
+              <p>Solo puedes tener un servidor escuchando en el puerto 8000. Si ves "That port is already in use", cierra la terminal anterior o usa <code>python manage.py runserver 8001</code>.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 4 -->
+        <article class="tutorial-step" id="step-4">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">4</span>
+            <h2>Crear la aplicación core</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-4" aria-label="Marcar paso 4 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear una aplicación Django llamada <code>core</code> que contendrá nuestra primera vista y template.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Un <strong>proyecto</strong> es el contenedor global: configuración, URLs principales, base de datos. Una <strong>aplicación</strong> es un módulo reutilizable con una responsabilidad concreta. Un proyecto puede tener muchas apps (<code>core</code>, <code>blog</code>, <code>tienda</code>). Aquí <code>core</code> aloja la página de inicio.</p>
+
+          <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Proyecto vs aplicación</p>
+              <p><strong>Proyecto (<code>config</code>)</strong> — La configuración del sitio completo. Un solo proyecto por carpeta de trabajo.</p>
+              <p><strong>Aplicación (<code>core</code>)</strong> — Código de una funcionalidad. Puedes tener varias apps en un proyecto o reutilizar una app en otro proyecto.</p>
+            </div>
+          </div>
+
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                terminal (.venv activo)
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py startapp core</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Terminal en la raíz del proyecto, junto a <code>manage.py</code>.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Se crea la carpeta <code>core/</code> con esta estructura:</p>
+          <div class="tree-structure">mi_primer_django/
+├── manage.py
+├── config/
+└── core/                  ← nueva aplicación
+    ├── migrations/
+    │   └── __init__.py
+    ├── __init__.py
+    ├── admin.py
+    ├── apps.py
+    ├── models.py
+    ├── tests.py
+    └── views.py</div>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>El explorador de VS Code muestra la carpeta <code>core</code> al mismo nivel que <code>config</code>, no dentro de ella.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 5 -->
+        <article class="tutorial-step" id="step-5">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">5</span>
+            <h2>Registrar core en INSTALLED_APPS</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-5" aria-label="Marcar paso 5 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Decirle a Django que la aplicación <code>core</code> forma parte de este proyecto añadiéndola a <code>INSTALLED_APPS</code>.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Django solo carga apps registradas. Sin este paso, tus vistas, templates y modelos de <code>core</code> no serán encontrados. Es uno de los olvidos más frecuentes de principiantes.</p>
+
+          <p class="step-label">Código</p>
+          <span class="file-path">config/settings.py</span>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                settings.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'core',
+]</code></pre>
+            </div>
+          </div>
+          <p>Añade <code>'core',</code> al final de la lista. No borres las apps que Django trae por defecto.</p>
+
+          <p class="step-label">Dónde va</p>
+          <p>Archivo <code>config/settings.py</code>, busca la variable <code>INSTALLED_APPS</code> cerca del inicio del archivo.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Al guardar el archivo, no aparece ningún error en la terminal si el servidor estaba corriendo (se recarga solo). Si ejecutas <code>python manage.py check</code>, debe reportar cero problemas.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>La cadena es exactamente <code>'core'</code> (minúsculas, sin espacios extra). Django distingue mayúsculas y minúsculas en los nombres de apps.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>TemplateDoesNotExist más adelante</strong> — A menudo la app no está en <code>INSTALLED_APPS</code>. Vuelve a este paso antes de buscar otros problemas.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 6 -->
+        <article class="tutorial-step" id="step-6">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">6</span>
+            <h2>Escribir la vista home en views.py</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-6" aria-label="Marcar paso 6 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear una función vista llamada <code>home</code> que prepara datos y los envía a un template HTML.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>La <strong>vista</strong> es el cerebro de cada página: recibe la petición, decide qué datos necesita y devuelve una respuesta. Aquí usamos <code>render</code>, que combina un template con un diccionario de contexto.</p>
+
+          <p class="step-label">Código</p>
+          <span class="file-path">core/views.py</span>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                views.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.shortcuts import render
+
+
+def home(request):
+    contexto = {
+        'titulo': 'Mi primera página con Django',
+        'mensaje': 'Si ves este texto, tu proyecto, app, URL, vista y template están conectados.',
+        'autor': 'Teacher Jim',
+    }
+    return render(request, 'core/home.html', contexto)</code></pre>
+            </div>
+          </div>
+
+          <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Qué hace cada parte</p>
+              <p><code>request</code> — Objeto con la información de la petición del navegador (siempre el primer argumento).</p>
+              <p><code>contexto</code> — Diccionario con variables que el template podrá usar.</p>
+              <p><code>render(...)</code> — Busca el template, le pasa el contexto y devuelve HTML listo para el navegador.</p>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Reemplaza el contenido de <code>core/views.py</code>. El archivo viene casi vacío después de <code>startapp</code>.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>El archivo guarda sin errores de sintaxis. VS Code no subraya en rojo las importaciones de Django si el intérprete del entorno virtual está seleccionado.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>La ruta del template en <code>render</code> es <code>'core/home.html'</code>. La crearemos en el paso 9 siguiendo la convención <code>templates/core/</code>.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 7 -->
+        <article class="tutorial-step" id="step-7">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">7</span>
+            <h2>Crear core/urls.py con app_name</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-7" aria-label="Marcar paso 7 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear un archivo de URLs propio de la app <code>core</code> que conecta la ruta <code>/home/</code> con la vista <code>home</code>.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Cada app puede tener sus propias URLs. <code>app_name = 'core'</code> define un espacio de nombres para evitar colisiones si otra app también tuviera una ruta llamada <code>home</code>. Más adelante podrás referenciar esta URL como <code>core:home</code>.</p>
+
+          <p class="step-label">Código</p>
+          <span class="file-path">core/urls.py</span>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                urls.py (nuevo archivo)
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.urls import path
+
+from . import views
+
+app_name = 'core'
+
+urlpatterns = [
+    path('home/', views.home, name='home'),
+]</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Crea el archivo <code>core/urls.py</code> al mismo nivel que <code>views.py</code>. En VS Code: clic derecho en la carpeta <code>core</code> &gt; Nuevo archivo &gt; <code>urls.py</code>.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>El archivo existe junto a los demás módulos de <code>core</code>:</p>
+          <div class="tree-structure">core/
+├── urls.py        ← nuevo
+├── views.py
+├── models.py
+└── ...</div>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>La importación es <code>from . import views</code> (punto = mismo paquete). El <code>name='home'</code> identifica esta ruta dentro del espacio <code>core</code>.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 8 -->
+        <article class="tutorial-step" id="step-8">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">8</span>
+            <h2>Conectar las URLs en config/urls.py</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-8" aria-label="Marcar paso 8 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Incluir las URLs de <code>core</code> en el enrutador principal del proyecto con <code>include</code>.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Cuando el navegador pide una URL, Django primero consulta <code>config/urls.py</code>. Sin <code>include</code>, Django no sabe que existen las rutas definidas en <code>core/urls.py</code>.</p>
+
+          <p class="step-label">Código</p>
+          <span class="file-path">config/urls.py</span>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                urls.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.contrib import admin
+from django.urls import include, path
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('core.urls')),
+]</code></pre>
+            </div>
+          </div>
+          <p>Añade <code>include</code> a la importación y la línea <code>path('', include('core.urls'))</code>. La cadena vacía <code>''</code> significa que las rutas de <code>core</code> se montan en la raíz del sitio, así <code>home/</code> será accesible como <code>/home/</code>.</p>
+
+          <p class="step-label">Dónde va</p>
+          <p>Archivo <code>config/urls.py</code>, dentro de la lista <code>urlpatterns</code>.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>La ruta completa queda así: petición a <code>http://127.0.0.1:8000/home/</code> &rarr; <code>config/urls.py</code> delega a <code>core/urls.py</code> &rarr; ejecuta <code>views.home</code>.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Guarda el archivo. Si el servidor está corriendo, verás "Watching for file changes" en la terminal al recargar.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>404 Page not found en /home/</strong> — Revisa que <code>include('core.urls')</code> esté escrito exactamente así y que <code>core/urls.py</code> exista. Un error tipográfico en el nombre del módulo rompe toda la ruta.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 9 -->
+        <article class="tutorial-step" id="step-9">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">9</span>
+            <h2>Crear el template home.html</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-9" aria-label="Marcar paso 9 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear un archivo HTML completo que muestra las variables del contexto que definimos en la vista.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>El <strong>template</strong> es la capa de presentación. Separa el diseño (HTML) de la lógica (Python en la vista). Django usa su propio lenguaje de plantillas con <code>{{ variable }}</code> para insertar datos.</p>
+
+          <p class="step-label">Código</p>
+          <span class="file-path">core/templates/core/home.html</span>
+          <p>Crea las carpetas <code>templates</code> y <code>core</code> dentro de la app si no existen. La ruta completa es importante: Django busca <code>core/home.html</code> dentro de cualquier carpeta <code>templates/</code> de apps registradas.</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                home.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;{{ titulo }}&lt;/title&gt;
+  &lt;style&gt;
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 40rem;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+      line-height: 1.6;
+      color: #1a1a2e;
+      background: #f8f9fc;
+    }
+    h1 {
+      color: #0d47a1;
+      border-bottom: 3px solid #90caf9;
+      padding-bottom: 0.5rem;
+    }
+    .mensaje {
+      background: #e3f2fd;
+      border-left: 4px solid #1976d2;
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+    }
+    footer {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #546e7a;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;{{ titulo }}&lt;/h1&gt;
+  &lt;p class="mensaje"&gt;{{ mensaje }}&lt;/p&gt;
+  &lt;footer&gt;
+    &lt;p&gt;Creado siguiendo los tutoriales de {{ autor }}.&lt;/p&gt;
+  &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Dentro de la app <code>core</code>, no en la raíz del proyecto:</p>
+          <div class="tree-structure">core/
+├── templates/
+│   └── core/
+│       └── home.html    ← aquí
+├── urls.py
+└── views.py</div>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>El archivo guarda correctamente. Las llaves dobles <code>{{ titulo }}</code> no se muestran en el navegador: Django las reemplaza por el valor del contexto.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>La ruta del archivo coincide con lo que pide <code>render</code>: <code>'core/home.html'</code> busca <code>templates/core/home.html</code> dentro de la app.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>TemplateDoesNotExist: core/home.html</strong> — El archivo está en la carpeta equivocada. Debe estar en <code>core/templates/core/</code>, no en <code>config/templates/</code> ni directamente en <code>core/home.html</code>.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 10 -->
+        <article class="tutorial-step" id="step-10">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">10</span>
+            <h2>Arrancar el servidor de desarrollo</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-10" aria-label="Marcar paso 10 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Iniciar de nuevo el servidor para probar la página completa con URL, vista y template conectados.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Todos los archivos ya están en su sitio. El servidor de desarrollo recarga automáticamente cuando guardas cambios, pero arrancarlo de nuevo confirma que no hay errores de importación ni de sintaxis al inicio.</p>
+
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                terminal (.venv activo)
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py runserver</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Terminal en la raíz del proyecto, con entorno virtual activo.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>El servidor arranca sin errores de importación. La terminal queda esperando peticiones:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Servidor listo
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Si aparece un traceback en rojo al arrancar, léelo desde abajo: la última línea suele indicar el archivo y la línea con el error. Corrige antes de ir al paso 11.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 11 -->
+        <article class="tutorial-step" id="step-11">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">11</span>
+            <h2>Verificar Mi primera página con Django</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-11" aria-label="Marcar paso 11 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Abrir la URL correcta en el navegador y confirmar que ves el título y el mensaje de tu template, no la página de cohete de Django.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>La verificación final cierra el ciclo. Si el texto aparece, significa que las cinco piezas —proyecto, app, URL, vista y template— están conectadas correctamente.</p>
+
+          <p class="step-label">Código</p>
+          <p>Abre esta URL en tu navegador (con el servidor corriendo):</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Navegador
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">http://127.0.0.1:8000/home/</code></pre>
+            </div>
+          </div>
+          <p>Presta atención a la barra final: <code>/home/</code> con la diagonal al final. Django suele redirigir si falta, pero usa la forma canónica.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>El navegador muestra una página con:</p>
+          <ul>
+            <li>Un encabezado <strong>Mi primera página con Django</strong> (valor de <code>{{ titulo }}</code>).</li>
+            <li>El párrafo del mensaje en un recuadro azul claro.</li>
+            <li>El pie de página con "Creado siguiendo los tutoriales de Teacher Jim".</li>
+          </ul>
+          <p>En la terminal del servidor verás una línea como:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Log del servidor
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">[07/Jul/2026 13:45:00] "GET /home/ HTTP/1.1" 200 892</code></pre>
+            </div>
+          </div>
+          <p>El código <code>200</code> significa que la petición fue exitosa.</p>
+
+          <p class="step-label">Lista de verificación final</p>
+          <ul class="checklist">
+            <li>El entorno virtual está activo cuando trabajas en el proyecto.</li>
+            <li>Existe <code>manage.py</code> y la carpeta <code>config/</code>.</li>
+            <li>La app <code>core</code> está en <code>INSTALLED_APPS</code>.</li>
+            <li><code>core/views.py</code> define la función <code>home</code> con contexto.</li>
+            <li><code>core/urls.py</code> mapea <code>home/</code> a la vista.</li>
+            <li><code>config/urls.py</code> incluye <code>core.urls</code>.</li>
+            <li>El template <code>core/templates/core/home.html</code> existe.</li>
+            <li>El navegador en <code>/home/</code> muestra <strong>Mi primera página con Django</strong>.</li>
+          </ul>
+
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Mensaje de Teacher Jim</p>
+              <p>Acabas de recorrer el camino completo de una petición web en Django. En el Tutorial 04 construirás una aplicación más grande con modelos, formularios y login. Guarda este proyecto: será la base del To-Do.</p>
+            </div>
+          </div>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Marca este paso, pulsa "Marcar como completado" y continúa al Tutorial 04 cuando estés listo.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Si algo falla</p>
+              <p><strong>404 en /home/</strong> — Revisa pasos 7 y 8 (URLs).</p>
+              <p><strong>TemplateDoesNotExist</strong> — Revisa pasos 5 y 9 (app registrada y ruta del template).</p>
+              <p><strong>Página en blanco o error 500</strong> — Mira la terminal del servidor; el traceback indica el archivo problemático.</p>
+            </div>
+          </div>
+        </article>
+
+        <section class="tutorial-section" id="flujo-django">
+          <h2>Flujo de una petición en Django</h2>
+          <p>Cuando visitas <code>http://127.0.0.1:8000/home/</code>, Django sigue este recorrido. Memorizarlo te ahorrará horas de depuración:</p>
+
+          <div class="flow-diagram flow-diagram--visual">
+            <span class="flow-node">URL del navegador</span>
+            <span class="flow-arrow">GET /home/</span>
+            <span class="flow-node">config/urls.py</span>
+            <span class="flow-arrow">include('core.urls')</span>
+            <span class="flow-node">core/urls.py</span>
+            <span class="flow-arrow">path('home/', views.home)</span>
+            <span class="flow-node">core/views.py</span>
+            <span class="flow-arrow">render con contexto</span>
+            <span class="flow-node">core/templates/core/home.html</span>
+            <span class="flow-arrow">HTML generado</span>
+            <span class="flow-node">Navegador</span>
+          </div>
+
+          <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Resumen del flujo</p>
+              <p><strong>URL</strong> — Lo que el usuario escribe o pulsa.</p>
+              <p><strong>urls.py</strong> — Tabla de enrutamiento: qué vista responde a cada ruta.</p>
+              <p><strong>views.py</strong> — Lógica: prepara datos y elige el template.</p>
+              <p><strong>template</strong> — Presentación: HTML con variables del contexto.</p>
+              <p><strong>Navegador</strong> — Recibe el HTML y lo muestra al usuario.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mini-challenge" id="mini-reto">
+          <h3>Mini reto</h3>
+          <p>Prueba que entiendes el flujo sin mirar los pasos anteriores:</p>
+          <ol>
+            <li>Añade una variable <code>'fecha'</code> al contexto en <code>views.py</code> con el valor <code>'Julio 2026'</code>.</li>
+            <li>Muestra esa variable en el template debajo del mensaje principal con <code>{{ fecha }}</code>.</li>
+            <li>Crea una segunda ruta <code>acerca/</code> en <code>core/urls.py</code> que apunte a una nueva vista <code>acerca</code> con su propio template.</li>
+            <li>Verifica ambas URLs en el navegador sin reiniciar el servidor (el autoreload lo hace por ti).</li>
+          </ol>
+          <p>Si puedes añadir una ruta nueva y verla en el navegador, ya no solo copias tutoriales: estás pensando como desarrollador Django.</p>
+        </section>
+
+        <nav class="tutorial-nav" aria-label="Navegación entre tutoriales">
+          <a class="btn btn--secondary" href="02-entornos-django.html">Anterior: Entornos + Django</a>
+          <a class="btn btn--secondary" href="../index.html">Volver al inicio</a>
+          <a class="btn btn--primary" href="04-todo-app-autenticacion.html">Siguiente: To-Do + Login</a>
+        </nav>
+
+      </div>
+
+      <aside class="progress-rail" aria-label="Progreso del tutorial">
+        <div class="progress-rail__card">
+          <h3>Tu progreso</h3>
+          <div class="reading-progress" aria-hidden="true">
+            <div class="reading-progress__bar" data-scroll-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label">Lectura</p>
+          <div class="reading-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="reading-progress__bar" data-reading-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label" data-step-progress-label>0 de 11 pasos (0%)</p>
+          <button class="btn btn--primary complete-tutorial-btn" type="button" data-complete-tutorial>Marcar como completado</button>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Aprende Django con Teacher Jim</h3>
+          <p>Construido para aprender haciendo. Tutoriales en español para estudiantes que quieren entender Django, no solo copiar código.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tutoriales</h4>
+          <ul>
+            <li><a href="01-instalar-vscode-python.html">Instalar VS Code y Python</a></li>
+            <li><a href="02-entornos-django.html">Entornos + Django</a></li>
+            <li><a href="03-primera-ventana-django.html">Primera ventana</a></li>
+            <li><a href="04-todo-app-autenticacion.html">To-Do + Login</a></li>
+            <li><a href="05-errores-django.html">Errores comunes</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Repositorio</h4>
+          <ul>
+            <li><a href="https://github.com/TU-USUARIO/TU-REPOSITORIO" rel="noopener noreferrer">GitHub</a></li>
+            <li><a href="../index.html#tutoriales">Todos los tutoriales</a></li>
+            <li><a href="../index.html#ruta">Ruta de aprendizaje</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span data-current-year>2026</span> Aprende Django con Teacher Jim</p>
+        <a class="back-to-top" href="#" data-back-to-top>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+            <path d="m18 15-6-6-6 6"></path>
+          </svg>
+          Volver arriba
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="search-overlay" data-search-overlay role="dialog" aria-modal="true" aria-label="Búsqueda de tutoriales">
+    <div class="search-box">
+      <input type="search" data-search-input placeholder="Buscar tutoriales..." aria-label="Buscar tutoriales">
+      <div class="search-results" data-search-results></div>
+    </div>
+  </div>
+
+  <div id="copy-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="../assets/js/theme.js" defer></script>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/tutorial-progress.js" defer></script>
+  <script src="../assets/js/code-copy.js" defer></script>
+  <script src="../assets/js/search.js" defer></script>
+  <script src="../assets/vendor/prism/prism.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-python.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-bash.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-markup.min.js" defer></script>
+</body>
+</html>

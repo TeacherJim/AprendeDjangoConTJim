@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480" fill="none">
+  <defs>
+    <radialGradient id="portalGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7DFF58" stop-opacity="0.6"/>
+      <stop offset="70%" stop-color="#176B3A" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#07100B" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7DFF58"/>
+      <stop offset="50%" stop-color="#8DD8D4"/>
+      <stop offset="100%" stop-color="#CEC2FF"/>
+    </linearGradient>
+  </defs>
+  <!-- Background grid -->
+  <g opacity="0.15" stroke="#7DFF58" stroke-width="0.5">
+    <line x1="0" y1="60" x2="480" y2="60"/><line x1="0" y1="120" x2="480" y2="120"/>
+    <line x1="0" y1="180" x2="480" y2="180"/><line x1="0" y1="240" x2="480" y2="240"/>
+    <line x1="0" y1="300" x2="480" y2="300"/><line x1="0" y1="360" x2="480" y2="360"/>
+    <line x1="0" y1="420" x2="480" y2="420"/>
+    <line x1="60" y1="0" x2="60" y2="480"/><line x1="120" y1="0" x2="120" y2="480"/>
+    <line x1="180" y1="0" x2="180" y2="480"/><line x1="240" y1="0" x2="240" y2="480"/>
+    <line x1="300" y1="0" x2="300" y2="480"/><line x1="360" y1="0" x2="360" y2="480"/>
+    <line x1="420" y1="0" x2="420" y2="480"/>
+  </g>
+  <!-- Portal glow -->
+  <ellipse cx="240" cy="240" rx="170" ry="140" fill="url(#portalGlow)"/>
+  <!-- Portal rings -->
+  <ellipse cx="240" cy="240" rx="150" ry="110" stroke="url(#ringGrad)" stroke-width="3" fill="none" opacity="0.9">
+    <animate attributeName="rx" values="150;155;150" dur="4s" repeatCount="indefinite"/>
+    <animate attributeName="ry" values="110;115;110" dur="4s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="240" cy="240" rx="118" ry="85" stroke="#7DFF58" stroke-width="2" fill="none" opacity="0.6">
+    <animate attributeName="opacity" values="0.6;0.9;0.6" dur="3s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="240" cy="240" rx="86" ry="60" stroke="#8DD8D4" stroke-width="1.5" fill="rgba(125,255,88,0.08)" opacity="0.8"/>
+  <!-- Terminal window -->
+  <rect x="158" y="192" width="164" height="96" rx="8" fill="#1a1f1c" stroke="#3a4540" stroke-width="1.5"/>
+  <rect x="158" y="192" width="164" height="22" rx="8" fill="#232a26"/>
+  <circle cx="172" cy="203" r="4" fill="#ff5f57"/><circle cx="186" cy="203" r="4" fill="#febc2e"/><circle cx="200" cy="203" r="4" fill="#28c840"/>
+  <text x="170" y="234" font-family="monospace" font-size="10" fill="#55FF88">$ django-admin</text>
+  <text x="170" y="250" font-family="monospace" font-size="10" fill="#8DD8D4">startproject config</text>
+  <text x="170" y="272" font-family="monospace" font-size="10" fill="#6a9955"># portal abierto</text>
+  <!-- Orbit nodes -->
+  <circle cx="80" cy="150" r="6" fill="#CEC2FF" opacity="0.8">
+    <animate attributeName="cy" values="150;145;150" dur="5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="400" cy="330" r="5" fill="#8DD8D4" opacity="0.7">
+    <animate attributeName="cy" values="330;325;330" dur="4.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="100" cy="360" r="4" fill="#7DFF58" opacity="0.6"/>
+  <circle cx="380" cy="130" r="4" fill="#7DFF58" opacity="0.5"/>
+  <!-- Code fragments -->
+  <text x="60" y="100" font-family="monospace" font-size="10" fill="#63558F" opacity="0.6">{ }</text>
+  <text x="390" y="400" font-family="monospace" font-size="10" fill="#276A68" opacity="0.6">def</text>
+  <text x="48" y="245" font-family="monospace" font-size="9" fill="#176B3A" opacity="0.5">url</text>
+  <text x="414" y="230" font-family="monospace" font-size="9" fill="#176B3A" opacity="0.5">view</text>
+  <!-- Orbit path -->
+  <ellipse cx="240" cy="240" rx="190" ry="150" stroke="#7DFF58" stroke-width="0.5" fill="none" opacity="0.2" stroke-dasharray="4 8">
+    <animateTransform attributeName="transform" type="rotate" from="0 240 240" to="360 240 240" dur="30s" repeatCount="indefinite"/>
+  </ellipse>
+</svg>

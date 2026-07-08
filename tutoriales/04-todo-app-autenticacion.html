@@ -1,0 +1,2552 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial 04: Web App To-Do + Login | Aprende Django con Teacher Jim</title>
+  <meta name="description" content="Construye tu primera aplicación Django completa: registro, login, logout, tareas por usuario, formularios POST con CSRF, plantillas y animaciones.">
+  <meta name="author" content="Teacher Jim">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Tutorial 04: Web App To-Do + Login">
+  <meta property="og:description" content="Proyecto guiado paso a paso: autenticación, modelo Task, vistas protegidas y diseño responsive con animaciones.">
+  <meta property="og:locale" content="es_ES">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/tutorial.css">
+  <link rel="stylesheet" href="../assets/css/syntax-theme.css">
+</head>
+<body data-tutorial-id="tutorial-04">
+
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="app-bar">
+    <div class="app-bar__inner">
+      <a class="app-bar__brand" href="../index.html">
+        <img class="app-bar__logo" src="../assets/icons/favicon.svg" alt="" width="36" height="36">
+        Teacher Jim
+      </a>
+      <nav class="app-bar__nav" aria-label="Navegación principal">
+        <a href="../index.html">Inicio</a>
+        <a href="../index.html#tutoriales">Tutoriales</a>
+        <a href="../index.html#ruta">Ruta de aprendizaje</a>
+        <a href="05-errores-django.html">Errores comunes</a>
+      </nav>
+      <div class="app-bar__actions">
+        <button class="icon-btn" type="button" data-search-open aria-label="Buscar tutoriales">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        </button>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro">
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </button>
+        <button class="icon-btn menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Abrir menú de navegación">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" data-mobile-nav aria-label="Navegación móvil">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#tutoriales">Tutoriales</a>
+    <a href="../index.html#ruta">Ruta de aprendizaje</a>
+    <a href="05-errores-django.html">Errores comunes</a>
+  </nav>
+
+  <main id="main-content">
+    <div class="tutorial-layout">
+
+      <aside class="toc-sidebar">
+        <button class="toc-toggle" type="button" data-toc-toggle aria-expanded="false">Mapa de la misión</button>
+        <nav class="toc-panel" data-toc-panel aria-label="Contenido del tutorial">
+          <h2>Contenido</h2>
+          <ul class="toc-list">
+            <li><a href="#resultado-final">Resultado final</a></li>
+            <li><a href="#antes-de-empezar">Antes de empezar</a></li>
+            <li><a href="#arquitectura">Arquitectura</a></li>
+            <li><a href="#step-1">Paso 1: App tasks</a></li>
+            <li><a href="#step-2">Paso 2: TEMPLATES DIRS</a></li>
+            <li><a href="#step-3">Paso 3: STATIC</a></li>
+            <li><a href="#step-4">Paso 4: Auth redirects</a></li>
+            <li><a href="#step-5">Paso 5: Modelo Task</a></li>
+            <li><a href="#step-6">Paso 6: Migraciones</a></li>
+            <li><a href="#step-7">Paso 7: Admin</a></li>
+            <li><a href="#step-8">Paso 8: Formularios</a></li>
+            <li><a href="#step-9">Paso 9: Vistas</a></li>
+            <li><a href="#step-10">Paso 10: tasks/urls.py</a></li>
+            <li><a href="#step-11">Paso 11: config/urls.py</a></li>
+            <li><a href="#step-12">Paso 12: base.html</a></li>
+            <li><a href="#step-13">Paso 13: login.html</a></li>
+            <li><a href="#step-14">Paso 14: signup.html</a></li>
+            <li><a href="#step-15">Paso 15: task_list.html</a></li>
+            <li><a href="#step-16">Paso 16: task_form.html</a></li>
+            <li><a href="#step-17">Paso 17: app.css</a></li>
+            <li><a href="#step-18">Paso 18: app.js</a></li>
+            <li><a href="#step-19">Paso 19: check y runserver</a></li>
+            <li><a href="#step-20">Paso 20: Verificación</a></li>
+            <li><a href="#step-21">Paso 21: Mini retos</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="tutorial-main">
+
+        <nav class="breadcrumb" aria-label="Ruta de navegación">
+          <a href="../index.html">Inicio</a>
+          <span aria-hidden="true">/</span>
+          <a href="../index.html#tutoriales">Tutoriales</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Web App To-Do + Login</span>
+        </nav>
+
+        <header class="tutorial-header">
+          <p class="tutorial-header__number">Tutorial 04</p>
+          <h1>Web App To-Do + Login</h1>
+          <p class="tutorial-header__desc">Este es el proyecto principal del curso. Vas a construir una aplicación real donde cada usuario tiene su propia lista de tareas: registrarse, iniciar sesión, crear, editar, completar y eliminar tareas, con protección CSRF y rutas privadas.</p>
+          <div class="tutorial-meta">
+            <span class="chip">Proyecto guiado</span>
+            <span class="chip">~3 h</span>
+            <span class="chip">21 pasos</span>
+          </div>
+        </header>
+
+        <section class="tutorial-section" id="resultado-final">
+          <h2>Resultado final</h2>
+          <p>Al terminar tendrás una aplicación Django funcional con:</p>
+          <ul>
+            <li>Registro con nombre, usuario, correo y contraseña confirmada.</li>
+            <li>Login y logout usando el sistema de autenticación de Django.</li>
+            <li>Lista de tareas privada por usuario.</li>
+            <li>CRUD completo: crear, editar, completar/descompletar y eliminar.</li>
+            <li>Plantillas responsive, CSS con animación <code>task-enter</code> y JS ligero.</li>
+            <li>Formularios POST protegidos con token CSRF.</li>
+          </ul>
+          <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Flujo que vas a dominar</p>
+              <p>URL → View → Model (base de datos) → Template → HTML en el navegador. En cada paso te diré quién llama a quién.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="tutorial-section" id="antes-de-empezar">
+          <h2>Antes de empezar</h2>
+          <ul class="checklist">
+            <li>Completaste los Tutoriales 01, 02 y 03.</li>
+            <li>Tienes el entorno virtual activo (<code>(.venv)</code> visible en la terminal).</li>
+            <li>Existe el proyecto Django en <code>mi_primer_django</code> con <code>config/</code> y la app <code>core/</code>.</li>
+            <li><code>python manage.py runserver</code> funcionó al menos una vez en el Tutorial 03.</li>
+            <li>VS Code abierto en la carpeta raíz del proyecto (donde está <code>manage.py</code>).</li>
+          </ul>
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Este tutorial es largo a propósito. No lo hagas de un solo tirón si te cansas: marca cada paso como completado y retoma mañana. Lo importante es entender cada pieza, no terminar rápido.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="tutorial-section" id="arquitectura">
+          <h2>Arquitectura final del proyecto</h2>
+          <p>Al final de esta misión, tu carpeta se verá así:</p>
+          <div class="tree-structure">mi_primer_django/
+├── .venv/
+├── config/
+│   ├── settings.py      ← configuración global
+│   ├── urls.py          ← enruta hacia tasks
+│   └── ...
+├── core/                ← app del Tutorial 03
+├── tasks/               ← app nueva de este tutorial
+│   ├── migrations/
+│   ├── templates/
+│   │   ├── tasks/
+│   │   │   ├── task_list.html
+│   │   │   └── task_form.html
+│   │   └── registration/
+│   │       ├── login.html
+│   │       └── signup.html
+│   ├── admin.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── urls.py
+│   └── views.py
+├── static/
+│   ├── css/
+│   │   └── app.css
+│   └── js/
+│       └── app.js
+├── templates/
+│   └── base.html        ← plantilla madre global
+├── db.sqlite3
+├── manage.py
+└── requirements.txt</div>
+          <p>Ve construyendo en este orden. Si saltas un paso, los errores aparecerán más adelante y será más difícil diagnosticarlos.</p>
+        </section>
+
+        <article class="tutorial-step" id="step-1">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">1</span>
+            <h2>Crear la app tasks y registrarla en settings</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-1" aria-label="Marcar paso 1 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear la aplicación <code>tasks</code> con <code>startapp</code> y registrarla en <code>INSTALLED_APPS</code> de <code>config/settings.py</code>.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Django organiza el código en aplicaciones reutilizables. La app <code>tasks</code> concentrará el modelo, formularios, vistas y plantillas de tu lista de tareas. Sin registrarla, Django no la reconocerá.</p>
+
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal — raíz del proyecto (mi_primer_django)
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py startapp tasks</code></pre>
+            </div>
+          </div>
+          <p>Abre <code>config/settings.py</code> y localiza <code>INSTALLED_APPS</code>. Añade <code>"tasks"</code> al final de la lista, después de <code>"core"</code> que creaste en el Tutorial 03:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                config/settings.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">INSTALLED_APPS = [
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "core",
+    "tasks",
+]</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>El comando se ejecuta en la carpeta que contiene <code>manage.py</code>. La línea <code>"tasks"</code> va dentro de <code>INSTALLED_APPS</code> en <code>config/settings.py</code>.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Aparece la carpeta <code>tasks/</code> con archivos como <code>models.py</code>, <code>views.py</code> y <code>apps.py</code>. El servidor aún no hace nada nuevo, pero Django ya conoce la app.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>En el explorador de VS Code existe <code>tasks/</code>. En <code>INSTALLED_APPS</code> aparece <code>"tasks"</code> sin errores de sintaxis.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>ModuleNotFoundError: No module named 'tasks'</strong> — Escribiste mal el nombre en <code>INSTALLED_APPS</code> o la carpeta no se creó en la raíz del proyecto.</p>
+            </div>
+          </div>
+
+        </article>
+        <article class="tutorial-step" id="step-2">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">2</span>
+            <h2>Configurar TEMPLATES DIRS</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-2" aria-label="Marcar paso 2 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Indicarle a Django dónde buscar plantillas globales del proyecto, no solo las de cada app.</p>
+
+          <p class="step-label">Por qué</p>
+          <p><code>base.html</code> será compartido por toda la aplicación y vivirá en <code>templates/</code> en la raíz. Sin <code>DIRS</code>, Django no lo encontrará aunque el archivo exista.</p>
+
+          <p class="step-label">Código</p>
+          <p>En <code>config/settings.py</code>, reemplaza la sección <code>TEMPLATES</code> por esta versión. Fíjate en <code>DIRS</code>:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                config/settings.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
+]</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Busca la variable <code>TEMPLATES = [...]</code> en <code>config/settings.py</code>. Modifica solo esa sección.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Django podrá cargar plantillas desde <code>mi_primer_django/templates/</code> además de las carpetas <code>templates/</code> dentro de cada app.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Guarda el archivo. Si tienes el servidor corriendo, no debería mostrar errores al recargar. Aún no creamos <code>base.html</code>; eso viene en el paso 12.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>TemplateDoesNotExist</strong> más adelante — Suele significar que olvidaste <code>DIRS</code>, escribiste mal la ruta o el archivo no está donde indicaste.</p>
+            </div>
+          </div>
+
+        </article>
+        <article class="tutorial-step" id="step-3">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">3</span>
+            <h2>STATIC_URL y STATICFILES_DIRS</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-3" aria-label="Marcar paso 3 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Configurar la URL pública de archivos estáticos y la carpeta donde Django buscará CSS y JavaScript del proyecto.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Tu <code>app.css</code> y <code>app.js</code> no son plantillas: son archivos estáticos servidos en desarrollo por <code>runserver</code>. Sin <code>STATICFILES_DIRS</code>, la etiqueta <code>{% static %}</code> no encontrará los archivos.</p>
+
+          <p class="step-label">Código</p>
+          <p>Añade o actualiza estas líneas al final de <code>config/settings.py</code> (después de <code>TEMPLATES</code>):</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                config/settings.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">STATIC_URL = "static/"
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>En <code>config/settings.py</code>, cerca de otras constantes de rutas. Crea la carpeta <code>static/</code> en la raíz del proyecto si aún no existe.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Django sabrá que los estáticos del desarrollo viven en <code>mi_primer_django/static/</code>. Más adelante crearás <code>static/css/app.css</code> y <code>static/js/app.js</code>.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Existe la carpeta <code>static/</code> en la raíz (puede estar vacía por ahora). <code>STATIC_URL</code> y <code>STATICFILES_DIRS</code> están en <code>settings.py</code> sin errores de sintaxis.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>404 en /static/css/app.css</strong> — El archivo no existe aún (normal hasta el paso 17) o la ruta en <code>STATICFILES_DIRS</code> no apunta a <code>BASE_DIR / "static"</code>.</p>
+            </div>
+          </div>
+
+        </article>
+        <article class="tutorial-step" id="step-4">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">4</span>
+            <h2>LOGIN_URL y redirects de autenticación</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-4" aria-label="Marcar paso 4 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Definir a dónde redirige Django cuando un usuario no autenticado intenta acceder a una vista protegida, y hacia dónde va tras login o logout.</p>
+
+          <p class="step-label">Por qué</p>
+          <p><code>@login_required</code> necesita saber qué URL es el login. Sin estas constantes, Django usa valores por defecto que no coinciden con tus rutas nombradas <code>login</code>, <code>task_list</code>, etc.</p>
+
+          <p class="step-label">Código</p>
+          <p>Añade al final de <code>config/settings.py</code>:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                config/settings.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "task_list"
+LOGOUT_REDIRECT_URL = "login"</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Al final de <code>config/settings.py</code>, después de la configuración de estáticos. Usa los <strong>nombres</strong> de URL (<code>name=</code> en <code>urls.py</code>), no rutas con barras.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Cuando implementes las vistas protegidas, un usuario sin sesión que visite la lista de tareas será enviado a <code>/login/</code>. Tras iniciar sesión volverá a la lista; tras cerrar sesión irá al login.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Las tres constantes están en <code>settings.py</code>. Los valores son cadenas sin barra inicial: <code>"login"</code>, <code>"task_list"</code>, <code>"login"</code>.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>NoReverseMatch</strong> al guardar — Escribiste <code>/login/</code> en lugar del nombre <code>login</code>. Django espera el valor de <code>name=</code> en <code>urls.py</code>.</p>
+            </div>
+          </div>
+
+        </article>
+        <article class="tutorial-step" id="step-5">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">5</span>
+            <h2>Modelo Task</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-5" aria-label="Marcar paso 5 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear el modelo <code>Task</code> que representa cada tarea en la base de datos, vinculada al usuario que la creó.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Los datos persistentes viven en modelos. El <code>ForeignKey</code> a <code>User</code> garantiza que cada tarea pertenece a una cuenta y podrás filtrar por <code>request.user</code> en las vistas.</p>
+
+          <p class="step-label">Código</p>
+          <p>Reemplaza el contenido de <code>tasks/models.py</code>:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                tasks/models.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.contrib.auth.models import User
+from django.db import models
+
+
+class Task(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="tasks",
+    )
+    title = models.CharField(max_length=150)
+    description = models.TextField(blank=True)
+    completed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["completed", "-created_at"]
+
+    def __str__(self):
+        return self.title</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Archivo <code>tasks/models.py</code> dentro de la app <code>tasks</code>.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Django reconoce la clase <code>Task</code> como tabla futura <code>tasks_task</code>. Aún no existe en la base de datos hasta que ejecutes migraciones en el paso 6.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>El archivo guarda sin errores. VS Code no subraya imports de <code>django.db</code> si el intérprete del <code>.venv</code> está seleccionado.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>RelatedObjectDoesNotExist</strong> más adelante — Creaste la tarea sin asignar <code>task.user = request.user</code> antes de <code>save()</code>.</p>
+            </div>
+          </div>
+
+        </article>
+        <article class="tutorial-step" id="step-6">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">6</span>
+            <h2>makemigrations y migrate</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-6" aria-label="Marcar paso 6 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Generar y aplicar la migración que crea la tabla <code>tasks_task</code> en SQLite.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Los modelos son Python; la base de datos necesita tablas reales. <code>makemigrations</code> compara modelos con el estado actual y crea instrucciones SQL; <code>migrate</code> las ejecuta.</p>
+
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal — .venv activo
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py makemigrations tasks</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal — aplicar migración
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py migrate</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Terminal en la carpeta que contiene <code>manage.py</code>, con el entorno virtual activo.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Tras <code>makemigrations</code> aparece un archivo nuevo en <code>tasks/migrations/</code> (por ejemplo <code>0001_initial.py</code>). Tras <code>migrate</code> la terminal muestra <code>Applying tasks.0001_initial... OK</code>.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Existe <code>tasks/migrations/0001_initial.py</code> (o similar). <code>python manage.py showmigrations tasks</code> muestra <code>[X]</code> en la migración inicial.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>No changes detected</strong> — La app <code>tasks</code> no está en <code>INSTALLED_APPS</code> o <code>models.py</code> no guardó los cambios.</p>
+            </div>
+          </div>
+
+        </article>
+        <article class="tutorial-step" id="step-7">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">7</span>
+            <h2>Admin TaskAdmin</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-7" aria-label="Marcar paso 7 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Registrar el modelo <code>Task</code> en el panel de administración de Django con columnas útiles para depurar.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>El admin te permite ver y editar tareas sin construir vistas extra. Es ideal para comprobar que las tareas se guardan con el usuario correcto mientras desarrollas.</p>
+
+          <p class="step-label">Código</p>
+          <p>Reemplaza <code>tasks/admin.py</code>:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                tasks/admin.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.contrib import admin
+
+from .models import Task
+
+
+@admin.register(Task)
+class TaskAdmin(admin.ModelAdmin):
+    list_display = (
+        "title",
+        "user",
+        "completed",
+        "created_at",
+    )
+    list_filter = (
+        "completed",
+        "created_at",
+    )
+    search_fields = (
+        "title",
+        "user__username",
+        "user__email",
+    )</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Archivo <code>tasks/admin.py</code>.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>En <code>http://127.0.0.1:8000/admin/</code> aparecerá la sección <strong>Tasks</strong> con el modelo <code>Task</code> (necesitas un superusuario; créalo con <code>python manage.py createsuperuser</code> si aún no lo tienes).</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Tras reiniciar <code>runserver</code>, el admin lista Tasks. Si creas una tarea manualmente desde el admin, se guarda en la base de datos.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>tasks.Task no aparece en admin</strong> — Olvidaste guardar <code>admin.py</code> o no usaste <code>@admin.register(Task)</code>.</p>
+            </div>
+          </div>
+
+        </article>
+        <article class="tutorial-step" id="step-8">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">8</span>
+            <h2>Formularios SignUpForm y TaskForm</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-8" aria-label="Marcar paso 8 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear <code>tasks/forms.py</code> con un formulario de registro extendido y un formulario para crear/editar tareas.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Los formularios validan datos antes de tocar la base de datos. <code>SignUpForm</code> reutiliza la lógica de contraseñas de Django; <code>TaskForm</code> mapea campos del modelo con widgets amigables.</p>
+
+          <p class="step-label">Código</p>
+          <p>Crea el archivo <code>tasks/forms.py</code> con este contenido:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                tasks/forms.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
+from .models import Task
+
+
+class SignUpForm(UserCreationForm):
+    first_name = forms.CharField(
+        max_length=150,
+        required=True,
+        label="Nombre",
+    )
+    email = forms.EmailField(
+        required=True,
+        label="Correo electrónico",
+    )
+
+    class Meta:
+        model = User
+        fields = (
+            "first_name",
+            "username",
+            "email",
+            "password1",
+            "password2",
+        )
+
+    def clean_email(self):
+        email = self.cleaned_data["email"].strip().lower()
+
+        if User.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError(
+                "Ya existe una cuenta con este correo."
+            )
+
+        return email
+
+
+class TaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = (
+            "title",
+            "description",
+        )
+        widgets = {
+            "title": forms.TextInput(
+                attrs={
+                    "placeholder": "Ejemplo: Terminar práctica de Django",
+                }
+            ),
+            "description": forms.Textarea(
+                attrs={
+                    "rows": 4,
+                    "placeholder": "Agrega detalles opcionales",
+                }
+            ),
+        }</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Nuevo archivo <code>tasks/forms.py</code> en la raíz de la app <code>tasks/</code>.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Las vistas podrán importar <code>SignUpForm</code> y <code>TaskForm</code>. La validación de email duplicado ocurrirá en <code>clean_email</code> antes del registro.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>El archivo existe y no hay errores de importación. Desde la shell de Django puedes probar: <code>from tasks.forms import SignUpForm, TaskForm</code>.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>ImportError: cannot import name 'TaskForm'</strong> — El archivo se llama distinto, está en otra carpeta o hay un error de sintaxis arriba en el archivo.</p>
+            </div>
+          </div>
+
+        </article>
+        <article class="tutorial-step" id="step-9">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">9</span>
+            <h2>Todas las vistas en views.py</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-9" aria-label="Marcar paso 9 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Implementar las vistas de registro, listado, creación, edición, toggle y eliminación de tareas.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Cada URL necesita una vista que procese GET/POST, aplique permisos y devuelva HTML o redirección. <code>@login_required</code> protege rutas privadas; <code>get_object_or_404</code> evita acceder a tareas de otros usuarios.</p>
+
+          <p class="step-label">Código</p>
+          <p>Reemplaza <code>tasks/views.py</code> completo:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                tasks/views.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
+
+from .forms import SignUpForm, TaskForm
+from .models import Task
+
+
+def signup_view(request):
+    if request.user.is_authenticated:
+        return redirect("task_list")
+
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect("task_list")
+    else:
+        form = SignUpForm()
+
+    return render(
+        request,
+        "registration/signup.html",
+        {"form": form},
+    )
+
+
+@login_required
+def task_list(request):
+    tasks = Task.objects.filter(user=request.user)
+    form = TaskForm()
+
+    context = {
+        "tasks": tasks,
+        "form": form,
+        "total_tasks": tasks.count(),
+        "completed_tasks": tasks.filter(completed=True).count(),
+        "pending_tasks": tasks.filter(completed=False).count(),
+    }
+
+    return render(
+        request,
+        "tasks/task_list.html",
+        context,
+    )
+
+
+@login_required
+@require_POST
+def task_create(request):
+    form = TaskForm(request.POST)
+
+    if form.is_valid():
+        task = form.save(commit=False)
+        task.user = request.user
+        task.save()
+
+    return redirect("task_list")
+
+
+@login_required
+def task_update(request, pk):
+    task = get_object_or_404(
+        Task,
+        pk=pk,
+        user=request.user,
+    )
+
+    if request.method == "POST":
+        form = TaskForm(
+            request.POST,
+            instance=task,
+        )
+
+        if form.is_valid():
+            form.save()
+            return redirect("task_list")
+    else:
+        form = TaskForm(instance=task)
+
+    return render(
+        request,
+        "tasks/task_form.html",
+        {
+            "form": form,
+            "task": task,
+        },
+    )
+
+
+@login_required
+@require_POST
+def task_toggle(request, pk):
+    task = get_object_or_404(
+        Task,
+        pk=pk,
+        user=request.user,
+    )
+
+    task.completed = not task.completed
+    task.save(update_fields=["completed", "updated_at"])
+
+    return redirect("task_list")
+
+
+@login_required
+@require_POST
+def task_delete(request, pk):
+    task = get_object_or_404(
+        Task,
+        pk=pk,
+        user=request.user,
+    )
+
+    task.delete()
+
+    return redirect("task_list")</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Archivo <code>tasks/views.py</code>.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Las funciones quedan listas para enlazar en <code>urls.py</code>. Aún no funcionan en el navegador hasta conectar rutas y plantillas.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Sin errores de sintaxis. Cada vista importada usa <code>redirect("task_list")</code> con el nombre de URL correcto.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>405 Method Not Allowed</strong> en crear/eliminar — La vista exige POST (<code>@require_POST</code>) pero el formulario usa GET o falta <code>method="post"</code>.</p>
+            </div>
+          </div>
+
+        </article>
+        <article class="tutorial-step" id="step-10">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">10</span>
+            <h2>tasks/urls.py con LoginView y LogoutView</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-10" aria-label="Marcar paso 10 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Definir las rutas de la app <code>tasks</code>: lista, registro, login, logout y acciones CRUD.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Django enruta por <code>urls.py</code>. Reutilizamos <code>LoginView</code> y <code>LogoutView</code> del framework en lugar de reinventar la autenticación.</p>
+
+          <p class="step-label">Código</p>
+          <p>Crea <code>tasks/urls.py</code>:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                tasks/urls.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import path
+
+from . import views
+
+urlpatterns = [
+    path(
+        "",
+        views.task_list,
+        name="task_list",
+    ),
+    path(
+        "signup/",
+        views.signup_view,
+        name="signup",
+    ),
+    path(
+        "login/",
+        LoginView.as_view(
+            template_name="registration/login.html"
+        ),
+        name="login",
+    ),
+    path(
+        "logout/",
+        LogoutView.as_view(),
+        name="logout",
+    ),
+    path(
+        "tasks/create/",
+        views.task_create,
+        name="task_create",
+    ),
+    path(
+        "tasks/&lt;int:pk&gt;/edit/",
+        views.task_update,
+        name="task_update",
+    ),
+    path(
+        "tasks/&lt;int:pk&gt;/toggle/",
+        views.task_toggle,
+        name="task_toggle",
+    ),
+    path(
+        "tasks/&lt;int:pk&gt;/delete/",
+        views.task_delete,
+        name="task_delete",
+    ),
+]</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Nuevo archivo <code>tasks/urls.py</code> junto a <code>views.py</code>.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Las rutas quedan definidas con nombres (<code>task_list</code>, <code>login</code>, etc.) que coinciden con <code>LOGIN_URL</code> y los <code>{% url %}</code> de las plantillas.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Cada <code>path()</code> tiene un <code>name=</code> único. <code>LoginView</code> apunta a <code>registration/login.html</code> (la crearás en el paso 13).</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>NoReverseMatch: 'login'</strong> — Falta la ruta <code>name="login"</code> o hay un typo en el nombre usado en settings o plantillas.</p>
+            </div>
+          </div>
+
+        </article>
+        <article class="tutorial-step" id="step-11">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">11</span>
+            <h2>config/urls.py con include de tasks</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-11" aria-label="Marcar paso 11 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Conectar las URLs de <code>tasks</code> al proyecto principal para que las rutas respondan en la raíz del sitio.</p>
+
+          <p class="step-label">Por qué</p>
+          <p><code>config/urls.py</code> es la puerta de entrada. Sin <code>include("tasks.urls")</code>, ninguna ruta de tareas o login funcionará aunque <code>tasks/urls.py</code> esté perfecto.</p>
+
+          <p class="step-label">Código</p>
+          <p>Reemplaza <code>config/urls.py</code>:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                config/urls.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.contrib import admin
+from django.urls import include, path
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("", include("tasks.urls")),
+]</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Archivo <code>config/urls.py</code> en la carpeta de configuración del proyecto.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>La ruta vacía <code>""</code> delega en <code>tasks.urls</code>. Visitar <code>/</code> llamará a <code>task_list</code> (redirigirá a login si no hay sesión).</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Guarda el archivo. <code>python manage.py check</code> no reporta errores de URLs.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>ModuleNotFoundError: No module named 'tasks.urls'</strong> — El archivo <code>tasks/urls.py</code> no existe o la app no está registrada.</p>
+            </div>
+          </div>
+
+        </article>
+        <article class="tutorial-step" id="step-12">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">12</span>
+            <h2>Plantilla base.html</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-12" aria-label="Marcar paso 12 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear la plantilla madre <code>base.html</code> con cabecera, navegación según sesión, bloques de contenido y carga de estáticos.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Evitas repetir HTML en cada página. Las plantillas hijas extienden <code>base.html</code> y solo rellenan <code>{% block content %}</code>.</p>
+
+          <p class="step-label">Código</p>
+          <p>Crea la carpeta <code>templates/</code> en la raíz del proyecto y dentro el archivo <code>base.html</code>:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                templates/base.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% load static %}
+&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;{% block title %}Mis Tareas{% endblock %} | Teacher Jim To-Do&lt;/title&gt;
+  &lt;link rel="stylesheet" href="{% static 'css/app.css' %}"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;a class="skip-link" href="#main-content"&gt;Saltar al contenido&lt;/a&gt;
+
+  &lt;header class="app-header"&gt;
+    &lt;div class="app-header__inner"&gt;
+      &lt;a class="app-header__brand" href="{% url 'task_list' %}"&gt;Teacher Jim To-Do&lt;/a&gt;
+
+      &lt;nav class="app-header__nav" aria-label="Navegación principal"&gt;
+        {% if user.is_authenticated %}
+          &lt;span class="app-header__user" aria-label="Usuario actual"&gt;
+            Hola, {{ user.first_name|default:user.username }}
+          &lt;/span&gt;
+          &lt;form method="post" action="{% url 'logout' %}" class="logout-form"&gt;
+            {% csrf_token %}
+            &lt;button type="submit" class="btn btn--ghost"&gt;Cerrar sesión&lt;/button&gt;
+          &lt;/form&gt;
+        {% else %}
+          &lt;a class="btn btn--ghost" href="{% url 'login' %}"&gt;Iniciar sesión&lt;/a&gt;
+          &lt;a class="btn btn--primary" href="{% url 'signup' %}"&gt;Crear cuenta&lt;/a&gt;
+        {% endif %}
+      &lt;/nav&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;main id="main-content" class="app-main"&gt;
+    {% if messages %}
+      &lt;div class="messages" role="status" aria-live="polite"&gt;
+        {% for message in messages %}
+          &lt;p class="message message--{{ message.tags }}"&gt;{{ message }}&lt;/p&gt;
+        {% endfor %}
+      &lt;/div&gt;
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  &lt;/main&gt;
+
+  &lt;footer class="app-footer"&gt;
+    &lt;p&gt;Proyecto educativo Django — Teacher Jim&lt;/p&gt;
+  &lt;/footer&gt;
+
+  &lt;script src="{% static 'js/app.js' %}" defer&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p><code>mi_primer_django/templates/base.html</code> — ruta global configurada en <code>TEMPLATES DIRS</code> del paso 2.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Django puede resolver <code>base.html</code> por nombre. Las vistas que rendericen plantillas hijas mostrarán la estructura común.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>El archivo existe en <code>templates/base.html</code>. La primera línea es <code>{{% load static %}}</code>.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>TemplateDoesNotExist: base.html</strong> — Falta <code>DIRS</code> en settings o el archivo no está en <code>templates/</code> de la raíz.</p>
+            </div>
+          </div>
+
+        </article>
+        <article class="tutorial-step" id="step-13">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">13</span>
+            <h2>Plantilla login.html</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-13" aria-label="Marcar paso 13 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear el formulario de inicio de sesión que usa <code>LoginView</code> de Django.</p>
+
+          <p class="step-label">Por qué</p>
+          <p><code>LoginView</code> espera una plantilla con los campos <code>username</code> y <code>password</code>. Personalizarla mantiene el estilo de tu app.</p>
+
+          <p class="step-label">Código</p>
+          <p>Crea la ruta de carpetas <code>tasks/templates/registration/</code> y el archivo <code>login.html</code>:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                tasks/templates/registration/login.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends "base.html" %}
+
+{% block title %}Iniciar sesión{% endblock %}
+
+{% block content %}
+&lt;section class="auth-card" aria-labelledby="login-heading"&gt;
+  &lt;h1 id="login-heading"&gt;Iniciar sesión&lt;/h1&gt;
+  &lt;p class="auth-card__lead"&gt;Accede a tus tareas con tu usuario y contraseña.&lt;/p&gt;
+
+  &lt;form method="post" novalidate&gt;
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      &lt;div class="form-errors" role="alert"&gt;
+        {% for error in form.non_field_errors %}
+          &lt;p&gt;{{ error }}&lt;/p&gt;
+        {% endfor %}
+      &lt;/div&gt;
+    {% endif %}
+
+    &lt;div class="form-field"&gt;
+      &lt;label for="{{ form.username.id_for_label }}"&gt;Usuario&lt;/label&gt;
+      {{ form.username }}
+      {% for error in form.username.errors %}
+        &lt;p class="field-error" role="alert"&gt;{{ error }}&lt;/p&gt;
+      {% endfor %}
+    &lt;/div&gt;
+
+    &lt;div class="form-field"&gt;
+      &lt;label for="{{ form.password.id_for_label }}"&gt;Contraseña&lt;/label&gt;
+      {{ form.password }}
+      {% for error in form.password.errors %}
+        &lt;p class="field-error" role="alert"&gt;{{ error }}&lt;/p&gt;
+      {% endfor %}
+    &lt;/div&gt;
+
+    &lt;button type="submit" class="btn btn--primary btn--block"&gt;Entrar&lt;/button&gt;
+  &lt;/form&gt;
+
+  &lt;p class="auth-card__footer"&gt;
+    ¿No tienes cuenta?
+    &lt;a href="{% url 'signup' %}"&gt;Regístrate aquí&lt;/a&gt;
+  &lt;/p&gt;
+&lt;/section&gt;
+{% endblock %}</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p><code>tasks/templates/registration/login.html</code> — Django busca <code>registration/login.html</code> por convención de auth.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Al visitar <code>/login/</code> verás el formulario de acceso con enlace a registro.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>La plantilla extiende <code>base.html</code> e incluye <code>{{% csrf_token %}}</code> dentro del <code>&lt;form&gt;</code>.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>403 CSRF</strong> al enviar login — Falta <code>{{% csrf_token %}}</code> en el formulario.</p>
+            </div>
+          </div>
+
+        </article>
+        <article class="tutorial-step" id="step-14">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">14</span>
+            <h2>Plantilla signup.html</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-14" aria-label="Marcar paso 14 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear la página de registro que renderiza <code>SignUpForm</code>.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Los nuevos usuarios necesitan una interfaz clara. Esta plantilla muestra todos los campos del formulario con mensajes de error por campo.</p>
+
+          <p class="step-label">Código</p>
+          <p>En <code>tasks/templates/registration/signup.html</code>:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                tasks/templates/registration/signup.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends "base.html" %}
+
+{% block title %}Crear cuenta{% endblock %}
+
+{% block content %}
+&lt;section class="auth-card" aria-labelledby="signup-heading"&gt;
+  &lt;h1 id="signup-heading"&gt;Crear cuenta&lt;/h1&gt;
+  &lt;p class="auth-card__lead"&gt;Regístrate para guardar tus tareas de forma privada.&lt;/p&gt;
+
+  &lt;form method="post" novalidate&gt;
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      &lt;div class="form-errors" role="alert"&gt;
+        {% for error in form.non_field_errors %}
+          &lt;p&gt;{{ error }}&lt;/p&gt;
+        {% endfor %}
+      &lt;/div&gt;
+    {% endif %}
+
+    &lt;div class="form-field"&gt;
+      &lt;label for="{{ form.first_name.id_for_label }}"&gt;Nombre&lt;/label&gt;
+      {{ form.first_name }}
+      {% for error in form.first_name.errors %}
+        &lt;p class="field-error" role="alert"&gt;{{ error }}&lt;/p&gt;
+      {% endfor %}
+    &lt;/div&gt;
+
+    &lt;div class="form-field"&gt;
+      &lt;label for="{{ form.username.id_for_label }}"&gt;Usuario&lt;/label&gt;
+      {{ form.username }}
+      {% for error in form.username.errors %}
+        &lt;p class="field-error" role="alert"&gt;{{ error }}&lt;/p&gt;
+      {% endfor %}
+    &lt;/div&gt;
+
+    &lt;div class="form-field"&gt;
+      &lt;label for="{{ form.email.id_for_label }}"&gt;Correo electrónico&lt;/label&gt;
+      {{ form.email }}
+      {% for error in form.email.errors %}
+        &lt;p class="field-error" role="alert"&gt;{{ error }}&lt;/p&gt;
+      {% endfor %}
+    &lt;/div&gt;
+
+    &lt;div class="form-field"&gt;
+      &lt;label for="{{ form.password1.id_for_label }}"&gt;Contraseña&lt;/label&gt;
+      {{ form.password1 }}
+      {% for error in form.password1.errors %}
+        &lt;p class="field-error" role="alert"&gt;{{ error }}&lt;/p&gt;
+      {% endfor %}
+    &lt;/div&gt;
+
+    &lt;div class="form-field"&gt;
+      &lt;label for="{{ form.password2.id_for_label }}"&gt;Confirmar contraseña&lt;/label&gt;
+      {{ form.password2 }}
+      {% for error in form.password2.errors %}
+        &lt;p class="field-error" role="alert"&gt;{{ error }}&lt;/p&gt;
+      {% endfor %}
+    &lt;/div&gt;
+
+    &lt;button type="submit" class="btn btn--primary btn--block"&gt;Crear cuenta&lt;/button&gt;
+  &lt;/form&gt;
+
+  &lt;p class="auth-card__footer"&gt;
+    ¿Ya tienes cuenta?
+    &lt;a href="{% url 'login' %}"&gt;Inicia sesión&lt;/a&gt;
+  &lt;/p&gt;
+&lt;/section&gt;
+{% endblock %}</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Misma carpeta <code>tasks/templates/registration/</code> que <code>login.html</code>.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p><code>/signup/</code> muestra el formulario de alta. Tras registro exitoso, la vista redirige a la lista de tareas.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Todos los campos del <code>SignUpForm</code> tienen etiqueta y bloque de errores. Hay enlace a <code>{{% url 'login' %}}</code>.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>El registro no guarda el email</strong> — Revisa que <code>email</code> esté en <code>Meta.fields</code> del formulario.</p>
+            </div>
+          </div>
+
+        </article>
+        <article class="tutorial-step" id="step-15">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">15</span>
+            <h2>Plantilla task_list.html</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-15" aria-label="Marcar paso 15 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Construir la página principal: estadísticas, formulario rápido de creación y lista de tareas con acciones.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Es la pantalla que el usuario verá tras iniciar sesión. Combina lectura (lista) y escritura (POST para crear, completar y eliminar).</p>
+
+          <p class="step-label">Código</p>
+          <p>Crea <code>tasks/templates/tasks/task_list.html</code>:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                tasks/templates/tasks/task_list.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends "base.html" %}
+
+{% block title %}Mis tareas{% endblock %}
+
+{% block content %}
+&lt;section class="tasks-page" aria-labelledby="tasks-heading"&gt;
+  &lt;header class="tasks-page__header"&gt;
+    &lt;h1 id="tasks-heading"&gt;Mis tareas&lt;/h1&gt;
+    &lt;p class="tasks-page__greeting"&gt;
+      Hola, {{ user.first_name|default:user.username }}. Organiza tu día paso a paso.
+    &lt;/p&gt;
+  &lt;/header&gt;
+
+  &lt;div class="stats-bar" aria-label="Estadísticas de tareas"&gt;
+    &lt;div class="stat-card"&gt;
+      &lt;span class="stat-card__value"&gt;{{ total_tasks }}&lt;/span&gt;
+      &lt;span class="stat-card__label"&gt;Total&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="stat-card"&gt;
+      &lt;span class="stat-card__value"&gt;{{ completed_tasks }}&lt;/span&gt;
+      &lt;span class="stat-card__label"&gt;Completadas&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="stat-card"&gt;
+      &lt;span class="stat-card__value"&gt;{{ pending_tasks }}&lt;/span&gt;
+      &lt;span class="stat-card__label"&gt;Pendientes&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;section class="quick-create" aria-labelledby="quick-create-heading"&gt;
+    &lt;h2 id="quick-create-heading" class="visually-hidden"&gt;Crear tarea rápida&lt;/h2&gt;
+    &lt;form method="post" action="{% url 'task_create' %}" class="quick-create__form"&gt;
+      {% csrf_token %}
+      &lt;div class="form-field"&gt;
+        &lt;label for="{{ form.title.id_for_label }}"&gt;Nueva tarea&lt;/label&gt;
+        {{ form.title }}
+        {% for error in form.title.errors %}
+          &lt;p class="field-error" role="alert"&gt;{{ error }}&lt;/p&gt;
+        {% endfor %}
+      &lt;/div&gt;
+      &lt;div class="form-field"&gt;
+        &lt;label for="{{ form.description.id_for_label }}"&gt;Descripción (opcional)&lt;/label&gt;
+        {{ form.description }}
+      &lt;/div&gt;
+      &lt;button type="submit" class="btn btn--primary"&gt;Agregar tarea&lt;/button&gt;
+    &lt;/form&gt;
+  &lt;/section&gt;
+
+  &lt;section class="task-list" aria-labelledby="task-list-heading"&gt;
+    &lt;h2 id="task-list-heading" class="visually-hidden"&gt;Lista de tareas&lt;/h2&gt;
+
+    &lt;ul class="task-list__items"&gt;
+      {% for task in tasks %}
+        &lt;li class="task-card{% if task.completed %} task-card--completed{% endif %} task-enter" data-task-id="{{ task.pk }}"&gt;
+          &lt;div class="task-card__content"&gt;
+            &lt;h3 class="task-card__title"&gt;{{ task.title }}&lt;/h3&gt;
+            {% if task.description %}
+              &lt;p class="task-card__description"&gt;{{ task.description }}&lt;/p&gt;
+            {% endif %}
+            &lt;p class="task-card__meta"&gt;
+              Creada: {{ task.created_at|date:"d/m/Y H:i" }}
+            &lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;div class="task-card__actions"&gt;
+            &lt;form method="post" action="{% url 'task_toggle' task.pk %}"&gt;
+              {% csrf_token %}
+              &lt;button type="submit" class="btn btn--secondary"&gt;
+                {% if task.completed %}Marcar pendiente{% else %}Completar{% endif %}
+              &lt;/button&gt;
+            &lt;/form&gt;
+
+            &lt;a class="btn btn--ghost" href="{% url 'task_update' task.pk %}"&gt;Editar&lt;/a&gt;
+
+            &lt;form method="post" action="{% url 'task_delete' task.pk %}" class="delete-form" data-confirm-delete&gt;
+              {% csrf_token %}
+              &lt;button type="submit" class="btn btn--danger"&gt;Eliminar&lt;/button&gt;
+            &lt;/form&gt;
+          &lt;/div&gt;
+        &lt;/li&gt;
+      {% empty %}
+        &lt;li class="empty-state"&gt;
+          &lt;p class="empty-state__title"&gt;Aún no tienes tareas&lt;/p&gt;
+          &lt;p class="empty-state__text"&gt;Usa el formulario de arriba para crear tu primera tarea.&lt;/p&gt;
+        &lt;/li&gt;
+      {% endfor %}
+    &lt;/ul&gt;
+  &lt;/section&gt;
+&lt;/section&gt;
+{% endblock %}</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p><code>tasks/templates/tasks/task_list.html</code> — convención <code>app_name/template.html</code>.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>La vista <code>task_list</code> renderiza esta plantilla con <code>tasks</code>, <code>form</code> y contadores. Cada tarea muestra botones Completar, Editar y Eliminar.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Los formularios POST incluyen <code>csrf_token</code>. Las acciones usan <code>{{% url 'task_toggle' task.pk %}}</code> y rutas similares.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>403 al crear tarea</strong> — Falta CSRF en el formulario de creación rápida.</p>
+            </div>
+          </div>
+
+        </article>
+        <article class="tutorial-step" id="step-16">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">16</span>
+            <h2>Plantilla task_form.html</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-16" aria-label="Marcar paso 16 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear la plantilla para editar el título y la descripción de una tarea existente.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Separar edición en su propia página simplifica la validación y evita formularios anidados complejos en la lista.</p>
+
+          <p class="step-label">Código</p>
+          <p>Crea <code>tasks/templates/tasks/task_form.html</code>:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                tasks/templates/tasks/task_form.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends "base.html" %}
+
+{% block title %}Editar tarea{% endblock %}
+
+{% block content %}
+&lt;section class="task-form-page" aria-labelledby="edit-heading"&gt;
+  &lt;header class="task-form-page__header"&gt;
+    &lt;h1 id="edit-heading"&gt;Editar tarea&lt;/h1&gt;
+    &lt;p&gt;Modifica el título o la descripción de tu tarea.&lt;/p&gt;
+  &lt;/header&gt;
+
+  &lt;form method="post" class="task-form" novalidate&gt;
+    {% csrf_token %}
+
+    &lt;div class="form-field"&gt;
+      &lt;label for="{{ form.title.id_for_label }}"&gt;Título&lt;/label&gt;
+      {{ form.title }}
+      {% for error in form.title.errors %}
+        &lt;p class="field-error" role="alert"&gt;{{ error }}&lt;/p&gt;
+      {% endfor %}
+    &lt;/div&gt;
+
+    &lt;div class="form-field"&gt;
+      &lt;label for="{{ form.description.id_for_label }}"&gt;Descripción&lt;/label&gt;
+      {{ form.description }}
+      {% for error in form.description.errors %}
+        &lt;p class="field-error" role="alert"&gt;{{ error }}&lt;/p&gt;
+      {% endfor %}
+    &lt;/div&gt;
+
+    &lt;div class="form-actions"&gt;
+      &lt;button type="submit" class="btn btn--primary"&gt;Guardar cambios&lt;/button&gt;
+      &lt;a class="btn btn--ghost" href="{% url 'task_list' %}"&gt;Cancelar&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;
+&lt;/section&gt;
+{% endblock %}</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p><code>tasks/templates/tasks/task_form.html</code>.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Al pulsar Editar en una tarea, cargas esta página con los valores actuales. Guardar vuelve a la lista.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>El formulario usa <code>method="post"</code> y botón Cancelar enlaza a <code>task_list</code>.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>404 al editar</strong> — La URL <code>tasks/&lt;pk&gt;/edit/</code> no coincide con <code>tasks/urls.py</code> o el <code>pk</code> no existe.</p>
+            </div>
+          </div>
+
+        </article>
+        <article class="tutorial-step" id="step-17">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">17</span>
+            <h2>app.css con animaciones</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-17" aria-label="Marcar paso 17 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Escribir los estilos de la aplicación: layout responsive, tarjetas de tareas y animación <code>task-enter</code>.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>El CSS unifica la experiencia visual. La animación da feedback al cargar tareas; <code>prefers-reduced-motion</code> respeta accesibilidad.</p>
+
+          <p class="step-label">Código</p>
+          <p>Crea <code>static/css/app.css</code>:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                static/css/app.css
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-css">:root {
+  --color-bg: #f4f7fb;
+  --color-surface: #ffffff;
+  --color-text: #1a2332;
+  --color-muted: #5c6b7f;
+  --color-primary: #3d5afe;
+  --color-primary-hover: #304ffe;
+  --color-danger: #d32f2f;
+  --color-border: #d8e0ea;
+  --color-success: #2e7d32;
+  --radius: 12px;
+  --shadow: 0 4px 20px rgba(26, 35, 50, 0.08);
+  --font-sans: "Segoe UI", system-ui, sans-serif;
+  --font-mono: "Cascadia Code", "Consolas", monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--color-primary);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+.app-header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow);
+}
+
+.app-header__inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.app-header__brand {
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.app-header__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.app-header__user {
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+
+.logout-form {
+  display: inline;
+  margin: 0;
+}
+
+.app-main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+}
+
+.app-footer {
+  text-align: center;
+  padding: 1.5rem;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.btn--primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.btn--secondary {
+  background: #e8eef8;
+  color: var(--color-text);
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.btn--danger {
+  background: #ffebee;
+  color: var(--color-danger);
+  border-color: #ffcdd2;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+.auth-card {
+  max-width: 440px;
+  margin: 2rem auto;
+  background: var(--color-surface);
+  padding: 2rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.auth-card__lead {
+  color: var(--color-muted);
+  margin-top: 0;
+}
+
+.auth-card__footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  color: var(--color-muted);
+}
+
+.form-field {
+  margin-bottom: 1rem;
+}
+
+.form-field label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font: inherit;
+}
+
+.field-error,
+.form-errors {
+  color: var(--color-danger);
+  font-size: 0.875rem;
+}
+
+.tasks-page__greeting {
+  color: var(--color-muted);
+}
+
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.stat-card {
+  background: var(--color-surface);
+  padding: 1rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.stat-card__value {
+  display: block;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.stat-card__label {
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
+.quick-create {
+  background: var(--color-surface);
+  padding: 1.25rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 1.5rem;
+}
+
+.task-list__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.task-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: var(--color-surface);
+  padding: 1.25rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--color-primary);
+}
+
+.task-card--completed {
+  opacity: 0.75;
+  border-left-color: var(--color-success);
+}
+
+.task-card--completed .task-card__title {
+  text-decoration: line-through;
+}
+
+.task-card__description {
+  color: var(--color-muted);
+  margin: 0.25rem 0;
+}
+
+.task-card__meta {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.task-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  border: 2px dashed var(--color-border);
+}
+
+.empty-state__title {
+  font-size: 1.125rem;
+  margin: 0 0 0.5rem;
+}
+
+.empty-state__text {
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.task-form-page {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.task-form {
+  background: var(--color-surface);
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes task-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.task-enter {
+  animation: task-enter 0.35s ease-out;
+}
+
+@media (max-width: 600px) {
+  .stats-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .task-card__actions .btn {
+    flex: 1 1 auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p><code>mi_primer_django/static/css/app.css</code> — servido vía <code>STATICFILES_DIRS</code>.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Al recargar cualquier página autenticada, verás tipografía, botones y tarjetas estilizados. Las tareas nuevas entran con animación suave.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>En las herramientas de desarrollador, <code>/static/css/app.css</code> responde 200. Las tarjetas tienen clase <code>task-enter</code> en la lista.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>La página se ve sin estilos</strong> — Falta <code>{{% load static %}}</code> en <code>base.html</code>, la ruta en <code>STATICFILES_DIRS</code> es incorrecta o no reiniciaste el servidor.</p>
+            </div>
+          </div>
+
+        </article>
+        <article class="tutorial-step" id="step-18">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">18</span>
+            <h2>app.js</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-18" aria-label="Marcar paso 18 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Añadir JavaScript ligero: confirmación al eliminar, foco automático en formularios y retardo escalonado en animaciones.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Mejora la usabilidad sin frameworks. La confirmación evita borrados accidentales; el foco ayuda en accesibilidad de teclado.</p>
+
+          <p class="step-label">Código</p>
+          <p>Crea <code>static/js/app.js</code>:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                static/js/app.js
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-javascript">document.addEventListener("DOMContentLoaded", () =&gt; {
+  const deleteForms = document.querySelectorAll("[data-confirm-delete]");
+
+  deleteForms.forEach((form) =&gt; {
+    form.addEventListener("submit", (event) =&gt; {
+      const confirmed = window.confirm(
+        "¿Seguro que deseas eliminar esta tarea? Esta acción no se puede deshacer."
+      );
+
+      if (!confirmed) {
+        event.preventDefault();
+      }
+    });
+  });
+
+  const firstInput = document.querySelector(
+    ".quick-create input, .auth-card input, .task-form input"
+  );
+
+  if (firstInput) {
+    firstInput.focus();
+  }
+
+  const taskCards = document.querySelectorAll(".task-card");
+
+  taskCards.forEach((card, index) =&gt; {
+    card.style.animationDelay = `${index * 0.04}s`;
+  });
+});</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p><code>mi_primer_django/static/js/app.js</code>. <code>base.html</code> ya lo carga con <code>&lt;script src="{% static 'js/app.js' %}" defer&gt;</code>.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Al pulsar Eliminar aparece un diálogo de confirmación. El primer campo del formulario visible recibe foco al cargar la página.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p><code>/static/js/app.js</code> responde 200. Eliminar sin confirmar cancela el envío del formulario.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>El JS no ejecuta</strong> — Error de sintaxis en el archivo, o el script no está enlazado en <code>base.html</code>.</p>
+            </div>
+          </div>
+
+        </article>
+        <article class="tutorial-step" id="step-19">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">19</span>
+            <h2>Ejecutar check y runserver</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-19" aria-label="Marcar paso 19 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Validar la configuración del proyecto y arrancar el servidor de desarrollo para probar el flujo completo.</p>
+
+          <p class="step-label">Por qué</p>
+          <p><code>manage.py check</code> detecta problemas de settings, modelos y URLs antes de abrir el navegador. Es tu red de seguridad tras tantos archivos nuevos.</p>
+
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal — verificar proyecto
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py check</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal — iniciar servidor
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py runserver</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Terminal en la raíz del proyecto con <code>.venv</code> activo.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p><code>check</code> muestra <code>System check identified no issues</code>. El servidor escucha en <code>http://127.0.0.1:8000/</code>. Sin sesión, la raíz redirige a login.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Abre <code>http://127.0.0.1:8000/signup/</code>, crea una cuenta, inicia sesión, crea una tarea, complétala y elimínala. Todo sin error 500.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>Error 500 en la raíz</strong> — Mira el traceback en la terminal: suele ser plantilla faltante, import roto o migración pendiente.</p>
+            </div>
+          </div>
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Si algo falla, no borres todo. Lee el mensaje, identifica el archivo y vuelve al paso correspondiente de este tutorial.</p>
+            </div>
+          </div>
+
+        </article>
+        <article class="tutorial-step" id="step-20">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">20</span>
+            <h2>Checklist de verificación (14 puntos)</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-20" aria-label="Marcar paso 20 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Probar manualmente en el navegador los 14 escenarios que confirman que la aplicación funciona de punta a punta: autenticación, tareas y aislamiento entre usuarios.</p>
+
+          <p class="step-label">Por qué</p>
+          <p><code>manage.py check</code> valida la configuración, pero no sustituye una prueba real. Esta lista obligatoria detecta fallos de flujo que solo aparecen al usar la app como un estudiante.</p>
+
+          <p class="step-label">Checklist manual en el navegador (14 puntos)</p>
+          <ol class="checklist">
+            <li>Abre <code>http://127.0.0.1:8000/</code> sin haber iniciado sesión.</li>
+            <li>Confirma que te redirige a la página de login (no ves tareas ajenas).</li>
+            <li>Ve a <code>/signup/</code> y crea una cuenta con nombre, usuario, correo y contraseña.</li>
+            <li>Tras registrarte, confirma que entras directamente a la lista de tareas.</li>
+            <li>Crea una tarea nueva con el formulario rápido de la parte superior.</li>
+            <li>Haz clic en <strong>Editar</strong>, cambia el título y guarda.</li>
+            <li>Pulsa <strong>Completar</strong> y verifica que la tarjeta cambia de estilo.</li>
+            <li>Pulsa <strong>Marcar pendiente</strong> y confirma que vuelve al estado anterior.</li>
+            <li>Elimina una tarea con el botón <strong>Eliminar</strong> (acepta la confirmación del navegador).</li>
+            <li>Cierra sesión con el formulario POST del encabezado.</li>
+            <li>Vuelve a iniciar sesión con el mismo usuario.</li>
+            <li>Confirma que tus tareas siguen ahí (persistencia en SQLite).</li>
+            <li>Crea un segundo usuario distinto en <code>/signup/</code>.</li>
+            <li>Con el segundo usuario, confirma que <strong>no</strong> ves las tareas del primero.</li>
+          </ol>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Si los 14 puntos pasan, tu aplicación cumple el objetivo del tutorial: autenticación segura, CRUD de tareas y datos aislados por usuario. El Tutorial 05 te ayudará cuando algo falle en el futuro.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Marca este paso y pulsa "Marcar como completado" en la barra lateral. Continúa al mini reto del paso 21 si quieres practicar más.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Guarda este proyecto. Lo reutilizarás y lo compararás con la guía de errores del Tutorial 05.</p>
+            </div>
+          </div>
+
+        </article>
+
+        <section class="mini-challenge tutorial-step" id="mini-reto">
+          <span id="step-21" tabindex="-1"></span>
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">21</span>
+            <h2>Mini retos A–D</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-21" aria-label="Marcar paso 21 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Cuatro retos opcionales para ir más allá del tutorial. Solo recibes pistas — la solución la construyes tú.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Copiar pasos no equivale a dominar Django. Estos retos practican modelos, consultas, plantillas y flujos de auth reales.</p>
+
+          <p class="step-label">Reto A — Fecha límite</p>
+          <p>Añade un campo <code>due_date</code> opcional al modelo y muéstralo en cada tarjeta de tarea.</p>
+          <p><em>Pista:</em> Usa <code>DateField(null=True, blank=True)</code>, ejecuta migración, añade el campo a <code>TaskForm</code> y compáralo con la fecha actual en la plantilla para resaltar vencidas.</p>
+
+          <p class="step-label">Reto B — Prioridad</p>
+          <p>Agrega prioridad baja, media o alta a cada tarea y visualízala con un badge de color.</p>
+          <p><em>Pista:</em> <code>CharField</code> con <code>choices=</code>, actualiza el formulario y añade una clase CSS distinta según el valor en <code>task_list.html</code>.</p>
+
+          <p class="step-label">Reto C — Filtrar completadas</p>
+          <p>Permite ver solo tareas completadas o solo pendientes sin salir de la lista principal.</p>
+          <p><em>Pista:</em> Añade enlaces con <code>?filter=completed</code> o <code>?filter=pending</code> y ajusta el <code>filter()</code> del queryset en <code>task_list</code> leyendo <code>request.GET</code>.</p>
+
+          <p class="step-label">Reto D — Porcentaje de avance</p>
+          <p>Muestra en la barra de estadísticas el porcentaje de tareas completadas respecto al total.</p>
+          <p><em>Pista:</em> Calcula en la vista algo como <code>int(completed / total * 100)</code> cuando <code>total &gt; 0</code>, pásalo al contexto y muéstralo con una barra de progreso en HTML/CSS.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Al completar un reto, tu app gana una función real sin romper lo ya construido. Empieza por A si dudas; cada reto es independiente.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Elige un reto, impleméntalo y pruébalo en el navegador con dos usuarios distintos. Si puedes explicar qué archivo tocaste y por qué, el reto está logrado.</p>
+            </div>
+          </div>
+        </section>
+        <nav class="tutorial-nav" aria-label="Navegación entre tutoriales">
+          <a class="btn btn--secondary" href="03-primera-ventana-django.html">Anterior: Primera ventana</a>
+          <a class="btn btn--secondary" href="../index.html">Volver al inicio</a>
+          <a class="btn btn--primary" href="05-errores-django.html">Siguiente: Errores comunes</a>
+        </nav>
+
+      </div>
+
+      <aside class="progress-rail" aria-label="Progreso del tutorial">
+        <div class="progress-rail__card">
+          <h3>Tu progreso</h3>
+          <div class="reading-progress" aria-hidden="true">
+            <div class="reading-progress__bar" data-scroll-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label">Lectura</p>
+          <div class="reading-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="reading-progress__bar" data-reading-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label" data-step-progress-label>0 de 21 pasos (0%)</p>
+          <button class="btn btn--primary complete-tutorial-btn" type="button" data-complete-tutorial>Marcar como completado</button>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Aprende Django con Teacher Jim</h3>
+          <p>Construido para aprender haciendo. Tutoriales en español para estudiantes que quieren entender Django, no solo copiar código.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tutoriales</h4>
+          <ul>
+            <li><a href="01-instalar-vscode-python.html">Instalar VS Code y Python</a></li>
+            <li><a href="02-entornos-django.html">Entornos + Django</a></li>
+            <li><a href="03-primera-ventana-django.html">Primera ventana</a></li>
+            <li><a href="04-todo-app-autenticacion.html">To-Do + Login</a></li>
+            <li><a href="05-errores-django.html">Errores comunes</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Repositorio</h4>
+          <ul>
+            <li><a href="https://github.com/TU-USUARIO/TU-REPOSITORIO" rel="noopener noreferrer">GitHub</a></li>
+            <li><a href="../index.html#tutoriales">Todos los tutoriales</a></li>
+            <li><a href="../index.html#ruta">Ruta de aprendizaje</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span data-current-year>2026</span> Aprende Django con Teacher Jim</p>
+        <a class="back-to-top" href="#" data-back-to-top>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+            <path d="m18 15-6-6-6 6"></path>
+          </svg>
+          Volver arriba
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="search-overlay" data-search-overlay role="dialog" aria-modal="true" aria-label="Búsqueda de tutoriales">
+    <div class="search-box">
+      <input type="search" data-search-input placeholder="Buscar tutoriales..." aria-label="Buscar tutoriales">
+      <div class="search-results" data-search-results></div>
+    </div>
+  </div>
+
+  <div id="copy-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="../assets/js/theme.js" defer></script>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/tutorial-progress.js" defer></script>
+  <script src="../assets/js/code-copy.js" defer></script>
+  <script src="../assets/js/search.js" defer></script>
+  <script src="../assets/vendor/prism/prism.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-python.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-bash.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-markup.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-css.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-javascript.min.js" defer></script>
+</body>
+</html>
+

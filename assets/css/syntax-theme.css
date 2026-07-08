@@ -1,0 +1,180 @@
+/* VS Code-like code window + Prism overrides */
+
+.code-window {
+  margin: var(--space-4) 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--code-border);
+  background: var(--code-background);
+  max-width: 100%;
+}
+
+.code-window__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-4);
+  background: var(--code-surface);
+  border-bottom: 1px solid var(--code-border);
+  min-height: 40px;
+}
+
+.code-window__filename {
+  font-family: var(--font-code);
+  font-size: 0.8rem;
+  color: #c0c9c0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.code-window__filename img,
+.code-window__filename svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.code-window__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.code-window__vscode {
+  opacity: 0.6;
+}
+
+.code-window__vscode img,
+.code-window__vscode svg {
+  width: 18px;
+  height: 18px;
+}
+
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  background: transparent;
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius-sm);
+  color: #c0c9c0;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.copy-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.copy-btn.is-copied {
+  color: var(--portal-glow);
+  border-color: var(--portal-glow);
+}
+
+.code-window__body {
+  overflow-x: auto;
+  padding: 0;
+}
+
+.code-window__body pre {
+  margin: 0 !important;
+  padding: var(--space-4) !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  font-size: 0.85rem !important;
+  line-height: 1.6 !important;
+}
+
+.code-window__body code {
+  font-family: var(--font-code) !important;
+  text-shadow: none !important;
+}
+
+.code-window__terminal-label {
+  font-size: 0.7rem;
+  color: #8a938a;
+  padding: var(--space-2) var(--space-4) 0;
+  font-family: var(--font-ui);
+}
+
+/* Prism token colors — VS Code inspired */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #d4d4d4;
+  background: var(--code-background);
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #6a9955;
+  font-style: italic;
+}
+
+.token.punctuation { color: #d4d4d4; }
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol {
+  color: #b5cea8;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin {
+  color: #ce9178;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #d4d4d4;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #c586c0;
+}
+
+.token.function,
+.token.class-name {
+  color: #dcdcaa;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: #9cdcfe;
+}
+
+.token.important,
+.token.bold { font-weight: bold; }
+
+.token.italic { font-style: italic; }
+
+/* HTML specific */
+.language-html .token.tag { color: #569cd6; }
+.language-html .token.attr-name { color: #9cdcfe; }
+.language-html .token.attr-value { color: #ce9178; }
+
+/* CSS specific */
+.language-css .token.selector { color: #d7ba7d; }
+.language-css .token.property { color: #9cdcfe; }
+
+/* Bash */
+.language-bash .token.function { color: #dcdcaa; }

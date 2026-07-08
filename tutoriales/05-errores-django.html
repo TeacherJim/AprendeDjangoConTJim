@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial 05: Errores comunes de Django | Aprende Django con Teacher Jim</title>
+  <meta name="description" content="Centro de referencia con 25 errores frecuentes al aprender Django: diagnóstico, solución y verificación paso a paso.">
+  <meta name="author" content="Teacher Jim">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Tutorial 05: Errores comunes de Django">
+  <meta property="og:description" content="Busca por síntoma y resuelve fallos de instalación, rutas, templates, migraciones, CSRF y más.">
+  <meta property="og:locale" content="es_ES">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/tutorial.css">
+  <link rel="stylesheet" href="../assets/css/syntax-theme.css">
+</head>
+<body data-tutorial-id="tutorial-05">
+
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="app-bar">
+    <div class="app-bar__inner">
+      <a class="app-bar__brand" href="../index.html">
+        <img class="app-bar__logo" src="../assets/icons/favicon.svg" alt="" width="36" height="36">
+        Teacher Jim
+      </a>
+
+      <nav class="app-bar__nav" aria-label="Navegación principal">
+        <a href="../index.html">Inicio</a>
+        <a href="../index.html#tutoriales">Tutoriales</a>
+        <a href="../index.html#ruta">Ruta de aprendizaje</a>
+        <a href="05-errores-django.html" class="is-active">Errores comunes</a>
+      </nav>
+
+      <div class="app-bar__actions">
+        <button class="icon-btn" type="button" data-search-open aria-label="Buscar tutoriales">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+        </button>
+
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro">
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+          </svg>
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+          </svg>
+        </button>
+
+        <button class="icon-btn menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Abrir menú de navegación">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="4" x2="20" y1="12" y2="12"></line>
+            <line x1="4" x2="20" y1="6" y2="6"></line>
+            <line x1="4" x2="20" y1="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" data-mobile-nav aria-label="Navegación móvil">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#tutoriales">Tutoriales</a>
+    <a href="../index.html#ruta">Ruta de aprendizaje</a>
+    <a href="05-errores-django.html">Errores comunes</a>
+  </nav>
+
+  <main id="main-content">
+    <div class="tutorial-layout">
+
+      <aside class="toc-sidebar">
+        <button class="toc-toggle" type="button" data-toc-toggle aria-expanded="false">Índice de errores</button>
+        <nav class="toc-panel" data-toc-panel aria-label="Contenido del tutorial">
+          <h2>Errores</h2>
+          <ul class="toc-list">
+            <li><a href="#intro">Introducción</a></li>
+            <li><a href="#error-python">Python no reconocido</a></li>
+            <li><a href="#error-no-module-django">No module django</a></li>
+            <li><a href="#error-django-admin">django-admin no reconocido</a></li>
+            <li><a href="#error-venv">Entorno virtual inactivo</a></li>
+            <li><a href="#error-powershell">Bloqueo PowerShell</a></li>
+            <li><a href="#error-manage-py">manage.py no encontrado</a></li>
+            <li><a href="#error-template">TemplateDoesNotExist</a></li>
+            <li><a href="#error-noreverse">NoReverseMatch</a></li>
+            <li><a href="#error-operational">OperationalError tabla</a></li>
+            <li><a href="#error-migrate">Cambios sin migrar</a></li>
+            <li><a href="#error-csrf">403 CSRF</a></li>
+            <li><a href="#error-404">404 ruta</a></li>
+            <li><a href="#error-port">Puerto en uso</a></li>
+            <li><a href="#error-modulenotfound">ModuleNotFoundError</a></li>
+            <li><a href="#error-syntax">SyntaxError</a></li>
+            <li><a href="#error-indent">IndentationError</a></li>
+            <li><a href="#error-css">CSS no carga</a></li>
+            <li><a href="#error-image">Imagen no carga</a></li>
+            <li><a href="#error-disallowedhost">DisallowedHost</a></li>
+            <li><a href="#error-sqlite-locked">SQLite bloqueada</a></li>
+            <li><a href="#error-django-outside-venv">Django fuera del venv</a></li>
+            <li><a href="#error-interpreter">Intérprete VS Code</a></li>
+            <li><a href="#error-changes">Cambios no aparecen</a></li>
+            <li><a href="#error-other-users">Datos de otros usuarios</a></li>
+            <li><a href="#error-post">Formulario POST falla</a></li>
+            <li><a href="#checkpoint">Checkpoint</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="tutorial-main">
+
+        <nav class="breadcrumb" aria-label="Ruta de navegación">
+          <a href="../index.html">Inicio</a>
+          <span aria-hidden="true">/</span>
+          <a href="../index.html#tutoriales">Tutoriales</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Errores comunes de Django</span>
+        </nav>
+
+        <header class="tutorial-header">
+          <p class="tutorial-header__number">Tutorial 05</p>
+          <h1>Errores comunes de Django</h1>
+          <p class="tutorial-header__desc">Este no es un tutorial lineal: es tu centro de referencia cuando algo falla. Busca por palabra clave, lee el síntoma que reconoces y sigue el diagnóstico hasta la verificación. Cada error incluye lo que no debes hacer para no empeorar el problema.</p>
+          <div class="tutorial-meta">
+            <span class="chip">Consulta rápida</span>
+            <span class="chip">25 errores</span>
+            <span class="chip">~30 min lectura</span>
+          </div>
+        </header>
+
+        <section class="tutorial-section" id="intro">
+          <h2>Cómo usar esta página</h2>
+          <p>Escribe en el buscador el mensaje que ves en pantalla o una palabra clave como <code>csrf</code>, <code>migrate</code> o <code>template</code>. Los resultados se filtran al instante. Si no encuentras tu error, revisa primero que el entorno virtual esté activo y que estés en la carpeta correcta del proyecto; muchos fallos comparten la misma raíz.</p>
+
+          <div class="error-search">
+            <label for="error-search-input" class="sr-only">Buscar error por síntoma o palabra clave</label>
+            <input type="search" id="error-search-input" data-error-search placeholder="Buscar error: python, csrf, migrate, template, 404..." aria-label="Buscar error">
+          </div>
+
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Un error no significa que no sirvas para programar. Significa que el sistema te está dando una pista. Lee el mensaje completo, copia la última línea del traceback y búscala aquí. Resolver errores es parte del oficio.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ERROR 1 -->
+        <article class="error-card" id="error-python" data-error-card data-keywords="python no reconocido comando terminal path instalar windows">
+          <h2>Python no se reconoce como comando</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Escribes <code>python --version</code> en la terminal y el sistema responde que no encuentra el comando.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">'python' no se reconoce como un comando interno o externo...</div>
+          <p class="step-label">Causa</p>
+          <p>Python no está instalado, o está instalado pero no se agregó al PATH del sistema. En Windows esto ocurre con frecuencia si no marcaste "Add python.exe to PATH" durante la instalación.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Prueba en este orden: <code>python --version</code>, <code>py --version</code>, <code>python3 --version</code>. Si ninguno responde, Python no está accesible desde esa terminal. Cierra y abre una terminal nueva después de instalar.</p>
+          <p class="step-label">Solución</p>
+          <p>Instala Python 3.10+ desde <a href="https://www.python.org/downloads/" rel="noopener noreferrer">python.org</a>. En Windows marca "Add python.exe to PATH". Si ya instalaste sin marcarla, desinstala y reinstala, o agrega manualmente la carpeta de Python a las variables de entorno.</p>
+          <p class="step-label">Verificación</p>
+          <p><code>python --version</code> muestra <code>Python 3.x.x</code> sin errores en una terminal recién abierta.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No copies rutas absolutas de Python en cada comando para evitar el problema. Arregla el PATH una vez y trabaja con normalidad.</p>
+        </article>
+
+        <!-- ERROR 2 -->
+        <article class="error-card" id="error-no-module-django" data-error-card data-keywords="no module named django import django pip install venv">
+          <h2>No module named 'django'</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Al ejecutar <code>python manage.py</code> o <code>import django</code> aparece un ModuleNotFoundError relacionado con django.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">ModuleNotFoundError: No module named 'django'</div>
+          <p class="step-label">Causa</p>
+          <p>Django no está instalado en el intérprete de Python que estás usando, o el entorno virtual no está activo y estás usando el Python global sin Django.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Verifica si ves <code>(.venv)</code> en el prompt. Ejecuta <code>pip show django</code>. Si dice "Package(s) not found", Django no está en ese entorno. Comprueba con <code>where python</code> (Windows) o <code>which python</code> (macOS/Linux) que la ruta apunte a <code>.venv</code>.</p>
+          <p class="step-label">Solución</p>
+          <p>Activa el entorno virtual y ejecuta <code>pip install "Django>=6.0,&lt;6.1"</code>. Si ya estaba activo, reinstala con <code>pip install -r requirements.txt</code>.</p>
+          <p class="step-label">Verificación</p>
+          <p><code>python -m django --version</code> muestra una versión 6.0.x con el entorno activo.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No instales Django con <code>pip install django</code> fuera del venv pensando que "ya quedó". Contamina el Python global y crea confusión entre proyectos.</p>
+        </article>
+
+        <!-- ERROR 3 -->
+        <article class="error-card" id="error-django-admin" data-error-card data-keywords="django-admin no reconocido comando scripts path venv">
+          <h2>django-admin no se reconoce</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Escribes <code>django-admin startproject</code> y la terminal dice que no reconoce el comando.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">'django-admin' no se reconoce como un comando interno o externo...</div>
+          <p class="step-label">Causa</p>
+          <p>El entorno virtual no está activo, Django no está instalado en el entorno activo, o la carpeta Scripts/bin del venv no está en el PATH de esa sesión.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Confirma <code>(.venv)</code> en el prompt. Ejecuta <code>pip show django</code>. Prueba la forma alternativa: <code>python -m django --version</code>. Si esta funciona pero django-admin no, el problema es solo el script en PATH; usa la forma con <code>python -m django</code>.</p>
+          <p class="step-label">Solución</p>
+          <p>Activa el venv, instala Django si falta, y usa <code>python -m django startproject nombre_proyecto</code> como alternativa robusta a <code>django-admin</code>.</p>
+          <p class="step-label">Verificación</p>
+          <p><code>django-admin --version</code> o <code>python -m django --version</code> responden con 6.0.x.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No descargues django-admin por separado. Es parte del paquete Django y solo existe donde instalaste Django.</p>
+        </article>
+
+        <!-- ERROR 4 -->
+        <article class="error-card" id="error-venv" data-error-card data-keywords="venv entorno virtual activar .venv prompt deactivate">
+          <h2>Entorno virtual no activo</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Instalaste Django pero los comandos fallan, pip instala en otro lugar, o no ves el prefijo (.venv) en la terminal.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">No hay un mensaje único; a menudo combina "no module named django" o rutas de pip que no incluyen .venv.</div>
+          <p class="step-label">Causa</p>
+          <p>Creaste el entorno virtual pero no lo activaste en la terminal actual. Cada terminal nueva requiere activación manual.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Mira el inicio del prompt: debe mostrar <code>(.venv)</code>. Ejecuta <code>where python</code> y confirma que la ruta contiene <code>.venv\Scripts</code> o <code>.venv/bin</code>.</p>
+          <p class="step-label">Solución</p>
+          <p>PowerShell: <code>.\.venv\Scripts\Activate.ps1</code>. CMD: <code>.venv\Scripts\activate.bat</code>. macOS/Linux: <code>source .venv/bin/activate</code>. Luego repite el comando que falló.</p>
+          <p class="step-label">Verificación</p>
+          <p>El prompt muestra <code>(.venv)</code> y <code>pip --version</code> incluye la ruta del entorno virtual.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No asumas que abrir VS Code activa el venv automáticamente. La terminal integrada puede arrancar sin él hasta que lo actives o selecciones el intérprete correcto.</p>
+        </article>
+
+        <!-- ERROR 5 -->
+        <article class="error-card" id="error-powershell" data-error-card data-keywords="powershell ejecución scripts deshabilitada executionpolicy activates">
+          <h2>PowerShell bloquea la activación del venv</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Al ejecutar Activate.ps1, PowerShell rechaza el script por política de ejecución.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">No se puede cargar el archivo ... Activate.ps1 porque la ejecución de scripts está deshabilitada en este sistema.</div>
+          <p class="step-label">Causa</p>
+          <p>La política de ejecución de PowerShell impide correr scripts locales, incluido el script de activación del entorno virtual.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Ejecuta <code>Get-ExecutionPolicy -List</code>. Si CurrentUser es Restricted, no podrás activar el venv con el script .ps1.</p>
+          <p class="step-label">Solución</p>
+          <p>Ejecuta una vez: <code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code>. Confirma y vuelve a activar. Alternativa inmediata: usa CMD con <code>.venv\Scripts\activate.bat</code>.</p>
+          <p class="step-label">Verificación</p>
+          <p><code>.\.venv\Scripts\Activate.ps1</code> funciona sin error y aparece <code>(.venv)</code> en el prompt.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No uses <code>Set-ExecutionPolicy Unrestricted</code> sin necesidad. RemoteSigned en CurrentUser es suficiente y más seguro.</p>
+        </article>
+
+        <!-- ERROR 6 -->
+        <article class="error-card" id="error-manage-py" data-error-card data-keywords="manage.py no encontrado can't open file directorio carpeta">
+          <h2>manage.py no encontrado</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Ejecutas <code>python manage.py runserver</code> y Python no encuentra el archivo.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">python: can't open file 'manage.py': [Errno 2] No such file or directory</div>
+          <p class="step-label">Causa</p>
+          <p>La terminal no está en la carpeta del proyecto Django. <code>manage.py</code> vive en la raíz del proyecto creado con <code>startproject</code>, no en la carpeta padre ni dentro de una app.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Ejecuta <code>dir</code> (Windows) o <code>ls</code> (macOS/Linux). Debes ver <code>manage.py</code> en el listado. Si no aparece, sube o baja de carpeta con <code>cd</code> hasta encontrarlo.</p>
+          <p class="step-label">Solución</p>
+          <p>Navega a la carpeta que contiene <code>manage.py</code>. En VS Code usa Archivo &gt; Abrir carpeta y selecciona la raíz del proyecto. Abre una terminal nueva desde ahí.</p>
+          <p class="step-label">Verificación</p>
+          <p><code>python manage.py --help</code> muestra la lista de subcomandos sin error de archivo no encontrado.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No copies manage.py a otra carpeta para "acercarlo". El archivo debe permanecer en la raíz del proyecto junto a la carpeta del paquete de configuración.</p>
+        </article>
+
+        <!-- ERROR 7 -->
+        <article class="error-card" id="error-template" data-error-card data-keywords="templatedoesnotexist template html render apps templates">
+          <h2>TemplateDoesNotExist</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">La vista intenta renderizar una plantilla y Django muestra una página amarilla de error indicando que no la encuentra.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">TemplateDoesNotExist at /ruta/ nombre_plantilla.html</div>
+          <p class="step-label">Causa</p>
+          <p>El archivo HTML no existe, el nombre en <code>render()</code> no coincide (mayúsculas, extensión, ruta), la app no está en INSTALLED_APPS, o la carpeta <code>templates/</code> no sigue la estructura esperada.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Lee la sección "Template-loader postmortem" del error: lista las rutas donde Django buscó. Compara con la ruta real del archivo en tu proyecto. Revisa <code>render(request, 'app/plantilla.html')</code> carácter por carácter.</p>
+          <p class="step-label">Solución</p>
+          <p>Crea la plantilla en <code>tu_app/templates/tu_app/plantilla.html</code> (recomendado con namespace) o ajusta el string en la vista para que coincida exactamente. Verifica que la app esté en <code>INSTALLED_APPS</code>.</p>
+          <p class="step-label">Verificación</p>
+          <p>Recarga la URL y la página renderiza sin TemplateDoesNotExist. El HTML aparece en el navegador.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No pongas templates sueltos en la raíz del proyecto sin configurar <code>DIRS</code> en TEMPLATES. Sigue la estructura de carpetas de la app.</p>
+        </article>
+
+        <!-- ERROR 8 -->
+        <article class="error-card" id="error-noreverse" data-error-card data-keywords="noreversematch reverse url name urls.py namespace">
+          <h2>NoReverseMatch</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Al cargar una página o usar <code>{% url %}</code> en una plantilla, Django no puede construir la URL.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">NoReverseMatch at / Reverse for 'nombre' not found. 'nombre' is not a valid view function or pattern name.</div>
+          <p class="step-label">Causa</p>
+          <p>El nombre usado en <code>{% url 'nombre' %}</code> o <code>reverse('nombre')</code> no existe en urls.py, está mal escrito, requiere argumentos que no pasaste, o el namespace no coincide.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Busca en urls.py el <code>name=</code> de la ruta. Si usas <code>app_name</code> o <code>include()</code> con namespace, la referencia debe ser <code>'app:nombre'</code>. Comprueba si la vista necesita <code>pk</code> o <code>slug</code>.</p>
+          <p class="step-label">Solución</p>
+          <p>Corrige el nombre en la plantilla o agrega <code>name='...'</code> en urls.py. Si la URL necesita parámetros: <code>{% url 'detalle' tarea.id %}</code>. Alinea namespace y nombres entre urls del proyecto y de la app.</p>
+          <p class="step-label">Verificación</p>
+          <p>La página carga sin NoReverseMatch y los enlaces generados apuntan a rutas válidas.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No hardcodees URLs como <code>/tareas/5/</code> en plantillas cuando puedes usar <code>{% url %}</code>. Si el nombre cambia, todo se rompe en silencio.</p>
+        </article>
+
+        <!-- ERROR 9 -->
+        <article class="error-card" id="error-operational" data-error-card data-keywords="operationalerror no such table sqlite database migrate">
+          <h2>OperationalError: no such table</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Al acceder a una vista que consulta la base de datos, el servidor devuelve error 500 con OperationalError.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">django.db.utils.OperationalError: no such table: mi_app_modelo</div>
+          <p class="step-label">Causa</p>
+          <p>Definiste un modelo en models.py pero no ejecutaste las migraciones. La tabla no existe en la base de datos SQLite.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Ejecuta <code>python manage.py showmigrations</code>. Si tu app muestra casillas vacías [ ] junto a migraciones pendientes, no se aplicaron. Revisa que la app esté en INSTALLED_APPS.</p>
+          <p class="step-label">Solución</p>
+          <p><code>python manage.py makemigrations</code> seguido de <code>python manage.py migrate</code>. Reinicia el servidor si estaba corriendo.</p>
+          <p class="step-label">Verificación</p>
+          <p><code>showmigrations</code> muestra [X] en todas las migraciones de tu app y la vista carga sin OperationalError.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No edites db.sqlite3 a mano ni borres migraciones ya aplicadas sin saber qué haces. Eso deja el historial inconsistente.</p>
+        </article>
+
+        <!-- ERROR 10 -->
+        <article class="error-card" id="error-migrate" data-error-card data-keywords="modelo cambios migrate makemigrations campo alteración">
+          <h2>Cambié el modelo pero la base de datos no refleja los cambios</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Agregaste un campo al modelo, la app falla al guardar o consultar, o ves errores sobre columnas inexistentes.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">OperationalError: table mi_app_modelo has no column named nuevo_campo</div>
+          <p class="step-label">Causa</p>
+          <p>Modificaste models.py pero no generaste ni aplicaste una nueva migración. El código Python y el esquema de la base de datos quedaron desincronizados.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Compara models.py con la última migración en <code>migrations/</code>. Ejecuta <code>python manage.py makemigrations</code> y observa si detecta cambios.</p>
+          <p class="step-label">Solución</p>
+          <p><code>python manage.py makemigrations</code> para crear el archivo de migración, luego <code>python manage.py migrate</code> para aplicarlo. En desarrollo, revisa el archivo de migración generado antes de aplicar.</p>
+          <p class="step-label">Verificación</p>
+          <p>El nuevo campo funciona en el admin o en el shell: <code>python manage.py shell</code> y crea un objeto con el campo nuevo.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No reinicies el servidor esperando que Django "detecte" los cambios del modelo automáticamente. Los modelos no se sincronizan solos con la base de datos.</p>
+        </article>
+
+        <!-- ERROR 11 -->
+        <article class="error-card" id="error-csrf" data-error-card data-keywords="403 csrf verificación token formulario forbidden">
+          <h2>403 Forbidden — verificación CSRF fallida</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Al enviar un formulario POST, Django responde con error 403 y mensaje sobre CSRF.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">Forbidden (403) CSRF verification failed. Request aborted.</div>
+          <p class="step-label">Causa</p>
+          <p>El formulario no incluye <code>{% csrf_token %}</code>, la cookie de sesión expiró, abriste el HTML como archivo local (file://), o el token no se envió en el POST.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Inspecciona el HTML del formulario en el navegador. Debe existir un <code>input type="hidden" name="csrfmiddlewaretoken"</code>. Confirma que accedes vía <code>http://127.0.0.1:8000</code>, no abriendo el archivo directamente.</p>
+          <p class="step-label">Solución</p>
+          <p>Dentro de <code>&lt;form method="post"&gt;</code> agrega <code>{% csrf_token %}</code> justo después de la etiqueta form. Recarga la página antes de enviar de nuevo para obtener un token fresco.</p>
+          <p class="step-label">Verificación</p>
+          <p>El formulario POST se procesa correctamente y redirige o muestra el resultado esperado sin 403.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No desactives CSRF con <code>@csrf_exempt</code> para "arreglar rápido" un formulario de login o tareas. Eso abre un agujero de seguridad real.</p>
+        </article>
+
+        <!-- ERROR 12 -->
+        <article class="error-card" id="error-404" data-error-card data-keywords="404 not found page ruta url urlpatterns">
+          <h2>404 — Página no encontrada (ruta Django)</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">El servidor Django responde con una página 404 amarilla (DEBUG=True) o una página 404 genérica.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">Page not found (404) Request URL: http://127.0.0.1:8000/ruta-incorrecta/</div>
+          <p class="step-label">Causa</p>
+          <p>La URL que visitas no está definida en urls.py, tiene una barra de más o de menos, el orden de urlpatterns importa, o estás mezclando rutas del proyecto y de la app incorrectamente.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Lee "The current path ... didn't match any of these" en la página de debug. Compara con tus urlpatterns. Verifica includes y prefijos como <code>path('tareas/', include('tareas.urls'))</code>.</p>
+          <p class="step-label">Solución</p>
+          <p>Agrega o corrige la ruta en urls.py. Asegúrate de que el servidor se reinició si cambiaste urls (en desarrollo suele recargar solo, pero comprueba). Usa <code>{% url %}</code> en enlaces para evitar typos.</p>
+          <p class="step-label">Verificación</p>
+          <p>La URL carga la vista correcta con código 200 en el navegador.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No confundas el 404 de Django con el 404 de este sitio estático. Si ves la página amarilla de Django, el servidor funciona; la ruta es la que falta.</p>
+        </article>
+
+        <!-- ERROR 13 -->
+        <article class="error-card" id="error-port" data-error-card data-keywords="puerto en uso port 8000 address already in use runserver">
+          <h2>Puerto 8000 ya en uso</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Al ejecutar runserver, Django no puede iniciar porque el puerto está ocupado.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">Error: That port is already in use.</div>
+          <p class="step-label">Causa</p>
+          <p>Ya tienes otro runserver corriendo en esa terminal u otra, otra aplicación usa el puerto 8000, o cerraste la terminal sin detener el proceso.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Busca otra terminal con el servidor activo. En Windows: <code>netstat -ano | findstr :8000</code>. En macOS/Linux: <code>lsof -i :8000</code>.</p>
+          <p class="step-label">Solución</p>
+          <p>Detén el servidor anterior con <kbd>Ctrl+C</kbd> en su terminal. Si no encuentras la terminal, mata el proceso por PID o usa otro puerto: <code>python manage.py runserver 8001</code>.</p>
+          <p class="step-label">Verificación</p>
+          <p><code>python manage.py runserver</code> arranca y muestra "Starting development server at http://127.0.0.1:8000/".</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No abras múltiples runserver en el mismo puerto pensando que "el último gana". Solo uno puede escuchar en 8000.</p>
+        </article>
+
+        <!-- ERROR 14 -->
+        <article class="error-card" id="error-modulenotfound" data-error-card data-keywords="modulenotfounderror import app installed_apps typo">
+          <h2>ModuleNotFoundError (app o módulo propio)</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Al iniciar el proyecto o importar una vista, Python no encuentra un módulo de tu proyecto.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">ModuleNotFoundError: No module named 'tareas' (o 'mi_proyecto.settings')</div>
+          <p class="step-label">Causa</p>
+          <p>La app no está en INSTALLED_APPS, el nombre del paquete tiene un typo, falta <code>__init__.py</code> (en versiones antiguas), o la estructura de carpetas no coincide con el import.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Verifica que la carpeta de la app existe junto a manage.py. Comprueba INSTALLED_APPS en settings.py. Alinea el nombre del import en urls.py con el nombre real de la carpeta.</p>
+          <p class="step-label">Solución</p>
+          <p>Agrega la app a INSTALLED_APPS: <code>'tareas.apps.TareasConfig'</code> o <code>'tareas'</code>. Corrige typos en imports. Si creaste la app con <code>startapp</code>, usa el nombre exacto que generó.</p>
+          <p class="step-label">Verificación</p>
+          <p><code>python manage.py check</code> no reporta errores de importación y el servidor arranca.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No renombres carpetas de apps a mano sin actualizar INSTALLED_APPS, apps.py y todos los imports.</p>
+        </article>
+
+        <!-- ERROR 15 -->
+        <article class="error-card" id="error-syntax" data-error-card data-keywords="syntaxerror invalid syntax python comillas paréntesis">
+          <h2>SyntaxError</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">El servidor no arranca o una vista falla al importarse. Python señala una línea con error de sintaxis.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">SyntaxError: invalid syntax (views.py, line 12)</div>
+          <p class="step-label">Causa</p>
+          <p>Comillas sin cerrar, paréntesis desbalanceados, dos puntos olvidados después de if/for/def, o mezcla de comillas tipográficas copiadas desde un documento.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Lee la línea indicada y la anterior. Python a veces señala donde detectó el problema, no donde lo causaste. VS Code subraya errores de sintaxis antes de ejecutar.</p>
+          <p class="step-label">Solución</p>
+          <p>Corrige la sintaxis en la línea señalada. Compara con el código del tutorial. Guarda el archivo y deja que el servidor recargue.</p>
+          <p class="step-label">Verificación</p>
+          <p>El archivo importa sin SyntaxError y <code>python manage.py check</code> pasa.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No comentes bloques enteros al azar para "silenciar" el error. Arregla la sintaxis; los comentarios no curan paréntesis rotos.</p>
+        </article>
+
+        <!-- ERROR 16 -->
+        <article class="error-card" id="error-indent" data-error-card data-keywords="indentationerror unexpected indent espacios tabs">
+          <h2>IndentationError</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Python rechaza un archivo por indentación incorrecta, a menudo después de agregar código dentro de una función o clase.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">IndentationError: unexpected indent (views.py, line 8)</div>
+          <p class="step-label">Causa</p>
+          <p>Mezcla de tabs y espacios, bloque dentro de if/for/def sin indentar, o copiar código con indentación dañada desde la web.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>En VS Code activa "Render Whitespace" para ver tabs vs espacios. Ve a la línea indicada y revisa que todos los niveles usen 4 espacios consistentemente.</p>
+          <p class="step-label">Solución</p>
+          <p>Selecciona el bloque afectado y usa "Convert Indentation to Spaces". Reindenta el cuerpo de funciones y clases con 4 espacios por nivel.</p>
+          <p class="step-label">Verificación</p>
+          <p>El módulo se importa sin IndentationError.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No mezcles tabs y espacios aunque "se vean igual". Python 3 los trata como distintos y fallará.</p>
+        </article>
+
+        <!-- ERROR 17 -->
+        <article class="error-card" id="error-css" data-error-card data-keywords="css no carga estilos static staticfiles collectstatic">
+          <h2>CSS no carga — la página se ve sin estilos</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">El HTML aparece pero sin colores, fuentes ni diseño. En DevTools la hoja de estilo devuelve 404.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">GET /static/css/estilos.css HTTP/1.1" 404</div>
+          <p class="step-label">Causa</p>
+          <p>No usas <code>{% load static %}</code> y <code>{% static 'ruta' %}</code>, el archivo no está en la carpeta static de la app, STATIC_URL mal configurado, o en producción falta collectstatic.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Abre DevTools &gt; Red y busca la petición al CSS. Revisa la ruta generada. Confirma que el archivo existe en <code>app/static/app/css/...</code> y que settings incluye django.contrib.staticfiles.</p>
+          <p class="step-label">Solución</p>
+          <p>En la plantilla: <code>{% load static %}</code> y <code>&lt;link rel="stylesheet" href="{% static 'app/css/estilos.css' %}"&gt;</code>. En desarrollo con DEBUG=True, Django sirve static automáticamente si está bien configurado.</p>
+          <p class="step-label">Verificación</p>
+          <p>La petición al CSS devuelve 200 y la página muestra los estilos correctamente.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No uses rutas absolutas como <code>/static/...</code> hardcodeadas sin el tag static. Si mueves archivos, la ruta debe actualizarse en la plantilla.</p>
+        </article>
+
+        <!-- ERROR 18 -->
+        <article class="error-card" id="error-image" data-error-card data-keywords="imagen no carga static media img src 404">
+          <h2>Imagen no carga</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Aparece el icono de imagen rota en el navegador. La imagen no se muestra aunque el archivo existe en el proyecto.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">GET /static/img/logo.png HTTP/1.1" 404 (o ruta similar)</div>
+          <p class="step-label">Causa</p>
+          <p>Misma familia de problemas que CSS: ruta incorrecta en <code>src</code>, archivo fuera de static/, typo en el nombre, o confusión entre archivos static y media.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Inspecciona el elemento img y copia la URL que intenta cargar. Búscala en tu árbol de carpetas. Verifica mayúsculas: en Linux el nombre importa.</p>
+          <p class="step-label">Solución</p>
+          <p>Coloca la imagen en <code>app/static/app/img/logo.png</code> y usa <code>&lt;img src="{% static 'app/img/logo.png' %}" alt="..."&gt;</code>. Para subidas de usuario usa MEDIA_URL y MEDIA_ROOT, no static.</p>
+          <p class="step-label">Verificación</p>
+          <p>La imagen carga con código 200 en la pestaña Red del navegador.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No pongas imágenes de usuario subidas en la carpeta static. Static es para archivos fijos del desarrollo; media es para contenido dinámico.</p>
+        </article>
+
+        <!-- ERROR 19 -->
+        <article class="error-card" id="error-disallowedhost" data-error-card data-keywords="disallowedhost allowed_hosts settings 127.0.0.1 bad request">
+          <h2>DisallowedHost</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Al acceder al sitio con una URL distinta a localhost, Django responde con error 400 DisallowedHost.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">Invalid HTTP_HOST header: '192.168.1.5:8000'. You may need to add '192.168.1.5' to ALLOWED_HOSTS.</div>
+          <p class="step-label">Causa</p>
+          <p>Accedes con una IP, dominio o puerto que no está listado en ALLOWED_HOSTS en settings.py. Django bloquea hosts no autorizados por seguridad.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Lee el valor exacto del host en el mensaje de error. Abre settings.py y revisa ALLOWED_HOSTS.</p>
+          <p class="step-label">Solución</p>
+          <p>En desarrollo agrega el host necesario: <code>ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.5']</code>. Si pruebas desde el móvil en la misma red, agrega la IP de tu PC.</p>
+          <p class="step-label">Verificación</p>
+          <p>La URL carga sin DisallowedHost usando el host que agregaste.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No uses <code>ALLOWED_HOSTS = ['*']</code> en producción. En desarrollo es tentador pero enseña un mal hábito; lista solo los hosts que realmente necesitas.</p>
+        </article>
+
+        <!-- ERROR 20 -->
+        <article class="error-card" id="error-sqlite-locked" data-error-card data-keywords="sqlite database is locked operacional concurrencia">
+          <h2>SQLite database is locked</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Operaciones de escritura fallan intermitentemente. Migraciones o guardados en el admin muestran error de base de datos bloqueada.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">django.db.utils.OperationalError: database is locked</div>
+          <p class="step-label">Causa</p>
+          <p>Otro proceso tiene abierto db.sqlite3 (segundo runserver, DB Browser, terminal con shell abierta en transacción), o escrituras concurrentes que SQLite no maneja bien.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Cierra programas que puedan tener la base abierta. Verifica que no hay dos servidores de desarrollo apuntando al mismo archivo de base de datos.</p>
+          <p class="step-label">Solución</p>
+          <p>Cierra conexiones extra, detén runserver duplicado, cierra DB Browser. Reinicia migrate o la operación. En desarrollo evita múltiples procesos escribiendo a la vez.</p>
+          <p class="step-label">Verificación</p>
+          <p>Guardar en el admin o ejecutar migrate completa sin "database is locked".</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No borres db.sqlite3 para "desbloquear" si ya tienes datos importantes. Primero cierra procesos; borrar es pérdida de datos.</p>
+        </article>
+
+        <!-- ERROR 21 -->
+        <article class="error-card" id="error-django-outside-venv" data-error-card data-keywords="django instalado global sistema pip list ubicación">
+          <h2>Django instalado fuera del entorno virtual</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Django funciona en una terminal pero no en otra. pip list muestra Django en un sitio y no en otro. Versiones inconsistentes entre compañeros.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">No hay un mensaje único; pip show django muestra Location fuera de .venv.</div>
+          <p class="step-label">Causa</p>
+          <p>Instalaste Django con pip global antes de crear el venv, o ejecutaste pip install sin activar el entorno virtual.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Con venv activo: <code>pip show django</code> y revisa Location. Debe estar dentro de tu proyecto/.venv. Sin venv: <code>where pip</code> y compara rutas.</p>
+          <p class="step-label">Solución</p>
+          <p>Activa el venv e instala ahí. Si Django quedó global y causa conflicto: <code>pip uninstall django</code> fuera del venv (con cuidado) e instala solo dentro de .venv. Usa requirements.txt para fijar versiones.</p>
+          <p class="step-label">Verificación</p>
+          <p><code>pip show django</code> con venv activo muestra Location en .venv/lib o .venv\Lib.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No instales el mismo paquete en global y en venv esperando que "use el correcto". Solo el intérprete activo decide.</p>
+        </article>
+
+        <!-- ERROR 22 -->
+        <article class="error-card" id="error-interpreter" data-error-card data-keywords="vscode intérprete python selector .venv interpret">
+          <h2>VS Code usa el intérprete incorrecto</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">VS Code subraya imports de Django como error, el botón Run falla, o la terminal integrada no coincide con el venv del proyecto.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">Import "django" could not be resolved Pylance (reportMissingImports)</div>
+          <p class="step-label">Causa</p>
+          <p>La extensión Python apunta al Python del sistema en lugar del de <code>.venv</code>. Pylance analiza con un intérprete que no tiene Django instalado.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Mira la barra inferior de VS Code: debe mostrar algo como <code>Python 3.x.x ('.venv': venv)</code>. Si muestra otra ruta, el intérprete es incorrecto.</p>
+          <p class="step-label">Solución</p>
+          <p><kbd>Ctrl+Shift+P</kbd> &gt; "Python: Select Interpreter" &gt; elige el de <code>.venv</code>. Abre terminal nueva para que herede el entorno. Opcional: crea <code>.vscode/settings.json</code> con la ruta al python del venv.</p>
+          <p class="step-label">Verificación</p>
+          <p>Los imports de django dejan de marcarse como error y la terminal integrada muestra <code>(.venv)</code> al activarse.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No ignores las advertencias de Pylance desactivando el análisis. Cambia el intérprete; el aviso suele ser correcto.</p>
+        </article>
+
+        <!-- ERROR 23 -->
+        <article class="error-card" id="error-changes" data-error-card data-keywords="cambios no aparecen caché guardar recargar servidor">
+          <h2>Los cambios de código no aparecen en el navegador</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Editas views.py o una plantilla pero el navegador muestra la versión anterior.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">No hay error; el síntoma es comportamiento viejo persistente.</div>
+          <p class="step-label">Causa</p>
+          <p>No guardaste el archivo (<kbd>Ctrl+S</kbd>), caché del navegador, editas un archivo distinto al que usa la vista, o el servidor no recargó por un error de sintaxis silencioso en otro módulo.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Confirma que la pestaña no tiene punto sin guardar. Mira la terminal del runserver: debe decir "Watching for file changes". Haz recarga forzada: <kbd>Ctrl+Shift+R</kbd>. Agrega un texto único temporal en la plantilla para confirmar que es el archivo correcto.</p>
+          <p class="step-label">Solución</p>
+          <p>Guarda todos los archivos. Reinicia runserver con <kbd>Ctrl+C</kbd> y vuelve a iniciar. Verifica que editas el proyecto correcto si tienes varias carpetas abiertas.</p>
+          <p class="step-label">Verificación</p>
+          <p>El cambio visible aparece tras guardar y recargar. La terminal muestra reload al guardar.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No asumas que el navegador siempre muestra lo último. Verifica guardado y recarga forzada antes de pensar que Django "no funciona".</p>
+        </article>
+
+        <!-- ERROR 24 -->
+        <article class="error-card" id="error-other-users" data-error-card data-keywords="usuario ve datos otros filtro request.user queryset">
+          <h2>El usuario ve tareas u objetos de otros usuarios</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Al iniciar sesión, un usuario ve registros que pertenecen a otra cuenta. La lista muestra todos los objetos de la base de datos.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">No hay error HTTP; es un fallo de lógica y privacidad de datos.</div>
+          <p class="step-label">Causa</p>
+          <p>La vista usa <code>Modelo.objects.all()</code> sin filtrar por <code>request.user</code>. Falta ForeignKey al usuario en el modelo o no filtras en get_queryset.</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Revisa la vista de listado. Busca <code>.objects.all()</code>. Comprueba que el modelo tiene campo <code>usuario = models.ForeignKey(User, ...)</code> o similar.</p>
+          <p class="step-label">Solución</p>
+          <p>Filtra por usuario: <code>Tarea.objects.filter(usuario=request.user)</code>. En vistas basadas en clases usa <code>get_queryset()</code> para retornar solo los del usuario autenticado. Asegura <code>@login_required</code> en la vista.</p>
+          <p class="step-label">Verificación</p>
+          <p>Crea dos usuarios con tareas distintas. Cada uno solo ve las suyas al iniciar sesión.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No confíes en ocultar enlaces en la plantilla. Si la URL existe y no filtras en el servidor, cualquiera puede acceder por URL directa.</p>
+        </article>
+
+        <!-- ERROR 25 -->
+        <article class="error-card" id="error-post" data-error-card data-keywords="formulario post falla method get csrf validación">
+          <h2>El formulario POST no hace nada o falla</h2>
+          <p class="step-label">Síntoma</p>
+          <div class="error-card__symptom">Pulsas enviar y la página se recarga sin guardar, muestra error, o los datos no llegan a la vista.</div>
+          <p class="step-label">Mensaje típico</p>
+          <div class="error-card__symptom">Varía: 403 CSRF, 405 Method Not Allowed, o simplemente GET con parámetros en la URL.</div>
+          <p class="step-label">Causa</p>
+          <p>El form no tiene <code>method="post"</code>, falta <code>action</code> correcto, la vista solo implementa GET, CSRF ausente, o el botón no es type="submit".</p>
+          <p class="step-label">Diagnóstico</p>
+          <p>Inspecciona el form en HTML. Verifica method="post". En la vista confirma <code>if request.method == 'POST':</code>. Revisa la terminal del servidor al enviar: debe mostrar POST, no solo GET.</p>
+          <p class="step-label">Solución</p>
+          <p>Formulario: <code>&lt;form method="post" action=""&gt;</code> con <code>{% csrf_token %}</code>. Vista: maneja POST, valida con Form o manualmente, guarda y redirige con redirect() para evitar reenvío duplicado.</p>
+          <p class="step-label">Verificación</p>
+          <p>Enviar el form crea o actualiza el registro. La terminal muestra POST 302 o 200 según tu flujo. Los datos persisten tras recargar.</p>
+          <p class="step-label">Qué NO hacer</p>
+          <p>No uses GET para acciones que modifican datos (crear, borrar, editar). GET debe ser idempotente y seguro de repetir.</p>
+        </article>
+
+        <section class="tutorial-section" id="checkpoint">
+          <h2>Checkpoint final</h2>
+          <p>Has recorrido los 25 errores más frecuentes en esta ruta de aprendizaje. No necesitas memorizarlos todos: necesitas saber que esta página existe y cómo buscar en ella.</p>
+          <ul class="checklist">
+            <li>Entiendes que muchos errores comparten causa: venv inactivo, carpeta incorrecta o migraciones pendientes.</li>
+            <li>Sabes usar el buscador con palabras del mensaje de error o del traceback.</li>
+            <li>Lees el mensaje completo antes de cambiar código al azar.</li>
+            <li>Verificas cada solución con el criterio indicado en la tarjeta.</li>
+            <li>Guardaste esta página en favoritos para consultarla mientras construyes tu proyecto.</li>
+          </ul>
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Mensaje de Teacher Jim</p>
+              <p>Los mejores desarrolladores no son los que nunca ven errores; son los que los leen con calma y los reducen a una causa concreta. La próxima vez que algo falle, respira, copia el mensaje y vuelve aquí. Con práctica, reconocerás varios de estos sin abrir la guía.</p>
+            </div>
+          </div>
+        </section>
+
+        <nav class="tutorial-nav" aria-label="Navegación entre tutoriales">
+          <a class="btn btn--secondary" href="04-todo-app-autenticacion.html">Anterior: To-Do + Login</a>
+          <a class="btn btn--secondary" href="../index.html">Volver al inicio</a>
+          <span></span>
+        </nav>
+
+      </div>
+
+      <aside class="progress-rail" aria-label="Progreso del tutorial">
+        <div class="progress-rail__card">
+          <h3>Referencia</h3>
+          <p class="reading-progress__label">25 errores documentados. Usa el buscador o el índice lateral para saltar al que necesites.</p>
+          <button class="btn btn--primary complete-tutorial-btn" type="button" data-complete-tutorial>Marcar como completado</button>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Aprende Django con Teacher Jim</h3>
+          <p>Construido para aprender haciendo. Tutoriales en español para estudiantes que quieren entender Django, no solo copiar código.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tutoriales</h4>
+          <ul>
+            <li><a href="01-instalar-vscode-python.html">Instalar VS Code y Python</a></li>
+            <li><a href="02-entornos-django.html">Entornos + Django</a></li>
+            <li><a href="03-primera-ventana-django.html">Primera ventana</a></li>
+            <li><a href="04-todo-app-autenticacion.html">To-Do + Login</a></li>
+            <li><a href="05-errores-django.html">Errores comunes</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Repositorio</h4>
+          <ul>
+            <li><a href="https://github.com/TU-USUARIO/TU-REPOSITORIO" rel="noopener noreferrer">GitHub</a></li>
+            <li><a href="../index.html#tutoriales">Todos los tutoriales</a></li>
+            <li><a href="../index.html#ruta">Ruta de aprendizaje</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span data-current-year>2026</span> Aprende Django con Teacher Jim</p>
+        <a class="back-to-top" href="#" data-back-to-top>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+            <path d="m18 15-6-6-6 6"></path>
+          </svg>
+          Volver arriba
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="search-overlay" data-search-overlay role="dialog" aria-modal="true" aria-label="Búsqueda de tutoriales">
+    <div class="search-box">
+      <input type="search" data-search-input placeholder="Buscar tutoriales..." aria-label="Buscar tutoriales">
+      <div class="search-results" data-search-results></div>
+    </div>
+  </div>
+
+  <div id="copy-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="../assets/js/theme.js" defer></script>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/tutorial-progress.js" defer></script>
+  <script src="../assets/js/search.js" defer></script>
+</body>
+</html>

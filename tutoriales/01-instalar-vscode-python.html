@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial 01: Instala VS Code y Python | Aprende Django con Teacher Jim</title>
+  <meta name="description" content="Instala Python y Visual Studio Code desde cero, configura la extensión oficial y ejecuta tu primer script antes de aprender Django.">
+  <meta name="author" content="Teacher Jim">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Tutorial 01: Instala VS Code y Python">
+  <meta property="og:description" content="Prepara tu computadora y verifica que Python funciona antes de comenzar con Django.">
+  <meta property="og:locale" content="es_ES">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/tutorial.css">
+  <link rel="stylesheet" href="../assets/css/syntax-theme.css">
+</head>
+<body data-tutorial-id="tutorial-01">
+
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="app-bar">
+    <div class="app-bar__inner">
+      <a class="app-bar__brand" href="../index.html">
+        <img class="app-bar__logo" src="../assets/icons/favicon.svg" alt="" width="36" height="36">
+        Teacher Jim
+      </a>
+
+      <nav class="app-bar__nav" aria-label="Navegación principal">
+        <a href="../index.html">Inicio</a>
+        <a href="../index.html#tutoriales">Tutoriales</a>
+        <a href="../index.html#ruta">Ruta de aprendizaje</a>
+        <a href="05-errores-django.html">Errores comunes</a>
+      </nav>
+
+      <div class="app-bar__actions">
+        <button class="icon-btn" type="button" data-search-open aria-label="Buscar tutoriales">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+        </button>
+
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro">
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+          </svg>
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+          </svg>
+        </button>
+
+        <button class="icon-btn menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Abrir menú de navegación">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="4" x2="20" y1="12" y2="12"></line>
+            <line x1="4" x2="20" y1="6" y2="6"></line>
+            <line x1="4" x2="20" y1="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" data-mobile-nav aria-label="Navegación móvil">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#tutoriales">Tutoriales</a>
+    <a href="../index.html#ruta">Ruta de aprendizaje</a>
+    <a href="05-errores-django.html">Errores comunes</a>
+  </nav>
+
+  <main id="main-content">
+    <div class="tutorial-layout">
+
+      <aside class="toc-sidebar">
+        <button class="toc-toggle" type="button" data-toc-toggle aria-expanded="false">Mapa de la misión</button>
+        <nav class="toc-panel" data-toc-panel aria-label="Contenido del tutorial">
+          <h2>Contenido</h2>
+          <ul class="toc-list">
+            <li><a href="#resultado-final">Resultado final</a></li>
+            <li><a href="#antes-de-empezar">Antes de empezar</a></li>
+            <li><a href="#step-1">Paso 1: Tres piezas</a></li>
+            <li><a href="#step-2">Paso 2: Comprobar Python</a></li>
+            <li><a href="#step-3">Paso 3: Instalar Python</a></li>
+            <li><a href="#step-4">Paso 4: Verificar de nuevo</a></li>
+            <li><a href="#step-5">Paso 5: Instalar VS Code</a></li>
+            <li><a href="#step-6">Paso 6: Extensión Python</a></li>
+            <li><a href="#step-7">Paso 7: Carpeta django-lab</a></li>
+            <li><a href="#step-8">Paso 8: Crear hola.py</a></li>
+            <li><a href="#step-9">Paso 9: Ejecutar</a></li>
+            <li><a href="#step-10">Paso 10: Checkpoint</a></li>
+            <li><a href="#mini-reto">Mini reto</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="tutorial-main">
+
+        <nav class="breadcrumb" aria-label="Ruta de navegación">
+          <a href="../index.html">Inicio</a>
+          <span aria-hidden="true">/</span>
+          <a href="../index.html#tutoriales">Tutoriales</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Instala VS Code y Python</span>
+        </nav>
+
+        <header class="tutorial-header">
+          <p class="tutorial-header__number">Tutorial 01</p>
+          <h1>Instala VS Code y Python</h1>
+          <p class="tutorial-header__desc">Antes de tocar Django necesitas dos herramientas que funcionen de verdad: el lenguaje Python y un editor donde escribir código. En esta misión instalamos ambos, verificamos cada paso y ejecutamos tu primer script.</p>
+          <div class="tutorial-meta">
+            <span class="chip">Inicial</span>
+            <span class="chip">~45 min</span>
+            <span class="chip">10 pasos</span>
+          </div>
+        </header>
+
+        <section class="tutorial-section" id="resultado-final">
+          <h2>Resultado final</h2>
+          <p>Al terminar este tutorial tendrás:</p>
+          <ul>
+            <li>Python instalado y accesible desde la terminal con <code>python --version</code> (o equivalente en tu sistema).</li>
+            <li>Visual Studio Code instalado con la extensión oficial de Python de Microsoft.</li>
+            <li>Una carpeta de trabajo llamada <code>django-lab</code> con un archivo <code>hola.py</code>.</li>
+            <li>Un script que pide tu nombre y muestra un saludo en pantalla al ejecutarlo.</li>
+          </ul>
+          <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Concepto clave</p>
+              <p>Instalar no significa solo descargar. Significa que tu computadora reconoce el comando cuando lo escribes en la terminal. Si no puedes verificar la versión, todavía no está listo.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="tutorial-section" id="antes-de-empezar">
+          <h2>Antes de empezar</h2>
+          <p>Revisa esta lista antes de avanzar. Si algo falla, no sigas al siguiente paso hasta resolverlo.</p>
+          <ul class="checklist">
+            <li>Tienes conexión a internet para descargar Python y VS Code.</li>
+            <li>Puedes abrir una terminal: PowerShell, CMD o Terminal según tu sistema operativo.</li>
+            <li>Tienes permisos para instalar programas en tu computadora (o un adulto que te ayude si es necesario).</li>
+            <li>Sabes en qué carpeta guardarás tus proyectos (por ejemplo, Documentos o el Escritorio).</li>
+            <li>Entiendes que copiar comandos sin leerlos es la forma más rápida de perder el hilo.</li>
+          </ul>
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>No te apures. La mayoría de problemas en los tutoriales siguientes vienen de saltarse una verificación aquí. Cada comando que ejecutes debe tener un resultado que puedas comprobar con tus propios ojos.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="tutorial-section" id="mapa-mision">
+          <h2>Mapa de la misión</h2>
+          <p>Diez pasos en orden. Marca cada uno cuando lo completes para guardar tu progreso en este navegador.</p>
+          <ol>
+            <li>Comprender las tres piezas: Python, VS Code y la extensión.</li>
+            <li>Comprobar si Python ya está instalado.</li>
+            <li>Instalar Python desde el sitio oficial (con PATH en Windows).</li>
+            <li>Verificar la instalación de nuevo.</li>
+            <li>Instalar Visual Studio Code.</li>
+            <li>Instalar la extensión Python de Microsoft.</li>
+            <li>Crear la carpeta <code>django-lab</code>.</li>
+            <li>Escribir el archivo <code>hola.py</code>.</li>
+            <li>Ejecutar el script desde la terminal.</li>
+            <li>Checkpoint final: confirmar que todo funciona.</li>
+          </ol>
+        </section>
+
+        <!-- PASO 1 -->
+        <article class="tutorial-step" id="step-1">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">1</span>
+            <h2>Comprender las tres piezas</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-1" aria-label="Marcar paso 1 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Identificar las tres piezas que necesitas antes de programar con Django: el intérprete de Python, el editor Visual Studio Code y la extensión de Python para VS Code.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Muchos estudiantes instalan cosas sin saber para qué sirven. Cuando algo falla, no saben si el problema es Python, el editor o la configuración. Separar las piezas te da un mapa mental claro.</p>
+
+          <div class="flow-diagram flow-diagram--visual">
+            <span class="flow-node">Python</span>
+            <span class="flow-arrow">ejecuta tu código</span>
+            <span class="flow-node">VS Code</span>
+            <span class="flow-arrow">donde escribes el código</span>
+            <span class="flow-node">Extensión Python</span>
+            <span class="flow-arrow">ayuda al editor a entender Python</span>
+          </div>
+
+          <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Las tres piezas explicadas</p>
+              <p><strong>Python</strong> es el lenguaje. Sin él, ningún comando <code>python</code> funcionará en tu terminal.</p>
+              <p><strong>VS Code</strong> es tu taller: archivos, carpetas, terminal integrada y resaltado de sintaxis.</p>
+              <p><strong>La extensión Python</strong> conecta el editor con el intérprete: autocompletado, detección de errores y ejecución con un clic.</p>
+            </div>
+          </div>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Deberías poder explicar con tus palabras qué hace cada pieza. No necesitas instalar nada todavía; solo entender el panorama.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Responde mentalmente: ¿qué pieza ejecuta el código? ¿cuál lo escribe? ¿cuál ayuda al editor? Si las tres respuestas son distintas, estás listo para el paso 2.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 2 -->
+        <article class="tutorial-step" id="step-2">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">2</span>
+            <h2>Comprobar si Python ya está instalado</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-2" aria-label="Marcar paso 2 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Abrir una terminal y ejecutar comandos para ver si Python ya está en tu sistema y qué versión tiene.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Algunas computadoras ya traen Python instalado. Otros tienen una versión antigua. Antes de descargar nada, comprobamos qué hay.</p>
+
+          <p class="step-label">Código</p>
+          <div class="os-tabs">
+            <div class="os-tabs__nav" role="tablist" aria-label="Comandos por sistema operativo">
+              <button class="os-tab-btn is-active" type="button" data-os-tab="win-ps" role="tab" aria-selected="true">Windows PowerShell</button>
+              <button class="os-tab-btn" type="button" data-os-tab="win-cmd" role="tab" aria-selected="false">Windows CMD</button>
+              <button class="os-tab-btn" type="button" data-os-tab="mac-linux" role="tab" aria-selected="false">macOS / Linux</button>
+            </div>
+
+            <div class="os-tab-panel is-active" data-os-panel="win-ps" role="tabpanel">
+              <div class="code-window">
+                <header class="code-window__header">
+                  <div class="code-window__filename">
+                    <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                    PowerShell
+                  </div>
+                  <div class="code-window__actions">
+                    <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                      <span class="copy-btn__text">Copiar</span>
+                    </button>
+                    <span class="code-window__vscode">
+                      <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                    </span>
+                  </div>
+                </header>
+                <div class="code-window__body">
+                  <p class="code-window__terminal-label">Prueba en este orden:</p>
+                  <pre><code class="language-powershell">python --version
+py --version
+python3 --version</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="os-tab-panel" data-os-panel="win-cmd" role="tabpanel">
+              <div class="code-window">
+                <header class="code-window__header">
+                  <div class="code-window__filename">
+                    <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                    CMD
+                  </div>
+                  <div class="code-window__actions">
+                    <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                      <span class="copy-btn__text">Copiar</span>
+                    </button>
+                    <span class="code-window__vscode">
+                      <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                    </span>
+                  </div>
+                </header>
+                <div class="code-window__body">
+                  <pre><code class="language-bash">python --version
+py --version</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="os-tab-panel" data-os-panel="mac-linux" role="tabpanel">
+              <div class="code-window">
+                <header class="code-window__header">
+                  <div class="code-window__filename">
+                    <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                    Terminal
+                  </div>
+                  <div class="code-window__actions">
+                    <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                      <span class="copy-btn__text">Copiar</span>
+                    </button>
+                    <span class="code-window__vscode">
+                      <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                    </span>
+                  </div>
+                </header>
+                <div class="code-window__body">
+                  <pre><code class="language-bash">python3 --version
+python --version</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>Estos comandos se ejecutan en la terminal de tu sistema operativo, no dentro de VS Code todavía. En Windows: busca "PowerShell" o "Símbolo del sistema" en el menú Inicio.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Si Python está instalado correctamente, verás algo como:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Salida esperada
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">Python 3.12.4</code></pre>
+            </div>
+          </div>
+          <p>El número exacto puede variar. Lo importante es que muestre <strong>Python 3.x</strong> y no un error.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Si obtuviste una versión 3.10 o superior, puedes saltar al paso 5 (instalar VS Code). Si viste un error o una versión 2.x, continúa al paso 3.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>"python" no se reconoce como comando</strong> — Python no está instalado o no está en el PATH. No es un fallo tuyo; simplemente necesitas instalarlo en el paso 3.</p>
+              <p><strong>Aparece Python 2.7</strong> — Esa versión es antigua y no sirve para Django 6. Instala Python 3 desde python.org.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 3 -->
+        <article class="tutorial-step" id="step-3">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">3</span>
+            <h2>Instalar Python desde el sitio oficial</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-3" aria-label="Marcar paso 3 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Descargar e instalar Python 3 desde <a href="https://www.python.org/downloads/" rel="noopener noreferrer">python.org/downloads</a>. En Windows activaremos la opción que agrega Python al PATH.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>El instalador oficial es la fuente confiable. Activar PATH en Windows permite que cualquier terminal encuentre el comando <code>python</code> sin configuración extra.</p>
+
+          <div class="callout callout--warning">
+            <div>
+              <p class="callout__label">Windows: opción crítica</p>
+              <p>En la primera pantalla del instalador, marca la casilla <strong>"Add python.exe to PATH"</strong> (o "Agregar Python al PATH") antes de pulsar "Install Now". Si no la marcas, el paso 4 fallará y tendrás que reinstalar.</p>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>La instalación es a nivel de sistema operativo. No necesitas crear carpetas todavía. Acepta las opciones por defecto salvo la casilla PATH en Windows.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <ul>
+            <li>El instalador descarga y copia los archivos de Python.</li>
+            <li>Al finalizar muestra "Setup was successful" o equivalente.</li>
+            <li>En macOS/Linux puede pedirte tu contraseña de administrador.</li>
+          </ul>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Cierra cualquier terminal que tuvieras abierta antes de instalar. Las terminales antiguas no ven cambios en PATH hasta que las reinicies.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>Instalé Python pero el comando sigue sin funcionar</strong> — Casi siempre es porque no marcaste "Add to PATH" en Windows. Desinstala Python desde Configuración &gt; Aplicaciones y vuelve a instalar marcando esa casilla.</p>
+              <p><strong>Descargué Python desde la Microsoft Store y hay conflictos</strong> — Prefiere el instalador de python.org. Es más predecible para aprender.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 4 -->
+        <article class="tutorial-step" id="step-4">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">4</span>
+            <h2>Verificar Python de nuevo</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-4" aria-label="Marcar paso 4 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Repetir los comandos de verificación en una terminal nueva para confirmar que la instalación funcionó.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Instalar sin verificar es adivinar. Este paso convierte "creo que funciona" en "sé que funciona".</p>
+
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python --version</code></pre>
+            </div>
+          </div>
+          <p>En macOS/Linux, si <code>python</code> no responde, prueba <code>python3 --version</code>. En Windows también puedes usar <code>py --version</code>.</p>
+
+          <p class="step-label">Dónde va</p>
+          <p>Terminal nueva del sistema. Si ya tenías una abierta, ciérrala y abre otra.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Deberías ver una línea con Python 3.10 o superior. Anota el número exacto; lo usarás más adelante.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Ejecuta también un mini test interactivo:</p>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">python -c "print('Python responde correctamente')"</code></pre>
+            </div>
+          </div>
+          <p>La salida debe ser exactamente: <code>Python responde correctamente</code></p>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>Sigue sin reconocer el comando</strong> — Reinicia la computadora. Si persiste, reinstala Python marcando "Add to PATH". No avances al paso 5 hasta resolver esto.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 5 -->
+        <article class="tutorial-step" id="step-5">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">5</span>
+            <h2>Instalar Visual Studio Code</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-5" aria-label="Marcar paso 5 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Descargar e instalar VS Code desde <a href="https://code.visualstudio.com/" rel="noopener noreferrer">code.visualstudio.com</a>.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>VS Code es gratuito, ligero y tiene terminal integrada. Podrías escribir Python en el Bloc de notas, pero perderías resaltado de sintaxis, detección de errores y comodidad al trabajar con carpetas.</p>
+
+          <p class="step-label">Dónde va</p>
+          <p>Instalación a nivel de sistema, igual que Python. En Windows acepta las opciones por defecto; puedes marcar "Agregar al menú contextual" si quieres abrir carpetas con clic derecho.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <ul>
+            <li>VS Code se abre después de instalar (o desde el menú Inicio / Aplicaciones).</li>
+            <li>Ves la pantalla de bienvenida con opciones como "Open Folder" o "Abrir carpeta".</li>
+          </ul>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Abre VS Code. Ve a <strong>Terminal &gt; Nueva terminal</strong> (o <kbd>Ctrl+`</kbd>). Debería aparecer un panel de terminal en la parte inferior. Escribe <code>python --version</code> ahí y confirma que muestra la misma versión que en el paso 4.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--why">
+            <div>
+              <p class="callout__label">Por qué importa la terminal integrada</p>
+              <p>Trabajarás siempre desde la carpeta del proyecto. La terminal de VS Code ya está ubicada en la carpeta que abras, lo que reduce errores de "archivo no encontrado".</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 6 -->
+        <article class="tutorial-step" id="step-6">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">6</span>
+            <h2>Instalar la extensión Python de Microsoft</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-6" aria-label="Marcar paso 6 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Instalar la extensión oficial "Python" publicada por Microsoft dentro de VS Code.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>VS Code no entiende Python por defecto. La extensión añade IntelliSense, formateo, depuración y la capacidad de seleccionar qué intérprete usar.</p>
+
+          <p class="step-label">Dónde va</p>
+          <ol>
+            <li>En VS Code, haz clic en el icono de Extensiones en la barra lateral (cuatro cuadrados) o pulsa <kbd>Ctrl+Shift+X</kbd>.</li>
+            <li>Busca <strong>Python</strong>.</li>
+            <li>Selecciona la extensión cuyo publicador es <strong>Microsoft</strong> (tiene millones de descargas).</li>
+            <li>Pulsa <strong>Install</strong> o <strong>Instalar</strong>.</li>
+          </ol>
+
+          <div class="callout callout--warning">
+            <div>
+              <p class="callout__label">Cuidado con imitaciones</p>
+              <p>Hay extensiones con nombres parecidos. Verifica que el publicador sea <strong>Microsoft</strong> y que el identificador sea <code>ms-python.python</code>.</p>
+            </div>
+          </div>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>La extensión se instala en segundos. Puede ofrecerte instalar Pylance (análisis de código); acepta si te lo propone.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>En la barra inferior de VS Code debería aparecer algo como "Python" o la versión del intérprete cuando abras un archivo <code>.py</code> más adelante. Por ahora confirma que la extensión aparece como instalada en el panel de Extensiones.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 7 -->
+        <article class="tutorial-step" id="step-7">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">7</span>
+            <h2>Crear la carpeta django-lab</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-7" aria-label="Marcar paso 7 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear una carpeta de trabajo llamada <code>django-lab</code> y abrirla en VS Code.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Cada proyecto vive en su propia carpeta. Mantener el código organizado desde el primer día evita mezclar archivos de distintos ejercicios.</p>
+
+          <p class="step-label">Código</p>
+          <div class="os-tabs">
+            <div class="os-tabs__nav" role="tablist" aria-label="Crear carpeta por sistema operativo">
+              <button class="os-tab-btn is-active" type="button" data-os-tab="win-ps2" role="tab" aria-selected="true">Windows PowerShell</button>
+              <button class="os-tab-btn" type="button" data-os-tab="win-cmd2" role="tab" aria-selected="false">Windows CMD</button>
+              <button class="os-tab-btn" type="button" data-os-tab="mac-linux2" role="tab" aria-selected="false">macOS / Linux</button>
+            </div>
+
+            <div class="os-tab-panel is-active" data-os-panel="win-ps2" role="tabpanel">
+              <div class="code-window">
+                <header class="code-window__header">
+                  <div class="code-window__filename">
+                    <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                    PowerShell
+                  </div>
+                  <div class="code-window__actions">
+                    <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                      <span class="copy-btn__text">Copiar</span>
+                    </button>
+                    <span class="code-window__vscode">
+                      <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                    </span>
+                  </div>
+                </header>
+                <div class="code-window__body">
+                  <pre><code class="language-powershell">cd $HOME\Documents
+mkdir django-lab
+cd django-lab
+code .</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="os-tab-panel" data-os-panel="win-cmd2" role="tabpanel">
+              <div class="code-window">
+                <header class="code-window__header">
+                  <div class="code-window__filename">
+                    <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                    CMD
+                  </div>
+                  <div class="code-window__actions">
+                    <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                      <span class="copy-btn__text">Copiar</span>
+                    </button>
+                    <span class="code-window__vscode">
+                      <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                    </span>
+                  </div>
+                </header>
+                <div class="code-window__body">
+                  <pre><code class="language-bash">cd %USERPROFILE%\Documents
+mkdir django-lab
+cd django-lab
+code .</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="os-tab-panel" data-os-panel="mac-linux2" role="tabpanel">
+              <div class="code-window">
+                <header class="code-window__header">
+                  <div class="code-window__filename">
+                    <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                    Terminal
+                  </div>
+                  <div class="code-window__actions">
+                    <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                      <span class="copy-btn__text">Copiar</span>
+                    </button>
+                    <span class="code-window__vscode">
+                      <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                    </span>
+                  </div>
+                </header>
+                <div class="code-window__body">
+                  <pre><code class="language-bash">cd ~/Documents
+mkdir django-lab
+cd django-lab
+code .</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>La carpeta puede estar en Documentos u otra ubicación que prefieras. Lo importante es que recuerdes dónde está. El comando <code>code .</code> abre la carpeta actual en VS Code.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>VS Code se abre (o se actualiza) mostrando <code>django-lab</code> como carpeta raíz en el explorador de archivos lateral. La terminal integrada debería estar dentro de esa carpeta.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>En la terminal de VS Code ejecuta <code>pwd</code> (macOS/Linux) o <code>cd</code> sin argumentos (Windows) y confirma que la ruta termina en <code>django-lab</code>.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>"code" no se reconoce</strong> — Reinstala VS Code y marca la opción "Add to PATH" durante la instalación. También puedes abrir VS Code manualmente y usar Archivo &gt; Abrir carpeta.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 8 -->
+        <article class="tutorial-step" id="step-8">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">8</span>
+            <h2>Crear el archivo hola.py</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-8" aria-label="Marcar paso 8 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear un script de Python que pida tu nombre y muestre un saludo usando una f-string.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Antes de Django necesitas confirmar que puedes escribir, guardar y entender código Python básico: variables, entrada del usuario y salida por pantalla.</p>
+
+          <p class="step-label">Código</p>
+          <span class="file-path">django-lab/hola.py</span>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                hola.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python"># Mi primer script de Python para Django Lab
+nombre = input("¿Cómo te llamas? ")
+
+print(f"Hola, {nombre}. Bienvenido a django-lab.")</code></pre>
+            </div>
+          </div>
+
+          <p class="step-label">Dónde va</p>
+          <p>En VS Code: clic derecho en el explorador de archivos &gt; Nuevo archivo &gt; escribe <code>hola.py</code>. Pega el código, guarda con <kbd>Ctrl+S</kbd>.</p>
+
+          <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Qué hace cada línea</p>
+              <p><code>input()</code> muestra un mensaje y espera que escribas texto. Ese texto se guarda en la variable <code>nombre</code>.</p>
+              <p><code>print(f"...")</code> es una f-string: las llaves <code>{nombre}</code> insertan el valor de la variable dentro del texto.</p>
+            </div>
+          </div>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>El archivo aparece en el explorador con icono de Python. El código tiene colores (sintaxis resaltada) gracias a la extensión instalada en el paso 6.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Revisa que guardaste el archivo. El punto en la pestaña del archivo desaparece cuando está guardado. La extensión del archivo debe ser <code>.py</code>, no <code>.py.txt</code>.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>El archivo se guardó como hola.py.txt</strong> — En Windows, desactiva "Ocultar extensiones de archivo para tipos conocidos" en el Explorador de archivos, o crea el archivo directamente desde VS Code.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 9 -->
+        <article class="tutorial-step" id="step-9">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">9</span>
+            <h2>Ejecutar hola.py</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-9" aria-label="Marcar paso 9 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Ejecutar el script desde la terminal integrada de VS Code y comprobar la interacción completa.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>Escribir código que no ejecutas es solo texto decorativo. Este paso cierra el ciclo: escribir, guardar, ejecutar, ver resultado.</p>
+
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                terminal (django-lab)
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python hola.py</code></pre>
+            </div>
+          </div>
+          <p>En macOS/Linux usa <code>python3 hola.py</code> si <code>python</code> no funciona.</p>
+
+          <p class="step-label">Dónde va</p>
+          <p>Terminal integrada de VS Code, con la carpeta <code>django-lab</code> abierta como proyecto.</p>
+
+          <p class="step-label">Qué debería ocurrir</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Salida esperada
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">¿Cómo te llamas? Ana
+Hola, Ana. Bienvenido a django-lab.</code></pre>
+            </div>
+          </div>
+          <p>El programa espera que escribas tu nombre y pulses Enter.</p>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Ejecuta el script dos veces con nombres distintos. La salida debe cambiar según lo que escribas. Si ves el saludo personalizado, Python y VS Code trabajan juntos correctamente.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>can't open file 'hola.py'</strong> — La terminal no está en la carpeta correcta. Ejecuta <code>cd</code> hasta llegar a <code>django-lab</code> o abre la carpeta en VS Code con Archivo &gt; Abrir carpeta.</p>
+              <p><strong>SyntaxError</strong> — Revisa comillas y paréntesis en <code>hola.py</code>. Copia el código del paso 8 exactamente.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PASO 10 -->
+        <article class="tutorial-step" id="step-10">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">10</span>
+            <h2>Checkpoint final</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-10" aria-label="Marcar paso 10 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Revisar que cumples todos los requisitos antes de pasar al Tutorial 02 sobre entornos virtuales y Django.</p>
+
+          <p class="step-label">Por qué</p>
+          <p>El siguiente tutorial asume que Python responde en la terminal y que sabes abrir carpetas en VS Code. Si algo falla aquí, fallará todo lo demás.</p>
+
+          <p class="step-label">Lista de verificación final</p>
+          <ul class="checklist">
+            <li><code>python --version</code> (o <code>python3 --version</code>) muestra Python 3.10+.</li>
+            <li>VS Code abre la carpeta <code>django-lab</code> sin problemas.</li>
+            <li>La extensión Python de Microsoft está instalada.</li>
+            <li><code>hola.py</code> existe y se ejecuta mostrando el saludo personalizado.</li>
+            <li>Entiendes la diferencia entre escribir código (editor) y ejecutarlo (terminal).</li>
+          </ul>
+
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Mensaje de Teacher Jim</p>
+              <p>Si marcaste todos los puntos, tu base está sólida. En el Tutorial 02 crearemos un entorno virtual aislado e instalaremos Django. No borres la carpeta <code>django-lab</code>; la usaremos como punto de partida.</p>
+            </div>
+          </div>
+
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Marca este paso como hecho y pulsa "Marcar como completado" en la barra de progreso lateral. Luego continúa al Tutorial 02.</p>
+            </div>
+          </div>
+        </article>
+
+        <section class="mini-challenge" id="mini-reto">
+          <h3>Mini reto</h3>
+          <p>Modifica <code>hola.py</code> para que también pregunte tu edad y muestre un mensaje como:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Salida objetivo
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">Hola, Ana. Tienes 15 años. Bienvenido a django-lab.</code></pre>
+            </div>
+          </div>
+          <p>Pista: necesitarás una segunda variable con <code>input()</code> y convertir la edad a número con <code>int()</code>. Si te atascas, repasa el paso 8 y vuelve a intentarlo.</p>
+        </section>
+
+        <nav class="tutorial-nav" aria-label="Navegación entre tutoriales">
+          <span></span>
+          <a class="btn btn--secondary" href="../index.html">Volver al inicio</a>
+          <a class="btn btn--primary" href="02-entornos-django.html">Siguiente: Entornos + Django</a>
+        </nav>
+
+      </div>
+
+      <aside class="progress-rail" aria-label="Progreso del tutorial">
+        <div class="progress-rail__card">
+          <h3>Tu progreso</h3>
+          <div class="reading-progress" aria-hidden="true">
+            <div class="reading-progress__bar" data-scroll-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label">Lectura</p>
+          <div class="reading-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="reading-progress__bar" data-reading-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label" data-step-progress-label>0 de 10 pasos (0%)</p>
+          <button class="btn btn--primary complete-tutorial-btn" type="button" data-complete-tutorial>Marcar como completado</button>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Aprende Django con Teacher Jim</h3>
+          <p>Construido para aprender haciendo. Tutoriales en español para estudiantes que quieren entender Django, no solo copiar código.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tutoriales</h4>
+          <ul>
+            <li><a href="01-instalar-vscode-python.html">Instalar VS Code y Python</a></li>
+            <li><a href="02-entornos-django.html">Entornos + Django</a></li>
+            <li><a href="03-primera-ventana-django.html">Primera ventana</a></li>
+            <li><a href="04-todo-app-autenticacion.html">To-Do + Login</a></li>
+            <li><a href="05-errores-django.html">Errores comunes</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Repositorio</h4>
+          <ul>
+            <li><a href="https://github.com/TU-USUARIO/TU-REPOSITORIO" rel="noopener noreferrer">GitHub</a></li>
+            <li><a href="../index.html#tutoriales">Todos los tutoriales</a></li>
+            <li><a href="../index.html#ruta">Ruta de aprendizaje</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span data-current-year>2026</span> Aprende Django con Teacher Jim</p>
+        <a class="back-to-top" href="#" data-back-to-top>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+            <path d="m18 15-6-6-6 6"></path>
+          </svg>
+          Volver arriba
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="search-overlay" data-search-overlay role="dialog" aria-modal="true" aria-label="Búsqueda de tutoriales">
+    <div class="search-box">
+      <input type="search" data-search-input placeholder="Buscar tutoriales..." aria-label="Buscar tutoriales">
+      <div class="search-results" data-search-results></div>
+    </div>
+  </div>
+
+  <div id="copy-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="../assets/js/theme.js" defer></script>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/tutorial-progress.js" defer></script>
+  <script src="../assets/js/code-copy.js" defer></script>
+  <script src="../assets/js/search.js" defer></script>
+  <script src="../assets/vendor/prism/prism.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-python.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-bash.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-markup.min.js" defer></script>
+</body>
+</html>

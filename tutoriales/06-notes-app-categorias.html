@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial 06: Notes App con categorías | Aprende Django con Teacher Jim</title>
+  <meta name="description" content="Construye una app privada de notas con categorías, favoritos, búsqueda y filtros por usuario en Django.">
+  <meta name="author" content="Teacher Jim">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Tutorial 06: Notes App con categorías">
+  <meta property="og:description" content="Notas privadas con categorías ForeignKey, favoritos, búsqueda Q y filtros.">
+  <meta property="og:locale" content="es_ES">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/tutorial.css">
+  <link rel="stylesheet" href="../assets/css/syntax-theme.css">
+  <link rel="stylesheet" href="../assets/css/portfolio-roadmap.css">
+  <link rel="stylesheet" href="../assets/css/project-cards.css">
+</head>
+<body data-tutorial-id="tutorial-06">
+
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="app-bar">
+    <div class="app-bar__inner">
+      <a class="app-bar__brand" href="../index.html">
+        <img class="app-bar__logo" src="../assets/icons/favicon.svg" alt="" width="36" height="36">
+        Teacher Jim
+      </a>
+      <nav class="app-bar__nav" aria-label="Navegación principal">
+        <a href="../index.html">Inicio</a>
+        <a href="../index.html#tutoriales">Tutoriales</a>
+        <a href="../ruta-portafolio.html">Portafolio</a>
+        <a href="05-errores-django.html">Errores</a>
+      </nav>
+      <div class="app-bar__actions">
+        <button class="icon-btn" type="button" data-search-open aria-label="Buscar tutoriales">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        </button>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro">
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </button>
+        <button class="icon-btn menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Abrir menú de navegación">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" data-mobile-nav aria-label="Navegación móvil">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#tutoriales">Tutoriales</a>
+    <a href="../ruta-portafolio.html">Portafolio</a>
+    <a href="05-errores-django.html">Errores</a>
+  </nav>
+  <main id="main-content">
+    <div class="tutorial-layout">
+
+      <aside class="toc-sidebar">
+        <button class="toc-toggle" type="button" data-toc-toggle aria-expanded="false">Mapa de la misión</button>
+        <nav class="toc-panel" data-toc-panel aria-label="Contenido del tutorial">
+          <h2>Contenido</h2>
+          <ul class="toc-list">
+            <li><a href="#resultado-final">Resultado final</a></li>
+            <li><a href="#antes-de-empezar">Antes de empezar</a></li>
+            <li><a href="#arquitectura">Arquitectura</a></li>
+            <li><a href="#step-1">Paso 1: App notes</a></li>
+            <li><a href="#step-2">Paso 2: Modelos</a></li>
+            <li><a href="#step-3">Paso 3: Migraciones</a></li>
+            <li><a href="#step-4">Paso 4: Admin</a></li>
+            <li><a href="#step-5">Paso 5: Formularios</a></li>
+            <li><a href="#step-6">Paso 6: Vistas</a></li>
+            <li><a href="#step-7">Paso 7: URLs</a></li>
+            <li><a href="#step-8">Paso 8: Templates</a></li>
+            <li><a href="#step-9">Paso 9: CSS cards</a></li>
+            <li><a href="#step-10">Paso 10: Favoritos</a></li>
+            <li><a href="#step-11">Paso 11: Búsqueda y filtros</a></li>
+            <li><a href="#step-12">Paso 12: Verificar</a></li>
+            <li><a href="#errores-comunes">Errores comunes</a></li>
+            <li><a href="#mini-reto">Mini retos</a></li>
+            <li><a href="#portafolio">Portafolio</a></li>
+            <li><a href="#checklist-final">Checklist final</a></li>
+          </ul>
+        </nav>
+      </aside>
+      <div class="tutorial-main">
+
+        <nav class="breadcrumb" aria-label="Ruta de navegación">
+          <a href="../index.html">Inicio</a>
+          <span aria-hidden="true">/</span>
+          <a href="../index.html#tutoriales">Tutoriales</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Notes App con categorías</span>
+        </nav>
+        <header class="tutorial-header">
+          <p class="tutorial-header__number">Tutorial 06 · Fase 1 · Mini Proyecto 01</p>
+          <h1>Notes App con categorías</h1>
+          <p class="tutorial-header__desc">Vas a construir una aplicación privada de notas. Cada usuario solo ve las suyas. Aprenderás ForeignKey, filtros, búsqueda, favoritos y tarjetas en plantillas. Este proyecto refuerza lo del To-Do y lo deja listo para portafolio.</p>
+          <div class="tutorial-meta">
+            <span class="chip">Fase 1</span>
+            <span class="chip">2 clases</span>
+            <span class="chip">12 pasos</span>
+            <span class="chip">Mini proyecto</span>
+          </div>
+        </header>
+        <section class="tutorial-section" id="resultado-final">
+          <h2>Resultado final</h2>
+          <p>Al terminar tendrás una app <code>notes</code> con:</p>
+          <ul>
+            <li>Modelos <code>Category</code> y <code>Note</code> ligados al usuario.</li>
+            <li>CRUD de notas protegido con <code>@login_required</code>.</li>
+            <li>Categorías con color, favoritos, búsqueda y filtros.</li>
+            <li>Plantillas con cards y un CSS claro para mostrar en captura.</li>
+          </ul>
+          <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Por qué sirve al portafolio</p>
+              <p>Un reclutador entiende al instante: autenticación, datos propios por usuario, relaciones ForeignKey y filtros reales. No es un hola mundo.</p>
+            </div>
+          </div>
+          <div class="tree-structure">mi_primer_django/
+├── notes/
+│   ├── models.py
+│   ├── forms.py
+│   ├── views.py
+│   ├── urls.py
+│   ├── admin.py
+│   └── templates/notes/
+│       ├── note_list.html
+│       ├── note_form.html
+│       ├── note_detail.html
+│       ├── note_confirm_delete.html
+│       └── category_form.html
+├── static/css/notes.css
+└── ...</div>
+        </section>
+        <section class="tutorial-section" id="antes-de-empezar">
+          <h2>Antes de empezar</h2>
+          <ul class="checklist">
+            <li>Completaste el Tutorial 04 (To-Do + Login) o tienes login funcionando.</li>
+            <li>Existe <code>templates/base.html</code> y autenticación con <code>django.contrib.auth</code>.</li>
+            <li>El entorno virtual está activo y Django 6.0.x responde.</li>
+            <li>VS Code abierto en la carpeta que contiene <code>manage.py</code>.</li>
+          </ul>
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Reutiliza el login del Tutorial 04. No reinventes autenticación: concentra energía en modelos, filtros y plantillas.</p>
+            </div>
+          </div>
+        </section>
+        <section class="tutorial-section" id="arquitectura">
+          <h2>Arquitectura</h2>
+          <p>URL <code>/notes/</code> → vistas de <code>notes</code> → modelos filtrados por <code>request.user</code> → templates con cards. El usuario nunca ve notas ajenas porque cada consulta lleva <code>filter(user=request.user)</code> o <code>get_object_or_404(..., user=request.user)</code>.</p>
+        </section>
+        <article class="tutorial-step" id="step-1">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">1</span>
+            <h2>Crear la app notes y registrarla</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-1" aria-label="Marcar paso 1 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear la aplicación <code>notes</code> y registrarla en <code>INSTALLED_APPS</code>.</p>
+          <p class="step-label">Por qué</p>
+          <p>Separar notas del To-Do mantiene cada app con una responsabilidad clara. Así puedes mostrar dos proyectos distintos en el mismo repositorio o copiar solo <code>notes/</code> después.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal — raíz del proyecto
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py startapp notes</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                config/settings.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">INSTALLED_APPS = [
+    &quot;django.contrib.admin&quot;,
+    &quot;django.contrib.auth&quot;,
+    &quot;django.contrib.contenttypes&quot;,
+    &quot;django.contrib.sessions&quot;,
+    &quot;django.contrib.messages&quot;,
+    &quot;django.contrib.staticfiles&quot;,
+    &quot;core&quot;,
+    &quot;tasks&quot;,
+    &quot;notes&quot;,
+]</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>El comando en la carpeta de <code>manage.py</code>. La cadena <code>"notes"</code> al final de <code>INSTALLED_APPS</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Aparece la carpeta <code>notes/</code> con <code>models.py</code>, <code>views.py</code> y el resto de archivos base.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>En el explorador existe <code>notes/</code> y en settings aparece <code>"notes"</code> sin error de sintaxis.</p>
+            </div>
+          </div>
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>AppRegistryNotReady / ModuleNotFoundError</strong> — La carpeta no está al mismo nivel que <code>manage.py</code> o escribiste mal el nombre.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-2">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">2</span>
+            <h2>Definir Category y Note</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-2" aria-label="Marcar paso 2 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Escribir los modelos <code>Category</code> y <code>Note</code> con ForeignKey al usuario y color opcional en categorías.</p>
+          <p class="step-label">Por qué</p>
+          <p><code>Category</code> organiza. <code>Note</code> guarda el contenido. El ForeignKey a usuario aísla datos. <code>SET_NULL</code> en categoría evita borrar notas si eliminas una categoría.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                notes/models.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.conf import settings
+from django.db import models
+
+
+class Category(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name=&quot;note_categories&quot;,
+    )
+    name = models.CharField(max_length=80)
+    color = models.CharField(max_length=20, default=&quot;#7DFF58&quot;)
+
+    class Meta:
+        ordering = [&quot;name&quot;]
+        verbose_name_plural = &quot;categories&quot;
+
+    def __str__(self):
+        return self.name
+
+
+class Note(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name=&quot;notes&quot;,
+    )
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name=&quot;notes&quot;,
+    )
+    title = models.CharField(max_length=150)
+    content = models.TextField()
+    is_favorite = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = [&quot;-updated_at&quot;]
+
+    def __str__(self):
+        return self.title</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>Reemplaza el contenido de <code>notes/models.py</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Django puede detectar los modelos al hacer migraciones. Todavía no hay tablas hasta el siguiente paso.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Sin errores de importación. Los campos coinciden con la especificación: title 150, content TextField, is_favorite, timestamps.</p>
+            </div>
+          </div>
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Si no puedes explicar con tus palabras qué guarda cada campo, no pases al siguiente paso. El portafolio se explica en voz alta.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-3">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">3</span>
+            <h2>Migraciones</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-3" aria-label="Marcar paso 3 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear y aplicar las migraciones de la app <code>notes</code>.</p>
+          <p class="step-label">Por qué</p>
+          <p>El modelo en Python no crea tablas solo. <code>makemigrations</code> genera el plan; <code>migrate</code> lo aplica en SQLite.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py makemigrations notes
+python manage.py migrate</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>Terminal con el entorno activo, en la raíz del proyecto.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Se crea un archivo en <code>notes/migrations/</code> y el migrate termina sin errores.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Aparece un archivo tipo <code>0001_initial.py</code> dentro de <code>notes/migrations/</code>.</p>
+            </div>
+          </div>
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>You are trying to add a non-nullable field...</strong> — Revisaste mal null/blank en category. Usa el modelo exacto del paso 2.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-4">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">4</span>
+            <h2>Registrar modelos en Admin</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-4" aria-label="Marcar paso 4 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Registrar <code>Category</code> y <code>Note</code> en el admin para inspeccionar datos mientras desarrollas.</p>
+          <p class="step-label">Por qué</p>
+          <p>El admin te deja verificar dueños, categorías y favoritos sin plantilla. Luego el Blog (Tutorial 09) profundizará en personalización.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                notes/admin.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.contrib import admin
+from .models import Category, Note
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = (&quot;name&quot;, &quot;user&quot;, &quot;color&quot;)
+    list_filter = (&quot;user&quot;,)
+    search_fields = (&quot;name&quot;,)
+
+
+@admin.register(Note)
+class NoteAdmin(admin.ModelAdmin):
+    list_display = (&quot;title&quot;, &quot;user&quot;, &quot;category&quot;, &quot;is_favorite&quot;, &quot;updated_at&quot;)
+    list_filter = (&quot;is_favorite&quot;, &quot;category&quot;, &quot;user&quot;)
+    search_fields = (&quot;title&quot;, &quot;content&quot;)</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p><code>notes/admin.py</code> completo.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>En <code>/admin/</code> ves Category y Note (necesitas superusuario).</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Si aún no tienes superuser: <code>python manage.py createsuperuser</code>. Entra a admin y confirma que aparecen ambos modelos.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-5">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">5</span>
+            <h2>Formularios NoteForm y CategoryForm</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-5" aria-label="Marcar paso 5 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear <code>forms.py</code> con ModelForms. El queryset de categorías se limita al usuario autenticado.</p>
+          <p class="step-label">Por qué</p>
+          <p>Sin filtrar categorías, un usuario vería categorías ajenas en el desplegable. Eso es un fallo de seguridad de datos.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                notes/forms.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django import forms
+from .models import Category, Note
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = [&quot;name&quot;, &quot;color&quot;]
+        widgets = {
+            &quot;name&quot;: forms.TextInput(attrs={&quot;placeholder&quot;: &quot;Nombre de la categoría&quot;}),
+            &quot;color&quot;: forms.TextInput(attrs={&quot;type&quot;: &quot;color&quot;}),
+        }
+
+
+class NoteForm(forms.ModelForm):
+    class Meta:
+        model = Note
+        fields = [&quot;title&quot;, &quot;content&quot;, &quot;category&quot;, &quot;is_favorite&quot;]
+        widgets = {
+            &quot;title&quot;: forms.TextInput(attrs={&quot;placeholder&quot;: &quot;Título de la nota&quot;}),
+            &quot;content&quot;: forms.Textarea(attrs={&quot;rows&quot;: 8, &quot;placeholder&quot;: &quot;Escribe tu nota...&quot;}),
+        }
+
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+        if user is not None:
+            self.fields[&quot;category&quot;].queryset = Category.objects.filter(user=user)
+            self.fields[&quot;category&quot;].required = False</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>Archivo nuevo <code>notes/forms.py</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Puedes importar los formularios desde las vistas sin error.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>El constructor de <code>NoteForm</code> recibe <code>user=</code> y filtra <code>category.queryset</code>.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-6">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">6</span>
+            <h2>Vistas con login_required y filtro por usuario</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-6" aria-label="Marcar paso 6 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Implementar listado, CRUD, detalle, toggle de favorito y creación de categoría. Toda consulta filtra por <code>request.user</code>.</p>
+          <p class="step-label">Por qué</p>
+          <p>Esto es el corazón del proyecto. URL → View → Model filtrado → Template. Sin el filtro de usuario, tendrías una app insegura.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                notes/views.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.shortcuts import get_object_or_404, redirect, render
+from .forms import CategoryForm, NoteForm
+from .models import Category, Note
+
+
+@login_required
+def note_list(request):
+    notes = Note.objects.filter(user=request.user).select_related(&quot;category&quot;)
+    categories = Category.objects.filter(user=request.user)
+
+    q = request.GET.get(&quot;q&quot;, &quot;&quot;).strip()
+    category_id = request.GET.get(&quot;category&quot;, &quot;&quot;)
+    favorites_only = request.GET.get(&quot;favorites&quot;) == &quot;1&quot;
+
+    if q:
+        notes = notes.filter(Q(title__icontains=q) | Q(content__icontains=q))
+    if category_id.isdigit():
+        notes = notes.filter(category_id=int(category_id))
+    if favorites_only:
+        notes = notes.filter(is_favorite=True)
+
+    context = {
+        &quot;notes&quot;: notes,
+        &quot;categories&quot;: categories,
+        &quot;q&quot;: q,
+        &quot;category_id&quot;: category_id,
+        &quot;favorites_only&quot;: favorites_only,
+        &quot;total&quot;: notes.count(),
+    }
+    return render(request, &quot;notes/note_list.html&quot;, context)
+
+
+@login_required
+def note_create(request):
+    if request.method == &quot;POST&quot;:
+        form = NoteForm(request.POST, user=request.user)
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.user = request.user
+            note.save()
+            messages.success(request, &quot;Nota creada.&quot;)
+            return redirect(&quot;notes:note_list&quot;)
+    else:
+        form = NoteForm(user=request.user)
+    return render(request, &quot;notes/note_form.html&quot;, {&quot;form&quot;: form, &quot;title&quot;: &quot;Nueva nota&quot;})
+
+
+@login_required
+def note_edit(request, pk):
+    note = get_object_or_404(Note, pk=pk, user=request.user)
+    if request.method == &quot;POST&quot;:
+        form = NoteForm(request.POST, instance=note, user=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, &quot;Nota actualizada.&quot;)
+            return redirect(&quot;notes:note_list&quot;)
+    else:
+        form = NoteForm(instance=note, user=request.user)
+    return render(request, &quot;notes/note_form.html&quot;, {&quot;form&quot;: form, &quot;title&quot;: &quot;Editar nota&quot;})
+
+
+@login_required
+def note_delete(request, pk):
+    note = get_object_or_404(Note, pk=pk, user=request.user)
+    if request.method == &quot;POST&quot;:
+        note.delete()
+        messages.success(request, &quot;Nota eliminada.&quot;)
+        return redirect(&quot;notes:note_list&quot;)
+    return render(request, &quot;notes/note_confirm_delete.html&quot;, {&quot;note&quot;: note})
+
+
+@login_required
+def note_detail(request, pk):
+    note = get_object_or_404(Note, pk=pk, user=request.user)
+    return render(request, &quot;notes/note_detail.html&quot;, {&quot;note&quot;: note})
+
+
+@login_required
+def toggle_favorite(request, pk):
+    note = get_object_or_404(Note, pk=pk, user=request.user)
+    if request.method == &quot;POST&quot;:
+        note.is_favorite = not note.is_favorite
+        note.save(update_fields=[&quot;is_favorite&quot;, &quot;updated_at&quot;])
+    return redirect(request.POST.get(&quot;next&quot;) or &quot;notes:note_list&quot;)
+
+
+@login_required
+def category_create(request):
+    if request.method == &quot;POST&quot;:
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            category = form.save(commit=False)
+            category.user = request.user
+            category.save()
+            messages.success(request, &quot;Categoría creada.&quot;)
+            return redirect(&quot;notes:note_list&quot;)
+    else:
+        form = CategoryForm()
+    return render(request, &quot;notes/category_form.html&quot;, {&quot;form&quot;: form})</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>Reemplaza <code>notes/views.py</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Las vistas están listas, pero faltan URLs y templates para verlas en el navegador.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Cada <code>get_object_or_404</code> incluye <code>user=request.user</code>. La lista usa <code>Q</code> para buscar en título y contenido.</p>
+            </div>
+          </div>
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>forgot to pass user= to NoteForm</strong> — El desplegable de categorías fallará o mostrará todas. Pasa siempre <code>user=request.user</code>.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-7">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">7</span>
+            <h2>URLs de la app y del proyecto</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-7" aria-label="Marcar paso 7 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear <code>notes/urls.py</code> con <code>app_name</code> e incluirlo en <code>config/urls.py</code> bajo el prefijo <code>notes/</code>.</p>
+          <p class="step-label">Por qué</p>
+          <p>Sin rutas, las vistas no existen para el navegador. El namespace <code>notes:</code> evita colisiones con <code>tasks:</code>.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                notes/urls.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.urls import path
+from . import views
+
+app_name = &quot;notes&quot;
+
+urlpatterns = [
+    path(&quot;&quot;, views.note_list, name=&quot;note_list&quot;),
+    path(&quot;nueva/&quot;, views.note_create, name=&quot;note_create&quot;),
+    path(&quot;&lt;int:pk&gt;/&quot;, views.note_detail, name=&quot;note_detail&quot;),
+    path(&quot;&lt;int:pk&gt;/editar/&quot;, views.note_edit, name=&quot;note_edit&quot;),
+    path(&quot;&lt;int:pk&gt;/eliminar/&quot;, views.note_delete, name=&quot;note_delete&quot;),
+    path(&quot;&lt;int:pk&gt;/favorito/&quot;, views.toggle_favorite, name=&quot;toggle_favorite&quot;),
+    path(&quot;categorias/nueva/&quot;, views.category_create, name=&quot;category_create&quot;),
+]</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                config/urls.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.contrib import admin
+from django.urls import include, path
+
+urlpatterns = [
+    path(&quot;admin/&quot;, admin.site.urls),
+    path(&quot;accounts/&quot;, include(&quot;django.contrib.auth.urls&quot;)),
+    path(&quot;tasks/&quot;, include(&quot;tasks.urls&quot;)),
+    path(&quot;notes/&quot;, include(&quot;notes.urls&quot;)),
+    path(&quot;&quot;, include(&quot;core.urls&quot;)),
+]</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>Archivo nuevo en la app; en config, añade la línea <code>path("notes/", ...)</code> respetando tus includes existentes (tasks, accounts, core).</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Django conoce las rutas. Al abrirlas sin templates verás TemplateDoesNotExist — eso es el siguiente paso.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p><code>python manage.py show_urls</code> no existe por defecto; usa <code>python manage.py check</code> y confirma cero issues.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-8">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">8</span>
+            <h2>Templates: lista, formulario, detalle y borrado</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-8" aria-label="Marcar paso 8 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear las plantillas bajo <code>notes/templates/notes/</code> extendiendo <code>base.html</code>.</p>
+          <p class="step-label">Por qué</p>
+          <p>Las cards de la lista son la captura principal del portafolio. El formulario reutiliza el mismo template para crear y editar.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                notes/templates/notes/note_list.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends &quot;base.html&quot; %}
+{% block title %}Mis notas{% endblock %}
+{% block content %}
+&lt;section class=&quot;notes-header&quot;&gt;
+  &lt;h1&gt;Mis notas&lt;/h1&gt;
+  &lt;p&gt;{{ total }} resultado{{ total|pluralize }}&lt;/p&gt;
+  &lt;div class=&quot;notes-actions&quot;&gt;
+    &lt;a class=&quot;btn&quot; href=&quot;{% url &#x27;notes:note_create&#x27; %}&quot;&gt;Nueva nota&lt;/a&gt;
+    &lt;a class=&quot;btn btn-secondary&quot; href=&quot;{% url &#x27;notes:category_create&#x27; %}&quot;&gt;Nueva categoría&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+
+&lt;form method=&quot;get&quot; class=&quot;notes-filters&quot; action=&quot;{% url &#x27;notes:note_list&#x27; %}&quot;&gt;
+  &lt;input type=&quot;search&quot; name=&quot;q&quot; value=&quot;{{ q }}&quot; placeholder=&quot;Buscar en título o contenido&quot;&gt;
+  &lt;select name=&quot;category&quot;&gt;
+    &lt;option value=&quot;&quot;&gt;Todas las categorías&lt;/option&gt;
+    {% for cat in categories %}
+      &lt;option value=&quot;{{ cat.id }}&quot; {% if category_id == cat.id|stringformat:&quot;s&quot; %}selected{% endif %}&gt;
+        {{ cat.name }}
+      &lt;/option&gt;
+    {% endfor %}
+  &lt;/select&gt;
+  &lt;label&gt;
+    &lt;input type=&quot;checkbox&quot; name=&quot;favorites&quot; value=&quot;1&quot; {% if favorites_only %}checked{% endif %}&gt;
+    Solo favoritas
+  &lt;/label&gt;
+  &lt;button type=&quot;submit&quot;&gt;Filtrar&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;div class=&quot;notes-grid&quot;&gt;
+  {% for note in notes %}
+    &lt;article class=&quot;note-card&quot; style=&quot;{% if note.category %}--accent: {{ note.category.color }};{% endif %}&quot;&gt;
+      &lt;header&gt;
+        &lt;h2&gt;&lt;a href=&quot;{% url &#x27;notes:note_detail&#x27; note.pk %}&quot;&gt;{{ note.title }}&lt;/a&gt;&lt;/h2&gt;
+        {% if note.category %}
+          &lt;span class=&quot;badge&quot; style=&quot;background: {{ note.category.color }}&quot;&gt;{{ note.category.name }}&lt;/span&gt;
+        {% endif %}
+      &lt;/header&gt;
+      &lt;p&gt;{{ note.content|truncatewords:28 }}&lt;/p&gt;
+      &lt;footer&gt;
+        &lt;form method=&quot;post&quot; action=&quot;{% url &#x27;notes:toggle_favorite&#x27; note.pk %}&quot;&gt;
+          {% csrf_token %}
+          &lt;input type=&quot;hidden&quot; name=&quot;next&quot; value=&quot;{{ request.get_full_path }}&quot;&gt;
+          &lt;button type=&quot;submit&quot;&gt;{% if note.is_favorite %}Quitar favorito{% else %}Favorito{% endif %}&lt;/button&gt;
+        &lt;/form&gt;
+        &lt;a href=&quot;{% url &#x27;notes:note_edit&#x27; note.pk %}&quot;&gt;Editar&lt;/a&gt;
+        &lt;a href=&quot;{% url &#x27;notes:note_delete&#x27; note.pk %}&quot;&gt;Eliminar&lt;/a&gt;
+      &lt;/footer&gt;
+    &lt;/article&gt;
+  {% empty %}
+    &lt;p class=&quot;empty&quot;&gt;No hay notas con estos filtros. Crea la primera.&lt;/p&gt;
+  {% endfor %}
+&lt;/div&gt;
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                notes/templates/notes/note_form.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends &quot;base.html&quot; %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+&lt;h1&gt;{{ title }}&lt;/h1&gt;
+&lt;form method=&quot;post&quot; class=&quot;stack-form&quot;&gt;
+  {% csrf_token %}
+  {{ form.as_p }}
+  &lt;button type=&quot;submit&quot;&gt;Guardar&lt;/button&gt;
+  &lt;a href=&quot;{% url &#x27;notes:note_list&#x27; %}&quot;&gt;Cancelar&lt;/a&gt;
+&lt;/form&gt;
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                notes/templates/notes/note_detail.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends &quot;base.html&quot; %}
+{% block title %}{{ note.title }}{% endblock %}
+{% block content %}
+&lt;article class=&quot;note-detail&quot;&gt;
+  &lt;h1&gt;{{ note.title }}&lt;/h1&gt;
+  {% if note.category %}&lt;p&gt;Categoría: {{ note.category.name }}&lt;/p&gt;{% endif %}
+  &lt;p&gt;Favorita: {% if note.is_favorite %}Sí{% else %}No{% endif %}&lt;/p&gt;
+  &lt;div class=&quot;note-body&quot;&gt;{{ note.content|linebreaks }}&lt;/div&gt;
+  &lt;p&gt;&lt;small&gt;Actualizada: {{ note.updated_at }}&lt;/small&gt;&lt;/p&gt;
+  &lt;p&gt;
+    &lt;a href=&quot;{% url &#x27;notes:note_edit&#x27; note.pk %}&quot;&gt;Editar&lt;/a&gt;
+    &lt;a href=&quot;{% url &#x27;notes:note_list&#x27; %}&quot;&gt;Volver&lt;/a&gt;
+  &lt;/p&gt;
+&lt;/article&gt;
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                notes/templates/notes/note_confirm_delete.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends &quot;base.html&quot; %}
+{% block title %}Eliminar nota{% endblock %}
+{% block content %}
+&lt;h1&gt;¿Eliminar &quot;{{ note.title }}&quot;?&lt;/h1&gt;
+&lt;form method=&quot;post&quot;&gt;
+  {% csrf_token %}
+  &lt;button type=&quot;submit&quot;&gt;Sí, eliminar&lt;/button&gt;
+  &lt;a href=&quot;{% url &#x27;notes:note_list&#x27; %}&quot;&gt;Cancelar&lt;/a&gt;
+&lt;/form&gt;
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                notes/templates/notes/category_form.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends &quot;base.html&quot; %}
+{% block title %}Nueva categoría{% endblock %}
+{% block content %}
+&lt;h1&gt;Nueva categoría&lt;/h1&gt;
+&lt;form method=&quot;post&quot; class=&quot;stack-form&quot;&gt;
+  {% csrf_token %}
+  {{ form.as_p }}
+  &lt;button type=&quot;submit&quot;&gt;Crear&lt;/button&gt;
+  &lt;a href=&quot;{% url &#x27;notes:note_list&#x27; %}&quot;&gt;Cancelar&lt;/a&gt;
+&lt;/form&gt;
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>Crea la carpeta <code>notes/templates/notes/</code> y guarda cada archivo con el nombre exacto.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Con el servidor en marcha, <code>/notes/</code> muestra la lista (vacía al inicio) si hay sesión iniciada.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Inicia sesión, abre <code>http://127.0.0.1:8000/notes/</code> y confirma que no hay TemplateDoesNotExist.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-9">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">9</span>
+            <h2>CSS para tarjetas de notas</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-9" aria-label="Marcar paso 9 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Añadir estilos de grid y cards. Enlázalos desde <code>base.html</code> o bloque extra de CSS.</p>
+          <p class="step-label">Por qué</p>
+          <p>Sin diseño mínimo, la captura del portafolio se ve incompleta. Este CSS es suficiente y profesional.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                static/css/notes.css
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-css">.notes-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.notes-header h1 { margin: 0; flex: 1; }
+.notes-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+.notes-filters input[type=&quot;search&quot;],
+.notes-filters select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #c5c9d0;
+  border-radius: 8px;
+  min-width: 180px;
+}
+.notes-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+.note-card {
+  border: 1px solid #d8dce3;
+  border-left: 4px solid var(--accent, #7dff58);
+  border-radius: 12px;
+  padding: 1rem;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.note-card h2 { font-size: 1.1rem; margin: 0; }
+.note-card .badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  color: #111;
+}
+.note-card footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+.stack-form p { margin-bottom: 0.75rem; }
+.empty { grid-column: 1 / -1; opacity: 0.8; }</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                templates/base.html (fragmento)
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% load static %}
+{# Dentro de &lt;head&gt;, junto a tu CSS existente: #}
+&lt;link rel=&quot;stylesheet&quot; href=&quot;{% static &#x27;css/notes.css&#x27; %}&quot;&gt;</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p><code>static/css/notes.css</code> (carpeta static que ya configuraste en el Tutorial 04). El link en el <code>&lt;head&gt;</code> de <code>base.html</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Las notas se ven en rejilla con borde de color según categoría.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Recarga forzada (Ctrl+F5). Si el CSS no carga, revisa <code>STATICFILES_DIRS</code> y <code>{% load static %}</code>.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-10">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">10</span>
+            <h2>Probar el toggle de favoritos</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-10" aria-label="Marcar paso 10 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear una nota, marcarla favorita desde la card y confirmar que el estado persiste al recargar.</p>
+          <p class="step-label">Por qué</p>
+          <p>El toggle usa POST + CSRF y <code>update_fields</code>. Es un patrón limpio para acciones booleanas sin formulario completo.</p>
+          <p class="step-label">Código</p>
+          <p>Ya está en <code>toggle_favorite</code> y en el formulario de cada card. Solo verifica el flujo:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Flujo esperado
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash"># 1. runserver
+# 2. Login
+# 3. /notes/nueva/ → crear nota
+# 4. En la lista, pulsar Favorito
+# 5. Recargar: sigue marcada
+# 6. Activar &quot;Solo favoritas&quot; y filtrar</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>Navegador y terminal del servidor.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>El botón cambia el texto entre Favorito y Quitar favorito. El filtro muestra solo las marcadas.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Tras marcar favorito, en el admin el campo <code>is_favorite</code> aparece en True.</p>
+            </div>
+          </div>
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>403 Forbidden</strong> — Falta <code>{% csrf_token %}</code> en el form del toggle.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-11">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">11</span>
+            <h2>Búsqueda y filtros en acción</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-11" aria-label="Marcar paso 11 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Probar búsqueda por texto, filtro por categoría y combinación de ambos con favoritos.</p>
+          <p class="step-label">Por qué</p>
+          <p>En entrevistas preguntan cómo filtraste. Tú respondes: <code>Q(title__icontains=q) | Q(content__icontains=q)</code> y filtros GET independientes.</p>
+          <p class="step-label">Código</p>
+          <p>La lógica ya está en <code>note_list</code>. Repasa este fragmento clave:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                notes/views.py (fragmento clave)
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">if q:
+    notes = notes.filter(Q(title__icontains=q) | Q(content__icontains=q))
+if category_id.isdigit():
+    notes = notes.filter(category_id=int(category_id))
+if favorites_only:
+    notes = notes.filter(is_favorite=True)</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>Ya está en la vista; aquí solo validas comportamiento.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Creas dos categorías (Estudio, Personal), varias notas, y los filtros reducen el grid correctamente. El contador <code>total</code> coincide.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Con un segundo usuario, no aparecen notas del primero. Esa es la prueba de aislamiento.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-12">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">12</span>
+            <h2>Verificación integral del proyecto</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-12" aria-label="Marcar paso 12 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Pasar <code>check</code>, recorrer el CRUD completo y confirmar aislamiento entre usuarios.</p>
+          <p class="step-label">Por qué</p>
+          <p>Antes de decir que el mini proyecto está listo para el portafolio, validas el flujo de punta a punta.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py check
+python manage.py runserver</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>Terminal y navegador.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Sin issues. CRUD, favoritos, filtros y detalle funcionan con sesión iniciada. Sin sesión, redirige a login.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Marca este paso solo si completaste el checklist final de más abajo.</p>
+            </div>
+          </div>
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>No hagas el proyecto solo para que funcione. Hazlo para que puedas explicarlo. Si no puedes decir qué modelo guarda qué dato, todavía no lo dominas.</p>
+            </div>
+          </div>
+        </article>
+        <section class="tutorial-section" id="errores-comunes">
+          <h2>Errores comunes de este proyecto</h2>
+          <ul>
+            <li><strong>Notas ajenas visibles</strong> — Olvidaste <code>filter(user=request.user)</code> o el <code>user=</code> en <code>get_object_or_404</code>.</li>
+            <li><strong>Categorías de otros usuarios en el select</strong> — No pasaste <code>user=request.user</code> a <code>NoteForm</code>.</li>
+            <li><strong>TemplateDoesNotExist: notes/note_list.html</strong> — La carpeta debe ser <code>notes/templates/notes/</code>, no solo <code>templates/</code>.</li>
+            <li><strong>NoReverseMatch notes:...</strong> — Falta <code>app_name = "notes"</code> o el include en <code>config/urls.py</code>.</li>
+            <li><strong>IntegrityError user_id</strong> — Guardaste el form sin <code>commit=False</code> y sin asignar <code>note.user</code>.</li>
+            <li><strong>Color no se ve</strong> — El CSS usa <code>style="--accent: ..."</code>; verifica que <code>notes.css</code> esté cargado.</li>
+          </ul>
+        </section>
+        <section class="mini-challenge tutorial-section" id="mini-reto">
+          <h2>Mini retos</h2>
+          <p class="step-label">Reto A — Ordenar por título</p>
+          <p>Añade un parámetro <code>?sort=title</code> o <code>?sort=updated</code> y cambia el <code>order_by</code> en la vista.</p>
+          <p><em>Pista:</em> Lee <code>request.GET.get("sort")</code> y aplica <code>notes.order_by("title")</code> o <code>"-updated_at"</code>.</p>
+          <p class="step-label">Reto B — Contador por categoría</p>
+          <p>En la lista, muestra cuántas notas tiene cada categoría del usuario.</p>
+          <p><em>Pista:</em> <code>Category.objects.filter(user=request.user).annotate(n=Count("notes"))</code>.</p>
+          <p class="step-label">Reto C — Confirmación soft</p>
+          <p>Antes de eliminar, muestra las primeras 40 palabras del contenido en la plantilla de confirmación.</p>
+        </section>
+        <section class="portfolio-evidence tutorial-section" id="portafolio">
+          <h2>Qué subir a tu portafolio</h2>
+          <p>Aplica esta app privada de notas con categorías, favoritos, búsqueda y filtros como evidencia de Fase 1.</p>
+          <div class="portfolio-evidence__grid">
+            <div class="portfolio-evidence__item">
+              <strong>Captura recomendada</strong>
+              <p>Lista de notas en grid con badges de color, barra de búsqueda y al menos una nota marcada como favorita.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Tecnologías</strong>
+              <p>Python, Django 6, SQLite, HTML, CSS, autenticación Django.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Problema que resuelve</strong>
+              <p>Organizar notas personales por categorías con privacidad por usuario, favoritos y búsqueda.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Qué aprendí</strong>
+              <p>ForeignKey, ModelForm filtrado por usuario, Q objects, login_required, templates con cards.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Mejoras futuras</strong>
+              <p>Etiquetas múltiples, editor Markdown, compartir notas en modo lectura.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Repo y demo</strong>
+              <p>Sube el código a GitHub con un README claro. Graba un video de 2–3 minutos mostrando búsqueda, filtros y la captura principal.</p>
+            </div>
+          </div>
+        </section>
+        <section class="tutorial-section" id="checklist-final">
+          <h2>Checklist final</h2>
+          <ul class="checklist">
+            <li>App <code>notes</code> registrada y migrada.</li>
+            <li>CRUD de notas con dueño = usuario autenticado.</li>
+            <li>Categorías con color asignables a notas.</li>
+            <li>Favoritos con POST + CSRF.</li>
+            <li>Búsqueda por título/contenido y filtro por categoría.</li>
+            <li>Segundo usuario no ve notas del primero.</li>
+            <li>Captura lista para el portafolio y README con pasos de ejecución.</li>
+          </ul>
+        </section>
+        <nav class="tutorial-nav" aria-label="Navegación entre tutoriales">
+          <a class="btn btn--secondary" href="05-errores-django.html">Anterior: Errores comunes</a>
+          <a class="btn btn--secondary" href="../ruta-portafolio.html">Ruta de portafolio</a>
+          <a class="btn btn--primary" href="07-calculadora-academica.html">Siguiente: Calculadora Académica</a>
+        </nav>
+      </div>
+
+      <aside class="progress-rail" aria-label="Progreso del tutorial">
+        <div class="progress-rail__card">
+          <h3>Tu progreso</h3>
+          <div class="reading-progress" aria-hidden="true">
+            <div class="reading-progress__bar" data-scroll-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label">Lectura</p>
+          <div class="reading-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="reading-progress__bar" data-reading-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label" data-step-progress-label>0 de 12 pasos (0%)</p>
+          <button class="btn btn--primary complete-tutorial-btn" type="button" data-complete-tutorial>Marcar como completado</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Aprende Django con Teacher Jim</h3>
+          <p>Construido para aprender haciendo. Tutoriales en español para estudiantes que quieren entender Django, no solo copiar código.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tutoriales</h4>
+          <ul>
+            <li><a href="01-instalar-vscode-python.html">Instalar VS Code y Python</a></li>
+            <li><a href="02-entornos-django.html">Entornos + Django</a></li>
+            <li><a href="03-primera-ventana-django.html">Primera ventana</a></li>
+            <li><a href="04-todo-app-autenticacion.html">To-Do + Login</a></li>
+            <li><a href="05-errores-django.html">Errores comunes</a></li>
+            <li><a href="06-notes-app-categorias.html">Notes App</a></li>
+            <li><a href="07-calculadora-academica.html">Calculadora Académica</a></li>
+            <li><a href="08-directorio-contactos-mini-crm.html">Mini CRM</a></li>
+            <li><a href="09-blog-profesional-admin.html">Blog Profesional</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Ruta y repositorio</h4>
+          <ul>
+            <li><a href="../ruta-portafolio.html">Ruta de portafolio</a></li>
+            <li><a href="https://github.com/TU-USUARIO/TU-REPOSITORIO" rel="noopener noreferrer">GitHub</a></li>
+            <li><a href="../index.html#tutoriales">Todos los tutoriales</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span data-current-year>2026</span> Aprende Django con Teacher Jim</p>
+        <a class="back-to-top" href="#" data-back-to-top>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+            <path d="m18 15-6-6-6 6"></path>
+          </svg>
+          Volver arriba
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="search-overlay" data-search-overlay role="dialog" aria-modal="true" aria-label="Búsqueda de tutoriales">
+    <div class="search-box">
+      <input type="search" data-search-input placeholder="Buscar tutoriales..." aria-label="Buscar tutoriales">
+      <div class="search-results" data-search-results></div>
+    </div>
+  </div>
+
+  <div id="copy-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="../assets/js/theme.js" defer></script>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/tutorial-progress.js" defer></script>
+  <script src="../assets/js/code-copy.js" defer></script>
+  <script src="../assets/js/search.js" defer></script>
+  <script src="../assets/js/portfolio-progress.js" defer></script>
+  <script src="../assets/vendor/prism/prism.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-python.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-bash.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-markup.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-css.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-javascript.min.js" defer></script>
+</body>
+</html>

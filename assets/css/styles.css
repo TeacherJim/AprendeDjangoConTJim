@@ -50,7 +50,10 @@
   --code-surface: #232a26;
   --code-border: #3a4540;
   --portal-glow: #7DFF58;
+  --portal-green: #176B3A;
   --terminal-green: #157F3B;
+  --alien-cyan: #276A68;
+  --galaxy-purple: #63558F;
   --focus-ring: #176B3A;
 
   --shadow-sm: 0 1px 3px rgba(23, 32, 25, 0.08);
@@ -88,7 +91,10 @@
   --code-surface: #121a15;
   --code-border: #2a3530;
   --portal-glow: #9DFF52;
+  --portal-green: #8DFF9E;
   --terminal-green: #55FF88;
+  --alien-cyan: #8DD8D4;
+  --galaxy-purple: #CEC2FF;
   --focus-ring: #8DFF9E;
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);

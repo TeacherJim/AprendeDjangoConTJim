@@ -1,5 +1,5 @@
 /**
- * Search and filter functionality
+ * Search and filter — includes base tutorials + portfolio projects
  */
 (function () {
   "use strict";
@@ -10,35 +10,91 @@
       title: "Instala VS Code y Python",
       desc: "Prepara tu computadora desde cero y verifica que Python realmente funciona.",
       url: "tutoriales/01-instalar-vscode-python.html",
-      keywords: ["python", "vscode", "instalar", "terminal", "extensión"]
+      keywords: ["python", "vscode", "instalar", "terminal", "base django"]
     },
     {
       id: "tutorial-02",
       title: "Entornos controlados + Django",
       desc: "Crea un entorno virtual e instala Django sin contaminar otros proyectos.",
       url: "tutoriales/02-entornos-django.html",
-      keywords: ["entorno", "virtual", "venv", "django", "pip", "requirements"]
+      keywords: ["entorno", "virtual", "venv", "django", "pip", "base django"]
     },
     {
       id: "tutorial-03",
       title: "Tu primera ventana en Django",
       desc: "Conecta proyecto, aplicación, URL, vista y template.",
       url: "tutoriales/03-primera-ventana-django.html",
-      keywords: ["django", "url", "views", "templates", "vista", "proyecto", "app"]
+      keywords: ["django", "url", "views", "templates", "base django"]
     },
     {
       id: "tutorial-04",
       title: "Web App To-Do + Login",
-      desc: "Construye una aplicación de tareas con autenticación y animaciones.",
+      desc: "Aplicación de tareas con autenticación. Fase 1 del portafolio.",
       url: "tutoriales/04-todo-app-autenticacion.html",
-      keywords: ["todo", "login", "autenticación", "csrf", "modelo", "formulario", "usuario"]
+      keywords: ["todo", "login", "auth", "crud", "mini-proyecto", "fase 1"]
     },
     {
       id: "tutorial-05",
       title: "Errores comunes de Django",
-      desc: "Diagnostica fallos de instalación, rutas, templates, migraciones y más.",
+      desc: "Diagnostica fallos de instalación, rutas, templates y migraciones.",
       url: "tutoriales/05-errores-django.html",
-      keywords: ["errores", "django", "migraciones", "csrf", "template", "debug", "404", "403"]
+      keywords: ["errores", "debug", "base django"]
+    },
+    {
+      id: "tutorial-06",
+      title: "Notes App con categorías",
+      desc: "Notas privadas con categorías, favoritos, búsqueda y filtros.",
+      url: "tutoriales/06-notes-app-categorias.html",
+      keywords: ["notes", "notas", "categorías", "crud", "auth", "mini-proyecto", "fase 1"]
+    },
+    {
+      id: "tutorial-07",
+      title: "Calculadora Académica",
+      desc: "Calcula promedios, estados y recomendaciones académicas.",
+      url: "tutoriales/07-calculadora-academica.html",
+      keywords: ["calculadora", "promedio", "formularios", "mini-proyecto", "fase 1"]
+    },
+    {
+      id: "tutorial-08",
+      title: "Mini CRM de Contactos",
+      desc: "Directorio con búsqueda, filtros, estados y estadísticas.",
+      url: "tutoriales/08-directorio-contactos-mini-crm.html",
+      keywords: ["crm", "contactos", "crud", "auth", "proyecto guiado", "fase 2"]
+    },
+    {
+      id: "tutorial-09",
+      title: "Blog Profesional con Admin",
+      desc: "Blog público administrado desde Django Admin con slugs y categorías.",
+      url: "tutoriales/09-blog-profesional-admin.html",
+      keywords: ["blog", "admin", "slug", "proyecto guiado", "fase 2"]
+    },
+    {
+      id: "tutorial-10",
+      title: "HelpDesk de Tickets",
+      desc: "Sistema de soporte con estados, prioridades y roles usuario/staff.",
+      url: "tutoriales/10-helpdesk-tickets.html",
+      keywords: ["helpdesk", "tickets", "auth", "crud", "proyecto profesional", "fase 3"]
+    },
+    {
+      id: "tutorial-11",
+      title: "Dashboard de Datos",
+      desc: "Gastos, métricas y gráficos con Django y Chart.js.",
+      url: "tutoriales/11-dashboard-datos.html",
+      keywords: ["dashboard", "chart.js", "datos", "proyecto profesional", "fase 3"]
+    },
+    {
+      id: "tutorial-12",
+      title: "Portafolio en GitHub Pages",
+      desc: "Página personal estática para mostrar todos tus proyectos.",
+      url: "tutoriales/12-portafolio-github-pages.html",
+      keywords: ["portafolio", "github pages", "proyecto final", "fase 4"]
+    },
+    {
+      id: "tutorial-13",
+      title: "Documentación y Demo Final",
+      desc: "README profesional, video demo y checklist de graduación.",
+      url: "tutoriales/13-documentacion-demo-final.html",
+      keywords: ["readme", "demo", "documentación", "proyecto final", "fase 4"]
     }
   ];
 
@@ -62,9 +118,10 @@
       cards.forEach(function (card) {
         const id = card.getAttribute("data-tutorial-card");
         const tutorial = TUTORIALS.find(function (t) { return t.id === id; });
-        if (!tutorial) return;
-
-        const haystack = (tutorial.title + " " + tutorial.desc + " " + tutorial.keywords.join(" ")).toLowerCase();
+        const keywords = card.getAttribute("data-keywords") || "";
+        const haystack = tutorial
+          ? (tutorial.title + " " + tutorial.desc + " " + tutorial.keywords.join(" ")).toLowerCase()
+          : (card.textContent + " " + keywords).toLowerCase();
         const match = !query || haystack.indexOf(query) !== -1;
         card.style.display = match ? "" : "none";
         if (match) visible++;
@@ -133,6 +190,8 @@
         let href = t.url;
         if (inTutorials && href.indexOf("tutoriales/") === 0) {
           href = href.replace("tutoriales/", "");
+        } else if (!inTutorials && href.indexOf("ruta-portafolio") === 0) {
+          href = t.url;
         }
         return '<a class="search-result-item" href="' + href + '">' +
           t.title + '<small>' + t.desc + '</small></a>';

@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial 11: Dashboard de Datos | Aprende Django con Teacher Jim</title>
+  <meta name="description" content="Dashboard de gastos personales con Django, agregaciones y gráficos Chart.js vía json_script.">
+  <meta name="author" content="Teacher Jim">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Tutorial 11: Dashboard de Datos">
+  <meta property="og:description" content="Proyecto profesional Fase 3: métricas, Decimal y Chart.js.">
+  <meta property="og:locale" content="es_ES">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/tutorial.css">
+  <link rel="stylesheet" href="../assets/css/syntax-theme.css">
+  <link rel="stylesheet" href="../assets/css/portfolio-roadmap.css">
+  <link rel="stylesheet" href="../assets/css/project-cards.css">
+</head>
+<body data-tutorial-id="tutorial-11">
+
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="app-bar">
+    <div class="app-bar__inner">
+      <a class="app-bar__brand" href="../index.html">
+        <img class="app-bar__logo" src="../assets/icons/favicon.svg" alt="" width="36" height="36">
+        Teacher Jim
+      </a>
+      <nav class="app-bar__nav" aria-label="Navegación principal">
+        <a href="../index.html">Inicio</a>
+        <a href="../index.html#tutoriales">Tutoriales</a>
+        <a href="../ruta-portafolio.html">Portafolio</a>
+        <a href="05-errores-django.html">Errores</a>
+      </nav>
+      <div class="app-bar__actions">
+        <button class="icon-btn" type="button" data-search-open aria-label="Buscar tutoriales">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        </button>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro">
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </button>
+        <button class="icon-btn menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Abrir menú de navegación">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" data-mobile-nav aria-label="Navegación móvil">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#tutoriales">Tutoriales</a>
+    <a href="../ruta-portafolio.html">Portafolio</a>
+    <a href="05-errores-django.html">Errores</a>
+  </nav>
+
+  <main id="main-content">
+    <div class="tutorial-layout">
+      <aside class="toc-sidebar">
+        <button class="toc-toggle" type="button" data-toc-toggle aria-expanded="false">Mapa de la misión</button>
+        <nav class="toc-panel" data-toc-panel aria-label="Contenido del tutorial">
+          <h2>Contenido</h2>
+          <ul class="toc-list">
+            <li><a href="#resultado-final">Resultado final</a></li>
+            <li><a href="#antes-de-empezar">Antes de empezar</a></li>
+            <li><a href="#arquitectura">Arquitectura</a></li>
+            <li><a href="#step-1">Paso 1: App finance</a></li>
+            <li><a href="#step-2">Paso 2: Modelo Transaction</a></li>
+            <li><a href="#step-3">Paso 3: Migraciones</a></li>
+            <li><a href="#step-4">Paso 4: Formularios</a></li>
+            <li><a href="#step-5">Paso 5: Agregaciones</a></li>
+            <li><a href="#step-6">Paso 6: json_script y Decimal</a></li>
+            <li><a href="#step-7">Paso 7: URLs</a></li>
+            <li><a href="#step-8">Paso 8: Plantillas + Chart.js</a></li>
+            <li><a href="#step-9">Paso 9: CSS</a></li>
+            <li><a href="#step-10">Paso 10: Verificar</a></li>
+            <li><a href="#checklist">Checklist</a></li>
+            <li><a href="#errores-comunes">Errores comunes</a></li>
+            <li><a href="#mini-retos">Mini retos</a></li>
+            <li><a href="#portfolio-evidence">Evidencia de portafolio</a></li>
+          </ul>
+        </nav>
+      </aside>
+      <div class="tutorial-main">
+
+        <nav class="breadcrumb" aria-label="Ruta de navegación">
+          <a href="../index.html">Inicio</a>
+          <span aria-hidden="true">/</span>
+          <a href="../ruta-portafolio.html">Portafolio</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Dashboard de Datos</span>
+        </nav>
+
+        <header class="tutorial-header">
+          <p class="tutorial-header__number">Tutorial 11 · Fase 3 · 4 clases</p>
+          <h1>Proyecto profesional: Dashboard de gastos con Chart.js</h1>
+          <p class="tutorial-header__desc">Registras ingresos y gastos, calculas totales y balance, y dibujas gráficos por categoría y por mes. Django prepara los datos; Chart.js los pinta en el navegador.</p>
+          <div class="tutorial-meta">
+            <span class="chip">Proyecto profesional</span>
+            <span class="chip">Fase 3</span>
+            <span class="chip">4 clases</span>
+            <span class="chip">10 pasos</span>
+          </div>
+        </header>
+
+        <section class="tutorial-section" id="resultado-final">
+          <h2>Resultado final</h2>
+          <ul>
+            <li>Modelo <code>Transaction</code> (ingreso/gasto) con monto Decimal, categoría y fecha.</li>
+            <li>Totales de ingresos, gastos y balance por usuario.</li>
+            <li>Gráficos Chart.js: por categoría y por mes.</li>
+            <li>Datos pasados con <code>json_script</code> (seguro frente a XSS).</li>
+            <li>Tabla filtrable por tipo y mes.</li>
+          </ul>
+                    <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Backend vs frontend</p>
+              <p>Django agrega y serializa. Chart.js solo recibe JSON y dibuja. No construyas API REST para este proyecto.</p>
+            </div>
+          </div>
+                    <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Chart.js desde CDN está bien <strong>en tu app Django local</strong> para aprender. Tu portafolio en GitHub Pages es otra cosa: ahí solo muestras capturas/enlaces del proyecto, no ejecutas Django ni necesitas Chart.js en el portal educativo.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="tutorial-section" id="antes-de-empezar">
+          <h2>Antes de empezar</h2>
+          <ul class="checklist">
+            <li>Dominas CRUD con <code>login_required</code> y ForeignKey a User.</li>
+            <li>Completaste el HelpDesk o un proyecto similar de Fase 2/3.</li>
+            <li>Tienes cuenta con login funcionando (puedes reutilizar auth del To-Do).</li>
+          </ul>
+        </section>
+
+        <section class="tutorial-section" id="arquitectura">
+          <h2>Arquitectura</h2>
+          <div class="tree-structure">finance_dashboard/
+├── config/
+├── finance/
+│   ├── models.py
+│   ├── forms.py
+│   ├── views.py
+│   ├── urls.py
+│   └── templates/finance/
+│       ├── base.html
+│       ├── dashboard.html
+│       ├── transaction_form.html
+│       └── transaction_list.html
+├── static/css/finance.css
+├── static/js/charts.js
+└── manage.py</div>
+        </section>
+        <article class="tutorial-step" id="step-1">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">1</span>
+            <h2>Crear la app finance y registrarla</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-1" aria-label="Marcar paso 1 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear proyecto (o reutilizar uno) y la app <code>finance</code>.</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">django-admin startproject config .
+python manage.py startapp finance
+python manage.py migrate
+python manage.py createsuperuser</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                config/settings.py (fragmento)
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">INSTALLED_APPS = [
+    # ... apps de Django ...
+    "finance",
+]
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "finance:dashboard"
+LOGOUT_REDIRECT_URL = "login"
+TEMPLATES[0]["DIRS"] = [BASE_DIR / "templates"]
+STATICFILES_DIRS = [BASE_DIR / "static"]</code></pre>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-2">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">2</span>
+            <h2>Modelo Transaction</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-2" aria-label="Marcar paso 2 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Definir ingresos y gastos con <code>DecimalField</code> (nunca float para dinero).</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                finance/models.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.conf import settings
+from django.db import models
+
+
+class Transaction(models.Model):
+    TYPE_CHOICES = [
+        ("income", "Ingreso"),
+        ("expense", "Gasto"),
+    ]
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="transactions",
+    )
+    transaction_type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    category = models.CharField(max_length=100)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    date = models.DateField()
+    description = models.CharField(max_length=200, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-date", "-created_at"]
+
+    def __str__(self):
+        sign = "+" if self.transaction_type == "income" else "-"
+        return f"{sign}{self.amount} {self.category}"</code></pre>
+            </div>
+          </div>
+                    <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">¿Por qué Decimal?</p>
+              <p>Los float en binario no representan 0.1 exacto. Para dinero usamos Decimal. Luego, al pasar a JavaScript, convertiremos a string o float de forma consciente.</p>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-3">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">3</span>
+            <h2>Migraciones y admin</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-3" aria-label="Marcar paso 3 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear la tabla en SQLite y registrar el modelo en el admin para cargar datos de prueba rápido.</p>
+          <p class="step-label">Por qué</p>
+          <p>Sin migraciones no hay persistencia. El admin te permite inventar 6–8 movimientos en un minuto antes de usar el formulario propio.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py makemigrations finance
+python manage.py migrate</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                finance/admin.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.contrib import admin
+from .models import Transaction
+
+
+@admin.register(Transaction)
+class TransactionAdmin(admin.ModelAdmin):
+    list_display = ("date", "user", "transaction_type", "category", "amount")
+    list_filter = ("transaction_type", "category", "date")
+    search_fields = ("category", "description", "user__username")</code></pre>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-4">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">4</span>
+            <h2>Formulario de transacción</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-4" aria-label="Marcar paso 4 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear un <code>ModelForm</code> con widgets HTML5 (<code>type=&quot;date&quot;</code>, <code>step=&quot;0.01&quot;</code>).</p>
+          <p class="step-label">Por qué</p>
+          <p>El formulario limita los campos que el usuario puede tocar y da validación automática del monto Decimal.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                finance/forms.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django import forms
+from .models import Transaction
+
+
+class TransactionForm(forms.ModelForm):
+    class Meta:
+        model = Transaction
+        fields = ["transaction_type", "category", "amount", "date", "description"]
+        widgets = {
+            "transaction_type": forms.Select(attrs={"class": "form-control"}),
+            "category": forms.TextInput(attrs={"class": "form-control", "placeholder": "Comida, Transporte, Nómina..."}),
+            "amount": forms.NumberInput(attrs={"class": "form-control", "step": "0.01", "min": "0.01"}),
+            "date": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
+            "description": forms.TextInput(attrs={"class": "form-control"}),
+        }</code></pre>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-5">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">5</span>
+            <h2>Vistas: totales, filtros y datos para gráficos</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-5" aria-label="Marcar paso 5 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Calcular suma de ingresos/gastos, balance y series para Chart.js.</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                finance/views.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from decimal import Decimal
+from collections import defaultdict
+
+from django.contrib.auth.decorators import login_required
+from django.db.models import Sum, Q
+from django.db.models.functions import TruncMonth
+from django.shortcuts import redirect, render
+from django.contrib import messages
+
+from .forms import TransactionForm
+from .models import Transaction
+
+
+def _dec(value):
+    """Convierte Decimal/None a float seguro para JSON de gráficos."""
+    if value is None:
+        return 0.0
+    if isinstance(value, Decimal):
+        return float(value)
+    return float(value)
+
+
+@login_required
+def dashboard(request):
+    qs = Transaction.objects.filter(user=request.user)
+
+    month = request.GET.get("month", "")  # formato YYYY-MM
+    if month:
+        year, mon = month.split("-")
+        qs = qs.filter(date__year=int(year), date__month=int(mon))
+
+    aggregates = qs.aggregate(
+        income=Sum("amount", filter=Q(transaction_type="income")),
+        expense=Sum("amount", filter=Q(transaction_type="expense")),
+    )
+    income = aggregates["income"] or Decimal("0")
+    expense = aggregates["expense"] or Decimal("0")
+    balance = income - expense
+
+    # Gastos por categoría
+    by_cat = (
+        qs.filter(transaction_type="expense")
+        .values("category")
+        .annotate(total=Sum("amount"))
+        .order_by("-total")
+    )
+    category_labels = [row["category"] for row in by_cat]
+    category_values = [_dec(row["total"]) for row in by_cat]
+
+    # Totales por mes (ingresos y gastos)
+    monthly = (
+        Transaction.objects.filter(user=request.user)
+        .annotate(month=TruncMonth("date"))
+        .values("month", "transaction_type")
+        .annotate(total=Sum("amount"))
+        .order_by("month")
+    )
+    month_map = defaultdict(lambda: {"income": 0.0, "expense": 0.0})
+    for row in monthly:
+        key = row["month"].strftime("%Y-%m")
+        month_map[key][row["transaction_type"]] = _dec(row["total"])
+    month_labels = list(month_map.keys())
+    month_income = [month_map[m]["income"] for m in month_labels]
+    month_expense = [month_map[m]["expense"] for m in month_labels]
+
+    chart_payload = {
+        "category": {"labels": category_labels, "values": category_values},
+        "monthly": {
+            "labels": month_labels,
+            "income": month_income,
+            "expense": month_expense,
+        },
+    }
+
+    return render(request, "finance/dashboard.html", {
+        "income": income,
+        "expense": expense,
+        "balance": balance,
+        "transactions": qs[:30],
+        "month": month,
+        # dict listo para {{ chart_data|json_script:"chart-data" }}
+        "chart_data": chart_payload,
+    })
+
+
+@login_required
+def transaction_create(request):
+    if request.method == "POST":
+        form = TransactionForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.save()
+            messages.success(request, "Movimiento registrado.")
+            return redirect("finance:dashboard")
+    else:
+        form = TransactionForm()
+    return render(request, "finance/transaction_form.html", {"form": form})
+
+
+@login_required
+def transaction_list(request):
+    qs = Transaction.objects.filter(user=request.user)
+    t = request.GET.get("type", "")
+    if t in ("income", "expense"):
+        qs = qs.filter(transaction_type=t)
+    return render(request, "finance/transaction_list.html", {
+        "transactions": qs,
+        "type": t,
+    })</code></pre>
+            </div>
+          </div>
+                    <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Mira la función <code>_dec</code>: JSON no tiene tipo Decimal. Si serializas mal, verás <code>TypeError: Object of type Decimal is not JSON serializable</code>. Convertir a float (o a string) es el paso obligatorio.</p>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-6">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">6</span>
+            <h2>Pasar JSON al template con json_script</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-6" aria-label="Marcar paso 6 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Explicar por qué usamos <code>json_script</code> en lugar de meter JSON crudo en un <code>&lt;script&gt;</code>.</p>
+          <p class="step-label">Por qué</p>
+          <p><code>json_script</code> escapa caracteres peligrosos (<code>&lt;</code>, etc.) y evita que un texto malicioso cierre tu script. Es la forma recomendada por Django.</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Fragmento en dashboard.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{{ chart_data|json_script:"chart-data" }}
+
+<canvas id="chartCategory" height="120"></canvas>
+<canvas id="chartMonthly" height="120"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="{% static 'js/charts.js' %}"></script></code></pre>
+            </div>
+          </div>
+          <p>La vista pasa un <strong>dict</strong> llamado <code>chart_data</code> (no un string). El filtro <code>json_script</code> lo serializa de forma segura a un <code>&lt;script type="application/json" id="chart-data"&gt;</code>. Tu <code>charts.js</code> lo lee con <code>JSON.parse</code>.</p>
+          <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Decimal y JSON</p>
+              <p>Si dejaste un <code>Decimal</code> dentro del dict, Django/JSON fallará. Por eso <code>_dec()</code> convierte a <code>float</code> <em>antes</em> de armar <code>chart_payload</code>. Alternativa válida: guardar strings (<code>str(amount)</code>) y parsear en JS.</p>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-7">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">7</span>
+            <h2>URLs</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-7" aria-label="Marcar paso 7 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                finance/urls.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.urls import path
+from . import views
+
+app_name = "finance"
+
+urlpatterns = [
+    path("", views.dashboard, name="dashboard"),
+    path("nuevo/", views.transaction_create, name="create"),
+    path("movimientos/", views.transaction_list, name="list"),
+]</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                config/urls.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.contrib import admin
+from django.urls import include, path
+from django.contrib.auth import views as auth_views
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("login/", auth_views.LoginView.as_view(), name="login"),
+    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
+    path("", include("finance.urls")),
+]</code></pre>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-8">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">8</span>
+            <h2>Plantillas y Chart.js</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-8" aria-label="Marcar paso 8 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                finance/templates/finance/base.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Mis finanzas{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/finance.css' %}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{% url 'finance:dashboard' %}">FinanceDash</a>
+    <nav>
+      <a href="{% url 'finance:dashboard' %}">Dashboard</a>
+      <a href="{% url 'finance:list' %}">Movimientos</a>
+      <a href="{% url 'finance:create' %}">Nuevo</a>
+      <form method="post" action="{% url 'logout' %}" class="inline">{% csrf_token %}
+        <button type="submit">Salir</button>
+      </form>
+    </nav>
+  </header>
+  <main class="container">
+    {% if messages %}{% for m in messages %}<p class="flash">{{ m }}</p>{% endfor %}{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html></code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                finance/templates/finance/dashboard.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends "finance/base.html" %}
+{% load static %}
+{% block title %}Dashboard · Finanzas{% endblock %}
+{% block content %}
+<h1>Dashboard de gastos</h1>
+
+<form method="get" class="filters">
+  <label>Mes
+    <input type="month" name="month" value="{{ month }}">
+  </label>
+  <button type="submit">Filtrar</button>
+  <a href="{% url 'finance:dashboard' %}">Limpiar</a>
+</form>
+
+<div class="stats">
+  <div class="stat ok"><strong>{{ income }}</strong><span>Ingresos</span></div>
+  <div class="stat danger"><strong>{{ expense }}</strong><span>Gastos</span></div>
+  <div class="stat"><strong>{{ balance }}</strong><span>Balance</span></div>
+</div>
+
+{{ chart_data|json_script:"chart-data" }}
+
+<div class="charts">
+  <section>
+    <h2>Gastos por categoría</h2>
+    <canvas id="chartCategory" height="140"></canvas>
+  </section>
+  <section>
+    <h2>Ingresos vs gastos por mes</h2>
+    <canvas id="chartMonthly" height="140"></canvas>
+  </section>
+</div>
+
+<h2>Últimos movimientos</h2>
+<table class="table">
+  <thead><tr><th>Fecha</th><th>Tipo</th><th>Categoría</th><th>Monto</th></tr></thead>
+  <tbody>
+  {% for t in transactions %}
+    <tr>
+      <td>{{ t.date }}</td>
+      <td>{{ t.get_transaction_type_display }}</td>
+      <td>{{ t.category }}</td>
+      <td class="{% if t.transaction_type == 'income' %}ok{% else %}danger{% endif %}">{{ t.amount }}</td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="4">Sin movimientos. <a href="{% url 'finance:create' %}">Crea el primero</a>.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="{% static 'js/charts.js' %}"></script>
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                static/js/charts.js
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-javascript">(function () {
+  const el = document.getElementById("chart-data");
+  if (!el) return;
+  const data = JSON.parse(el.textContent);
+
+  const cat = document.getElementById("chartCategory");
+  if (cat && data.category) {
+    new Chart(cat, {
+      type: "doughnut",
+      data: {
+        labels: data.category.labels,
+        datasets: [{
+          data: data.category.values,
+          backgroundColor: [
+            "#38bdf8", "#818cf8", "#34d399", "#fbbf24", "#f87171", "#a78bfa", "#2dd4bf"
+          ],
+        }],
+      },
+      options: { plugins: { legend: { position: "bottom" } } },
+    });
+  }
+
+  const mon = document.getElementById("chartMonthly");
+  if (mon && data.monthly) {
+    new Chart(mon, {
+      type: "bar",
+      data: {
+        labels: data.monthly.labels,
+        datasets: [
+          { label: "Ingresos", data: data.monthly.income, backgroundColor: "#34d399" },
+          { label: "Gastos", data: data.monthly.expense, backgroundColor: "#f87171" },
+        ],
+      },
+      options: {
+        scales: { y: { beginAtZero: true } },
+        plugins: { legend: { position: "bottom" } },
+      },
+    });
+  }
+})();</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                finance/templates/finance/transaction_form.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends "finance/base.html" %}
+{% block title %}Nuevo movimiento{% endblock %}
+{% block content %}
+<h1>Registrar ingreso o gasto</h1>
+<form method="post" class="card-form">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Guardar</button>
+</form>
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                finance/templates/finance/transaction_list.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends "finance/base.html" %}
+{% block title %}Movimientos{% endblock %}
+{% block content %}
+<h1>Movimientos</h1>
+<form method="get" class="filters">
+  <select name="type">
+    <option value="">Todos</option>
+    <option value="income" {% if type == "income" %}selected{% endif %}>Ingresos</option>
+    <option value="expense" {% if type == "expense" %}selected{% endif %}>Gastos</option>
+  </select>
+  <button type="submit">Filtrar</button>
+</form>
+<table class="table">
+  <thead><tr><th>Fecha</th><th>Tipo</th><th>Categoría</th><th>Monto</th><th>Descripción</th></tr></thead>
+  <tbody>
+  {% for t in transactions %}
+    <tr>
+      <td>{{ t.date }}</td>
+      <td>{{ t.get_transaction_type_display }}</td>
+      <td>{{ t.category }}</td>
+      <td>{{ t.amount }}</td>
+      <td>{{ t.description }}</td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5">Sin resultados.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <p>Con esto, la vista ya entrega <code>chart_data</code> listo para el template del paso 8.</p>
+
+        </article>
+
+        <article class="tutorial-step" id="step-9">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">9</span>
+            <h2>CSS del dashboard</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-9" aria-label="Marcar paso 9 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                static/css/finance.css
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-css">:root {
+  --bg: #0b1220;
+  --surface: #152033;
+  --text: #e8eefc;
+  --muted: #9aa8c7;
+  --accent: #5eead4;
+  --ok: #34d399;
+  --danger: #f87171;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: radial-gradient(circle at top left, #1e293b, var(--bg));
+  color: var(--text);
+  min-height: 100vh;
+}
+.topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 1.5rem; border-bottom: 1px solid #334155;
+  background: rgba(11, 18, 32, 0.9);
+}
+.topbar a { color: var(--text); text-decoration: none; margin-right: 1rem; }
+.brand { color: var(--accent) !important; font-weight: 700; }
+.container { max-width: 1000px; margin: 0 auto; padding: 1.5rem; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1rem 0 2rem; }
+.stat { background: var(--surface); border-radius: 14px; padding: 1rem; text-align: center; border: 1px solid #334155; }
+.stat strong { display: block; font-size: 1.5rem; }
+.stat.ok strong { color: var(--ok); }
+.stat.danger strong { color: var(--danger); }
+.charts { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 2rem; }
+.charts section { background: var(--surface); border-radius: 14px; padding: 1rem; border: 1px solid #334155; }
+.table { width: 100%; border-collapse: collapse; }
+.table th, .table td { padding: 0.65rem; border-bottom: 1px solid #334155; text-align: left; }
+.ok { color: var(--ok); }
+.danger { color: var(--danger); }
+.filters { display: flex; gap: 0.75rem; align-items: end; margin-bottom: 1rem; flex-wrap: wrap; }
+input, select, button, textarea {
+  font: inherit; padding: 0.5rem 0.75rem; border-radius: 8px;
+  border: 1px solid #475569; background: var(--surface); color: var(--text);
+}
+button { background: var(--accent); color: #042f2e; border: none; font-weight: 700; cursor: pointer; }
+.card-form { background: var(--surface); padding: 1.25rem; border-radius: 14px; max-width: 480px; }
+.inline { display: inline; }
+.flash { background: #14532d; padding: 0.5rem 0.75rem; border-radius: 8px; }
+@media (max-width: 800px) {
+  .stats, .charts { grid-template-columns: 1fr; }
+}</code></pre>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-10">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">10</span>
+            <h2>Verificar con datos de prueba</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-10" aria-label="Marcar paso 10 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py check
+python manage.py runserver</code></pre>
+            </div>
+          </div>
+          <p>Registra al menos: 2 ingresos (Nómina, Freelance) y 4 gastos en categorías distintas repartidos en 2 meses. Abre el dashboard y confirma que los gráficos no están vacíos.</p>
+                    <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Balance = ingresos − gastos. El doughnut refleja solo gastos. El bar chart muestra ambos por mes.</p>
+            </div>
+          </div>
+
+        </article>
+
+        <section class="tutorial-section" id="checklist">
+          <h2>Checklist final</h2>
+          <ul class="checklist">
+            <li>Transaction con DecimalField y tipos income/expense.</li>
+            <li>Totales y balance correctos por usuario.</li>
+            <li>json_script + Chart.js sin errores en consola.</li>
+            <li>Filtro por mes y lista de movimientos.</li>
+            <li>Entiendes por qué Decimal no va directo a JSON.</li>
+          </ul>
+        </section>
+
+        <section class="tutorial-section" id="errores-comunes">
+          <h2>Errores comunes</h2>
+          <div class="callout callout--error"><div>
+            <p class="callout__label">Error común</p>
+            <p><strong>TypeError: Decimal is not JSON serializable</strong> — Convierte con <code>float()</code> o serializa strings. Usa <code>_dec</code>.</p>
+          </div></div>
+          <div class="callout callout--error"><div>
+            <p class="callout__label">Error común</p>
+            <p><strong>Chart is not defined</strong> — El script de Chart.js CDN debe cargarse antes de <code>charts.js</code>.</p>
+          </div></div>
+          <div class="callout callout--error"><div>
+            <p class="callout__label">Error común</p>
+            <p><strong>Gráficos vacíos</strong> — No hay gastos, o filtraste un mes sin datos. Quita el filtro y verifica el JSON en el inspector (id <code>chart-data</code>).</p>
+          </div></div>
+        </section>
+
+        <section class="mini-challenge tutorial-step" id="mini-retos">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">+</span>
+            <h2>Mini retos</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-11" aria-label="Marcar mini retos">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Reto A — Presupuesto mensual</p>
+          <p>Define un tope de gastos y muestra un aviso si lo superas.</p>
+          <p class="step-label">Reto B — Exportar CSV</p>
+          <p>Vista que descarga los movimientos del usuario como CSV.</p>
+          <p class="step-label">Reto C — Gráfico de línea del balance acumulado</p>
+          <p>Calcula el balance día a día y dibuja un <code>line</code> chart.</p>
+        </section>
+
+        <section class="portfolio-evidence" id="portfolio-evidence">
+          <h2>Qué subir a tu portafolio</h2>
+          <div class="portfolio-evidence__grid">
+            <div class="portfolio-evidence__item"><strong>Captura</strong><p>Dashboard con ambos gráficos y números de balance.</p></div>
+            <div class="portfolio-evidence__item"><strong>Tecnologías</strong><p>Django, agregaciones Sum, TruncMonth, Chart.js, json_script.</p></div>
+            <div class="portfolio-evidence__item"><strong>Problema</strong><p>Ver en qué se va el dinero mes a mes.</p></div>
+            <div class="portfolio-evidence__item"><strong>Aprendizajes</strong><p>Serialización Decimal→JSON, separación backend/frontend.</p></div>
+            <div class="portfolio-evidence__item"><strong>Mejoras</strong><p>Presupuestos, multi-moneda, importar extractos bancarios.</p></div>
+            <div class="portfolio-evidence__item"><strong>Nota Pages</strong><p>GitHub Pages muestra capturas; Django corre en tu PC o un hosting con Python.</p></div>
+          </div>
+        </section>
+
+        <nav class="tutorial-nav" aria-label="Navegación entre tutoriales">
+          <a class="btn btn--secondary" href="10-helpdesk-tickets.html">Anterior: HelpDesk</a>
+          <a class="btn btn--secondary" href="../ruta-portafolio.html">Ruta de portafolio</a>
+          <a class="btn btn--primary" href="12-portafolio-github-pages.html">Siguiente: Portafolio GitHub Pages</a>
+        </nav>
+      </div>
+
+      <aside class="progress-rail" aria-label="Progreso del tutorial">
+        <div class="progress-rail__card">
+          <h3>Tu progreso</h3>
+          <div class="reading-progress" aria-hidden="true">
+            <div class="reading-progress__bar" data-scroll-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label">Lectura</p>
+          <div class="reading-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="reading-progress__bar" data-reading-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label" data-step-progress-label>0 de 11 pasos (0%)</p>
+          <button class="btn btn--primary complete-tutorial-btn" type="button" data-complete-tutorial>Marcar como completado</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Aprende Django con Teacher Jim</h3>
+          <p>Construido para aprender haciendo. Tutoriales en español para estudiantes que quieren entender Django, no solo copiar código.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tutoriales</h4>
+          <ul>
+            <li><a href="09-blog-profesional-admin.html">Blog profesional</a></li>
+            <li><a href="10-helpdesk-tickets.html">HelpDesk de Tickets</a></li>
+            <li><a href="11-dashboard-datos.html">Dashboard de Datos</a></li>
+            <li><a href="12-portafolio-github-pages.html">Portafolio GitHub Pages</a></li>
+            <li><a href="13-documentacion-demo-final.html">Documentación y Demo</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Ruta</h4>
+          <ul>
+            <li><a href="../ruta-portafolio.html">Ruta de portafolio</a></li>
+            <li><a href="../index.html#tutoriales">Todos los tutoriales</a></li>
+            <li><a href="05-errores-django.html">Errores comunes</a></li>
+            <li><a href="https://github.com/TU-USUARIO/TU-REPOSITORIO" rel="noopener noreferrer">GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span data-current-year>2026</span> Aprende Django con Teacher Jim</p>
+        <a class="back-to-top" href="#" data-back-to-top>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+            <path d="m18 15-6-6-6 6"></path>
+          </svg>
+          Volver arriba
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="search-overlay" data-search-overlay role="dialog" aria-modal="true" aria-label="Búsqueda de tutoriales">
+    <div class="search-box">
+      <input type="search" data-search-input placeholder="Buscar tutoriales..." aria-label="Buscar tutoriales">
+      <div class="search-results" data-search-results></div>
+    </div>
+  </div>
+
+  <div id="copy-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="../assets/js/theme.js" defer></script>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/tutorial-progress.js" defer></script>
+  <script src="../assets/js/code-copy.js" defer></script>
+  <script src="../assets/js/search.js" defer></script>
+  <script src="../assets/js/portfolio-progress.js" defer></script>
+  <script src="../assets/vendor/prism/prism.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-python.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-bash.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-markup.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-css.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-javascript.min.js" defer></script>
+</body>
+</html>
+

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial 13: Documentación y Demo Final | Aprende Django con Teacher Jim</title>
+  <meta name="description" content="Plantilla README profesional, guion de video demo de 2-3 minutos y checklist de graduación del portafolio.">
+  <meta name="author" content="Teacher Jim">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Tutorial 13: Documentación y Demo Final">
+  <meta property="og:description" content="Fase 4: documenta, demuestra y cierra tu ruta profesional.">
+  <meta property="og:locale" content="es_ES">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/tutorial.css">
+  <link rel="stylesheet" href="../assets/css/syntax-theme.css">
+  <link rel="stylesheet" href="../assets/css/portfolio-roadmap.css">
+  <link rel="stylesheet" href="../assets/css/project-cards.css">
+</head>
+<body data-tutorial-id="tutorial-13">
+
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="app-bar">
+    <div class="app-bar__inner">
+      <a class="app-bar__brand" href="../index.html">
+        <img class="app-bar__logo" src="../assets/icons/favicon.svg" alt="" width="36" height="36">
+        Teacher Jim
+      </a>
+      <nav class="app-bar__nav" aria-label="Navegación principal">
+        <a href="../index.html">Inicio</a>
+        <a href="../index.html#tutoriales">Tutoriales</a>
+        <a href="../ruta-portafolio.html">Portafolio</a>
+        <a href="05-errores-django.html">Errores</a>
+      </nav>
+      <div class="app-bar__actions">
+        <button class="icon-btn" type="button" data-search-open aria-label="Buscar tutoriales">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        </button>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro">
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </button>
+        <button class="icon-btn menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Abrir menú de navegación">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" data-mobile-nav aria-label="Navegación móvil">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#tutoriales">Tutoriales</a>
+    <a href="../ruta-portafolio.html">Portafolio</a>
+    <a href="05-errores-django.html">Errores</a>
+  </nav>
+
+  <main id="main-content">
+    <div class="tutorial-layout">
+      <aside class="toc-sidebar">
+        <button class="toc-toggle" type="button" data-toc-toggle aria-expanded="false">Mapa de la misión</button>
+        <nav class="toc-panel" data-toc-panel aria-label="Contenido del tutorial">
+          <h2>Contenido</h2>
+          <ul class="toc-list">
+            <li><a href="#resultado-final">Resultado final</a></li>
+            <li><a href="#antes-de-empezar">Antes de empezar</a></li>
+            <li><a href="#step-1">Paso 1: README profesional</a></li>
+            <li><a href="#step-2">Paso 2: Plantilla completa</a></li>
+            <li><a href="#step-3">Paso 3: Guion de video demo</a></li>
+            <li><a href="#step-4">Paso 4: Grabar y publicar</a></li>
+            <li><a href="#step-5">Paso 5: Secrets y limpieza</a></li>
+            <li><a href="#step-6">Paso 6: Checklist de graduación</a></li>
+            <li><a href="#errores-comunes">Errores comunes</a></li>
+            <li><a href="#mini-retos">Mini retos</a></li>
+            <li><a href="#portfolio-evidence">Evidencia</a></li>
+          </ul>
+        </nav>
+      </aside>
+      <div class="tutorial-main">
+
+        <nav class="breadcrumb" aria-label="Ruta de navegación">
+          <a href="../index.html">Inicio</a>
+          <span aria-hidden="true">/</span>
+          <a href="../ruta-portafolio.html">Portafolio</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Documentación y Demo Final</span>
+        </nav>
+
+        <header class="tutorial-header">
+          <p class="tutorial-header__number">Tutorial 13 · Fase 4 · 2 clases</p>
+          <h1>Documentación y demo final</h1>
+          <p class="tutorial-header__desc">Cierras el ciclo profesional: README claro en cada repo, video demo de 2–3 minutos y checklist de entrega. Sin esto, el portafolio se ve incompleto. Fecha de entrega: <strong>19 de noviembre de 2026 a las 5:00 p. m.</strong> El 1 de diciembre es la graduación.</p>
+          <div class="tutorial-meta">
+            <span class="chip">Proyecto final</span>
+            <span class="chip">Fase 4</span>
+            <span class="chip">2 clases</span>
+            <span class="chip">6 pasos</span>
+          </div>
+        </header>
+
+        <section class="tutorial-section" id="resultado-final">
+          <h2>Resultado final</h2>
+          <ul>
+            <li>README profesional en tus repositorios Django (plantilla reutilizable).</li>
+            <li>Guion y video demo de 2–3 minutos enlazado desde el portafolio.</li>
+            <li>Repos limpios: sin secretos, sin <code>.venv</code>, con capturas.</li>
+            <li>Checklist de graduación completado.</li>
+          </ul>
+                    <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Un buen README conviene a tu yo del futuro: en tres meses no recordarás cómo arrancar el HelpDesk. Escríbelo como si le hablaras a un compañero nuevo.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="tutorial-section" id="antes-de-empezar">
+          <h2>Antes de empezar</h2>
+          <ul class="checklist">
+            <li>Portafolio publicado (Tutorial 12) o al menos el HTML listo.</li>
+            <li>Al menos un proyecto Django estrella para documentar (HelpDesk o Dashboard).</li>
+            <li>Capacidad de grabar pantalla (OBS, Xbox Game Bar, QuickTime, etc.).</li>
+          </ul>
+        </section>
+        <article class="tutorial-step" id="step-1">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">1</span>
+            <h2>Qué debe tener un README de proyecto</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-1" aria-label="Marcar paso 1 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Lista las secciones obligatorias antes de copiar la plantilla.</p>
+          <ul>
+            <li>Nombre y descripción en una frase.</li>
+            <li>Problema que resuelve.</li>
+            <li>Funcionalidades.</li>
+            <li>Tecnologías.</li>
+            <li>Capturas.</li>
+            <li>Instalación local paso a paso.</li>
+            <li>Aviso de secretos.</li>
+            <li>Aprendizajes y mejoras futuras.</li>
+            <li>Enlace a tu portafolio.</li>
+          </ul>
+                    <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">README ≠ ensayo</p>
+              <p>Frases cortas, comandos copiables, capturas reales. Quien lee quiere correr el proyecto en 5 minutos.</p>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-2">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">2</span>
+            <h2>Plantilla completa de README (Markdown)</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-2" aria-label="Marcar paso 2 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Código</p>
+          <p>Copia esto en <code>README.md</code> de tu repo (ejemplo HelpDesk). Adáptalo a Notes, CRM o Dashboard cambiando nombres.</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                README.md
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup"># HelpDesk de Tickets (Django)
+
+Sistema de tickets de soporte con roles de usuario y staff, prioridades, estados y dashboard de contadores.
+
+## Problema que resuelve
+
+Centraliza solicitudes de ayuda: el usuario reporta un incidente y el equipo de soporte hace seguimiento hasta resolverlo.
+
+## Funcionalidades
+
+- Registro / login (reutiliza auth de Django)
+- Crear tickets (título, descripción, categoría, prioridad)
+- Usuario solo ve sus tickets
+- Staff ve todos, cambia estado y responde
+- Filtros por estado y búsqueda de texto
+- Dashboard con totales por estado y prioridad alta
+
+## Tecnologías
+
+- Python 3.x
+- Django 5/6
+- SQLite (desarrollo)
+- HTML / CSS
+
+## Capturas
+
+<!-- Sustituye por rutas reales en tu repo o enlaces a imágenes -->
+![Lista de tickets](docs/lista.png)
+![Dashboard](docs/dashboard.png)
+
+## Cómo ejecutarlo en local
+
+```bash
+git clone https://github.com/TU-USUARIO/helpdesk-django.git
+cd helpdesk-django
+python -m venv .venv
+
+# Windows
+.venv\Scripts\activate
+# macOS / Linux
+source .venv/bin/activate
+
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+Abre http://127.0.0.1:8000/ e inicia sesión.
+
+## Variables de entorno / secretos
+
+No subas `SECRET_KEY` real ni archivos `.env` con credenciales.
+En desarrollo puedes usar la key de ejemplo solo en máquinas locales.
+
+## Estructura
+
+```text
+config/          # settings y urls del proyecto
+tickets/         # app principal
+static/          # CSS
+templates/       # login
+```
+
+## Decisiones de diseño
+
+- Roles con `user.is_staff` (introducción; no RBAC avanzado)
+- Dos ModelForm: uno para usuarios, otro para staff
+- Queryset filtrado en lista y detalle para evitar fugas de datos
+
+## Aprendizajes
+
+- Aislar datos por usuario
+- Agregar métricas con `Count` y `Q`
+- Comunicar estados con badges y dashboard
+
+## Mejoras futuras
+
+- Adjuntos
+- Notificaciones por email
+- Grupos de agentes
+- API REST
+
+## Autor
+
+Tu Nombre — [Portafolio](https://TU-USUARIO.github.io/TU-REPO-PORTAFOLIO/)
+</code></pre>
+            </div>
+          </div>
+          <p>Añade también un <code>requirements.txt</code> congelado:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">pip freeze > requirements.txt</code></pre>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-3">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">3</span>
+            <h2>Guion del video demo (2–3 minutos)</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-3" aria-label="Marcar paso 3 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Escribir el guion antes de grabar. Improvisar alarga el video y se pierde el mensaje.</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                guion-demo.txt
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">Guion demo 2–3 minutos (HelpDesk — adapta a tu proyecto estrella)
+
+[0:00–0:15] Presentación
+«Hola, soy [Nombre]. Te muestro mi HelpDesk en Django: tickets con prioridad, estados y roles usuario/staff.»
+
+[0:15–0:45] Usuario normal
+- Inicio sesión como cliente1
+- Creo un ticket de prioridad alta
+- Muestro que en la lista solo aparecen MIS tickets
+
+[0:45–1:30] Staff
+- Cierro sesión / entro como staff
+- Abro el dashboard: contadores
+- Abro el ticket del cliente, cambio a «En proceso» y escribo respuesta
+- Guardo y muestro la respuesta visible en el detalle
+
+[1:30–2:15] Detalles técnicos (breve)
+- «Usé ForeignKey a User, choices de prioridad/estado, y filtro con is_staff.»
+- «El detalle siempre consulta el queryset filtrado para no filtrar datos ajenos.»
+
+[2:15–2:45] Portafolio
+- Abro mi GitHub Pages
+- Señalo la card del proyecto y el README del repo
+
+[2:45–3:00] Cierre
+- «Siguiente paso: [permisos avanzados / email / adjuntos]. Gracias.»
+</code></pre>
+            </div>
+          </div>
+                    <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Si te trabas, graba en tres tomas cortas y únelas. Nadie exige cine: exige claridad.</p>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-4">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">4</span>
+            <h2>Grabar, exportar y publicar el enlace</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-4" aria-label="Marcar paso 4 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <ol>
+            <li>Cierra notificaciones y oculta barras con datos personales.</li>
+            <li>Usa resolución 1280×720 o 1920×1080.</li>
+            <li>Habla claro; si no quieres voz, usa subtítulos cortos en pantalla.</li>
+            <li>Exporta MP4.</li>
+            <li>Súbelo a YouTube (no listado) o a un release de GitHub / Drive público.</li>
+            <li>Pega el enlace en la card del portafolio y en el README.</li>
+          </ol>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Fragmento para portafolio
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup"><a href="https://youtu.be/TU_VIDEO" rel="noopener noreferrer">Ver demo (2 min)</a></code></pre>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-5">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">5</span>
+            <h2>Limpieza de secretos y repos</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-5" aria-label="Marcar paso 5 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Auditar que nada sensible quedó en Git.</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                .gitignore (mínimo Django)
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">.venv/
+__pycache__/
+*.py[cod]
+db.sqlite3
+.env
+*.log
+staticfiles/
+media/
+.DS_Store
+Thumbs.db</code></pre>
+            </div>
+          </div>
+          <ul class="checklist">
+            <li>No hay <code>SECRET_KEY</code> de producción en el repo.</li>
+            <li>No hay contraseñas en capturas ni en el video.</li>
+            <li><code>.venv/</code> y <code>db.sqlite3</code> están ignorados.</li>
+            <li>El README no pide clonar con tokens de acceso.</li>
+          </ul>
+                    <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p>Si ya subiste un secreto, cámbialo (rota la clave). Borrar el commit no siempre basta si alguien clonó.</p>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-6">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">6</span>
+            <h2>Checklist de graduación</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-6" aria-label="Marcar paso 6 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Marca cada ítem. Si alguno falla, ese es tu siguiente trabajo — no improvises el cierre.</p>
+          <ul class="checklist">
+            <li>GitHub limpio en cada proyecto Django (README + .gitignore + requirements).</li>
+            <li>Capturas actualizadas en <code>docs/</code> o en el portafolio.</li>
+            <li>Portafolio publicado en GitHub Pages con URL que abre sin 404 de CSS.</li>
+            <li>Al menos un video demo enlazado.</li>
+            <li>Ningún secreto en repos públicos.</li>
+            <li>Cards de proyectos coherentes (problema, tech, repo, aprendizaje).</li>
+            <li>Puedes explicar en voz alta el flujo de tu mejor app en 3 minutos.</li>
+            <li>Fecha de entrega del portafolio anotada: <strong>19 de noviembre de 2026 a las 5:00 p. m.</strong> (el 1 de diciembre es la graduación, no la entrega).</li>
+          </ul>
+                    <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Pídele a un compañero que abra solo tu URL de Pages y te diga qué proyecto entendería primero. Si no entiende ninguno, reescribe las descripciones.</p>
+            </div>
+          </div>
+
+        </article>
+
+        <section class="tutorial-section" id="errores-comunes">
+          <h2>Errores comunes</h2>
+          <div class="callout callout--error"><div>
+            <p class="callout__label">Error común</p>
+            <p><strong>README de una línea</strong> — «Proyecto Django». Insuficiente. Usa la plantilla del paso 2.</p>
+          </div></div>
+          <div class="callout callout--error"><div>
+            <p class="callout__label">Error común</p>
+            <p><strong>Video de 12 minutos sin guion</strong> — Nadie lo termina. Corta a 3 minutos con el guion del paso 3.</p>
+          </div></div>
+          <div class="callout callout--error"><div>
+            <p class="callout__label">Error común</p>
+            <p><strong>Subir .env o SECRET_KEY</strong> — Rota la clave y limpia el historial o empieza un repo nuevo si hace falta.</p>
+          </div></div>
+        </section>
+
+        <section class="mini-challenge tutorial-step" id="mini-retos">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">+</span>
+            <h2>Mini retos</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-7" aria-label="Marcar mini retos">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Reto A — CONTRIBUTING.md corto</p>
+          <p>Explica cómo abrir issues y el estilo de commits que usas.</p>
+          <p class="step-label">Reto B — Badges en el README</p>
+          <p>Añade badges de licencia y Python version (shields.io).</p>
+          <p class="step-label">Reto C — Demo con subtítulos</p>
+          <p>Exporta el video con subtítulos en español para quien lo vea sin audio.</p>
+        </section>
+
+        <section class="portfolio-evidence" id="portfolio-evidence">
+          <h2>Qué subir / qué enlazar</h2>
+          <div class="portfolio-evidence__grid">
+            <div class="portfolio-evidence__item"><strong>README</strong><p>Un README estrella en tu mejor repo, visible en GitHub.</p></div>
+            <div class="portfolio-evidence__item"><strong>Video</strong><p>Enlace público o no listado desde la card del portafolio.</p></div>
+            <div class="portfolio-evidence__item"><strong>Capturas</strong><p>Antes/después o flujo usuario → staff.</p></div>
+            <div class="portfolio-evidence__item"><strong>Aprendizajes</strong><p>3 viñetas honestas: qué te costó y qué dominas ahora.</p></div>
+            <div class="portfolio-evidence__item"><strong>Limpieza</strong><p>Screenshot de .gitignore y ausencia de .venv en el repo.</p></div>
+            <div class="portfolio-evidence__item"><strong>Cierre</strong><p>Marca este tutorial completado y celebra el cierre de la Fase 4.</p></div>
+          </div>
+                    <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Graduarte no significa saberlo todo. Significa poder mostrar trabajo real, explicarlo y dejarlo reproducible. Eso ya es nivel profesional de estudiante.</p>
+            </div>
+          </div>
+        </section>
+
+        <nav class="tutorial-nav" aria-label="Navegación entre tutoriales">
+          <a class="btn btn--secondary" href="12-portafolio-github-pages.html">Anterior: Portafolio GitHub Pages</a>
+          <a class="btn btn--secondary" href="../index.html">Inicio</a>
+          <a class="btn btn--primary" href="../ruta-portafolio.html">Ver ruta de portafolio</a>
+        </nav>
+      </div>
+
+      <aside class="progress-rail" aria-label="Progreso del tutorial">
+        <div class="progress-rail__card">
+          <h3>Tu progreso</h3>
+          <div class="reading-progress" aria-hidden="true">
+            <div class="reading-progress__bar" data-scroll-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label">Lectura</p>
+          <div class="reading-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="reading-progress__bar" data-reading-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label" data-step-progress-label>0 de 7 pasos (0%)</p>
+          <button class="btn btn--primary complete-tutorial-btn" type="button" data-complete-tutorial>Marcar como completado</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Aprende Django con Teacher Jim</h3>
+          <p>Construido para aprender haciendo. Tutoriales en español para estudiantes que quieren entender Django, no solo copiar código.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tutoriales</h4>
+          <ul>
+            <li><a href="09-blog-profesional-admin.html">Blog profesional</a></li>
+            <li><a href="10-helpdesk-tickets.html">HelpDesk de Tickets</a></li>
+            <li><a href="11-dashboard-datos.html">Dashboard de Datos</a></li>
+            <li><a href="12-portafolio-github-pages.html">Portafolio GitHub Pages</a></li>
+            <li><a href="13-documentacion-demo-final.html">Documentación y Demo</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Ruta</h4>
+          <ul>
+            <li><a href="../ruta-portafolio.html">Ruta de portafolio</a></li>
+            <li><a href="../index.html#tutoriales">Todos los tutoriales</a></li>
+            <li><a href="05-errores-django.html">Errores comunes</a></li>
+            <li><a href="https://github.com/TU-USUARIO/TU-REPOSITORIO" rel="noopener noreferrer">GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span data-current-year>2026</span> Aprende Django con Teacher Jim</p>
+        <a class="back-to-top" href="#" data-back-to-top>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+            <path d="m18 15-6-6-6 6"></path>
+          </svg>
+          Volver arriba
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="search-overlay" data-search-overlay role="dialog" aria-modal="true" aria-label="Búsqueda de tutoriales">
+    <div class="search-box">
+      <input type="search" data-search-input placeholder="Buscar tutoriales..." aria-label="Buscar tutoriales">
+      <div class="search-results" data-search-results></div>
+    </div>
+  </div>
+
+  <div id="copy-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="../assets/js/theme.js" defer></script>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/tutorial-progress.js" defer></script>
+  <script src="../assets/js/code-copy.js" defer></script>
+  <script src="../assets/js/search.js" defer></script>
+  <script src="../assets/js/portfolio-progress.js" defer></script>
+  <script src="../assets/vendor/prism/prism.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-python.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-bash.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-markup.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-css.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-javascript.min.js" defer></script>
+</body>
+</html>
+

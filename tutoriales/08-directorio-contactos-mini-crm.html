@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial 08: Mini CRM de Contactos | Aprende Django con Teacher Jim</title>
+  <meta name="description" content="Directorio de contactos con CRUD, choices, búsqueda Q, filtros y dashboard de estadísticas.">
+  <meta name="author" content="Teacher Jim">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Tutorial 08: Mini CRM de Contactos">
+  <meta property="og:description" content="CRM educativo con estados, tipos, búsqueda y estadísticas simples.">
+  <meta property="og:locale" content="es_ES">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/tutorial.css">
+  <link rel="stylesheet" href="../assets/css/syntax-theme.css">
+  <link rel="stylesheet" href="../assets/css/portfolio-roadmap.css">
+  <link rel="stylesheet" href="../assets/css/project-cards.css">
+</head>
+<body data-tutorial-id="tutorial-08">
+
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="app-bar">
+    <div class="app-bar__inner">
+      <a class="app-bar__brand" href="../index.html">
+        <img class="app-bar__logo" src="../assets/icons/favicon.svg" alt="" width="36" height="36">
+        Teacher Jim
+      </a>
+      <nav class="app-bar__nav" aria-label="Navegación principal">
+        <a href="../index.html">Inicio</a>
+        <a href="../index.html#tutoriales">Tutoriales</a>
+        <a href="../ruta-portafolio.html">Portafolio</a>
+        <a href="05-errores-django.html">Errores</a>
+      </nav>
+      <div class="app-bar__actions">
+        <button class="icon-btn" type="button" data-search-open aria-label="Buscar tutoriales">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        </button>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro">
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </button>
+        <button class="icon-btn menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Abrir menú de navegación">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" data-mobile-nav aria-label="Navegación móvil">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#tutoriales">Tutoriales</a>
+    <a href="../ruta-portafolio.html">Portafolio</a>
+    <a href="05-errores-django.html">Errores</a>
+  </nav>
+  <main id="main-content">
+    <div class="tutorial-layout">
+
+      <aside class="toc-sidebar">
+        <button class="toc-toggle" type="button" data-toc-toggle aria-expanded="false">Mapa de la misión</button>
+        <nav class="toc-panel" data-toc-panel aria-label="Contenido del tutorial">
+          <h2>Contenido</h2>
+          <ul class="toc-list">
+            <li><a href="#resultado-final">Resultado final</a></li>
+            <li><a href="#antes-de-empezar">Antes de empezar</a></li>
+            <li><a href="#arquitectura">Arquitectura</a></li>
+            <li><a href="#step-1">Paso 1: App contacts</a></li>
+            <li><a href="#step-2">Paso 2: Modelo Contact</a></li>
+            <li><a href="#step-3">Paso 3: Migraciones</a></li>
+            <li><a href="#step-4">Paso 4: Formulario</a></li>
+            <li><a href="#step-5">Paso 5: Vistas CRUD</a></li>
+            <li><a href="#step-6">Paso 6: Búsqueda Q y filtros</a></li>
+            <li><a href="#step-7">Paso 7: Dashboard stats</a></li>
+            <li><a href="#step-8">Paso 8: URLs</a></li>
+            <li><a href="#step-9">Paso 9: Templates</a></li>
+            <li><a href="#step-10">Paso 10: CSS</a></li>
+            <li><a href="#step-11">Paso 11: Admin</a></li>
+            <li><a href="#step-12">Paso 12: Verificar</a></li>
+            <li><a href="#errores-comunes">Errores comunes</a></li>
+            <li><a href="#mini-reto">Mini retos</a></li>
+            <li><a href="#portafolio">Portafolio</a></li>
+            <li><a href="#checklist-final">Checklist final</a></li>
+          </ul>
+        </nav>
+      </aside>
+      <div class="tutorial-main">
+
+        <nav class="breadcrumb" aria-label="Ruta de navegación">
+          <a href="../index.html">Inicio</a>
+          <span aria-hidden="true">/</span>
+          <a href="../index.html#tutoriales">Tutoriales</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Mini CRM de Contactos</span>
+        </nav>
+        <header class="tutorial-header">
+          <p class="tutorial-header__number">Tutorial 08 · Fase 2 · Proyecto Guiado</p>
+          <h1>Mini CRM de Contactos</h1>
+          <p class="tutorial-header__desc">Construyes un directorio privado: crear, editar, eliminar y buscar contactos; filtrar por tipo y estado; ver un dashboard con conteos. Es el salto de mini proyecto a algo que parece herramienta de trabajo.</p>
+          <div class="tutorial-meta">
+            <span class="chip">Fase 2</span>
+            <span class="chip">2 clases</span>
+            <span class="chip">12 pasos</span>
+            <span class="chip">Proyecto guiado</span>
+          </div>
+        </header>
+        <section class="tutorial-section" id="resultado-final">
+          <h2>Resultado final</h2>
+          <ul>
+            <li>Modelo <code>Contact</code> con <code>CONTACT_TYPES</code> y <code>STATUS_CHOICES</code>.</li>
+            <li>CRUD completo aislado por usuario.</li>
+            <li>Búsqueda con <code>Q</code> (nombre, correo, empresa).</li>
+            <li>Filtros por tipo y estado + dashboard con agregaciones <code>Count</code>.</li>
+          </ul>
+          <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Por qué Fase 2</p>
+              <p>Aquí demuestras choices, agregaciones y un listado profesional. Es evidencia clara de que ya no solo haces CRUD plano.</p>
+            </div>
+          </div>
+          <div class="tree-structure">contacts/
+├── models.py
+├── forms.py
+├── views.py
+├── urls.py
+├── admin.py
+└── templates/contacts/
+    ├── contact_list.html
+    ├── contact_form.html
+    ├── contact_detail.html
+    ├── contact_confirm_delete.html
+    └── dashboard.html</div>
+        </section>
+        <section class="tutorial-section" id="antes-de-empezar">
+          <h2>Antes de empezar</h2>
+          <ul class="checklist">
+            <li>Login del Tutorial 04 funcionando.</li>
+            <li>Completaste Notes (06) o entiendes ForeignKey + login_required.</li>
+            <li>Entorno virtual activo.</li>
+          </ul>
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>No copies el modelo a medias. CONTACT_TYPES y STATUS_CHOICES deben coincidir exactamente: son parte del contrato del proyecto.</p>
+            </div>
+          </div>
+        </section>
+        <section class="tutorial-section" id="arquitectura">
+          <h2>Arquitectura</h2>
+          <p><code>/contacts/</code> lista y filtra. <code>/contacts/dashboard/</code> agrega. El detalle y los formularios reutilizan el mismo aislamiento por <code>request.user</code> que Notes y Tasks.</p>
+        </section>
+        <article class="tutorial-step" id="step-1">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">1</span>
+            <h2>Crear app contacts</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-1" aria-label="Marcar paso 1 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear y registrar la app <code>contacts</code>.</p>
+          <p class="step-label">Por qué</p>
+          <p>Fase 2 empieza a parecer portfolio serio: apps con nombres de dominio real.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py startapp contacts</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                config/settings.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">&quot;contacts&quot;,  # en INSTALLED_APPS</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p>Raíz del proyecto y settings.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>Carpeta <code>contacts/</code> creada.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>La app aparece en el explorador y en INSTALLED_APPS.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-2">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">2</span>
+            <h2>Modelo Contact con choices</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-2" aria-label="Marcar paso 2 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Definir el modelo con tipos, estados y campos de seguimiento.</p>
+          <p class="step-label">Por qué</p>
+          <p><code>choices</code> documenta el dominio en el modelo y genera labels con <code>get_FOO_display</code>.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                contacts/models.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.conf import settings
+from django.db import models
+
+
+class Contact(models.Model):
+    CONTACT_TYPES = [
+        (&quot;student&quot;, &quot;Estudiante&quot;),
+        (&quot;teacher&quot;, &quot;Docente&quot;),
+        (&quot;company&quot;, &quot;Empresa&quot;),
+        (&quot;client&quot;, &quot;Cliente&quot;),
+        (&quot;other&quot;, &quot;Otro&quot;),
+    ]
+
+    STATUS_CHOICES = [
+        (&quot;new&quot;, &quot;Nuevo&quot;),
+        (&quot;contacted&quot;, &quot;Contactado&quot;),
+        (&quot;pending&quot;, &quot;Pendiente&quot;),
+        (&quot;closed&quot;, &quot;Cerrado&quot;),
+    ]
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name=&quot;contacts&quot;,
+    )
+    full_name = models.CharField(max_length=150)
+    email = models.EmailField(blank=True)
+    phone = models.CharField(max_length=30, blank=True)
+    company = models.CharField(max_length=120, blank=True)
+    contact_type = models.CharField(max_length=20, choices=CONTACT_TYPES)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=&quot;new&quot;)
+    notes = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = [&quot;full_name&quot;]
+
+    def __str__(self):
+        return self.full_name</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p><code>contacts/models.py</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>Modelo listo para migrar.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Incluye user ForeignKey, full_name, email, phone, company, contact_type, status, notes, created_at.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-3">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">3</span>
+            <h2>Migraciones</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-3" aria-label="Marcar paso 3 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Generar y aplicar la migración inicial.</p>
+          <p class="step-label">Por qué</p>
+          <p>Sin tablas no hay CRM.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py makemigrations contacts
+python manage.py migrate</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p>Terminal en la raíz.</p>
+          <p class="step-label">Qué debería ocurrir</p><p><code>0001_initial.py</code> creado.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Migrate sin errores.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-4">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">4</span>
+            <h2>ContactForm</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-4" aria-label="Marcar paso 4 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>ModelForm con los campos editables (sin user: se asigna en la vista).</p>
+          <p class="step-label">Por qué</p>
+          <p>El usuario autenticado es el dueño; no debe elegirse a sí mismo ni a otro en un select.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                contacts/forms.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django import forms
+from .models import Contact
+
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = [
+            &quot;full_name&quot;,
+            &quot;email&quot;,
+            &quot;phone&quot;,
+            &quot;company&quot;,
+            &quot;contact_type&quot;,
+            &quot;status&quot;,
+            &quot;notes&quot;,
+        ]
+        widgets = {
+            &quot;notes&quot;: forms.Textarea(attrs={&quot;rows&quot;: 4}),
+            &quot;full_name&quot;: forms.TextInput(attrs={&quot;placeholder&quot;: &quot;Nombre completo&quot;}),
+        }</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p>Archivo nuevo.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>Form importable.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p><code>user</code> no está en <code>fields</code>.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-5">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">5</span>
+            <h2>Vistas CRUD + aislamiento</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-5" aria-label="Marcar paso 5 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Implementar listado, crear, editar, eliminar, detalle y dashboard.</p>
+          <p class="step-label">Por qué</p>
+          <p>Un CRM sin aislamiento de usuarios no es demostrable en entrevista.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                contacts/views.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.db.models import Count, Q
+from django.shortcuts import get_object_or_404, redirect, render
+from .forms import ContactForm
+from .models import Contact
+
+
+def _base_qs(user):
+    return Contact.objects.filter(user=user)
+
+
+@login_required
+def contact_list(request):
+    contacts = _base_qs(request.user)
+    q = request.GET.get(&quot;q&quot;, &quot;&quot;).strip()
+    contact_type = request.GET.get(&quot;type&quot;, &quot;&quot;)
+    status = request.GET.get(&quot;status&quot;, &quot;&quot;)
+
+    if q:
+        contacts = contacts.filter(
+            Q(full_name__icontains=q)
+            | Q(email__icontains=q)
+            | Q(company__icontains=q)
+        )
+    if contact_type:
+        contacts = contacts.filter(contact_type=contact_type)
+    if status:
+        contacts = contacts.filter(status=status)
+
+    context = {
+        &quot;contacts&quot;: contacts,
+        &quot;q&quot;: q,
+        &quot;contact_type&quot;: contact_type,
+        &quot;status&quot;: status,
+        &quot;type_choices&quot;: Contact.CONTACT_TYPES,
+        &quot;status_choices&quot;: Contact.STATUS_CHOICES,
+        &quot;total&quot;: contacts.count(),
+    }
+    return render(request, &quot;contacts/contact_list.html&quot;, context)
+
+
+@login_required
+def contact_create(request):
+    if request.method == &quot;POST&quot;:
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            contact = form.save(commit=False)
+            contact.user = request.user
+            contact.save()
+            messages.success(request, &quot;Contacto creado.&quot;)
+            return redirect(&quot;contacts:contact_list&quot;)
+    else:
+        form = ContactForm()
+    return render(request, &quot;contacts/contact_form.html&quot;, {&quot;form&quot;: form, &quot;title&quot;: &quot;Nuevo contacto&quot;})
+
+
+@login_required
+def contact_edit(request, pk):
+    contact = get_object_or_404(Contact, pk=pk, user=request.user)
+    if request.method == &quot;POST&quot;:
+        form = ContactForm(request.POST, instance=contact)
+        if form.is_valid():
+            form.save()
+            messages.success(request, &quot;Contacto actualizado.&quot;)
+            return redirect(&quot;contacts:contact_list&quot;)
+    else:
+        form = ContactForm(instance=contact)
+    return render(request, &quot;contacts/contact_form.html&quot;, {&quot;form&quot;: form, &quot;title&quot;: &quot;Editar contacto&quot;})
+
+
+@login_required
+def contact_delete(request, pk):
+    contact = get_object_or_404(Contact, pk=pk, user=request.user)
+    if request.method == &quot;POST&quot;:
+        contact.delete()
+        messages.success(request, &quot;Contacto eliminado.&quot;)
+        return redirect(&quot;contacts:contact_list&quot;)
+    return render(request, &quot;contacts/contact_confirm_delete.html&quot;, {&quot;contact&quot;: contact})
+
+
+@login_required
+def contact_detail(request, pk):
+    contact = get_object_or_404(Contact, pk=pk, user=request.user)
+    return render(request, &quot;contacts/contact_detail.html&quot;, {&quot;contact&quot;: contact})
+
+
+@login_required
+def dashboard(request):
+    qs = _base_qs(request.user)
+    status_labels = dict(Contact.STATUS_CHOICES)
+    type_labels = dict(Contact.CONTACT_TYPES)
+    by_status = [
+        {&quot;label&quot;: status_labels.get(r[&quot;status&quot;], r[&quot;status&quot;]), &quot;total&quot;: r[&quot;total&quot;]}
+        for r in qs.values(&quot;status&quot;).annotate(total=Count(&quot;id&quot;)).order_by(&quot;status&quot;)
+    ]
+    by_type = [
+        {&quot;label&quot;: type_labels.get(r[&quot;contact_type&quot;], r[&quot;contact_type&quot;]), &quot;total&quot;: r[&quot;total&quot;]}
+        for r in qs.values(&quot;contact_type&quot;).annotate(total=Count(&quot;id&quot;)).order_by(&quot;contact_type&quot;)
+    ]
+    context = {
+        &quot;total&quot;: qs.count(),
+        &quot;by_status&quot;: by_status,
+        &quot;by_type&quot;: by_type,
+        &quot;recent&quot;: qs.order_by(&quot;-created_at&quot;)[:5],
+    }
+    return render(request, &quot;contacts/dashboard.html&quot;, context)</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p>Reemplaza <code>contacts/views.py</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>Vistas listas; faltan URLs y templates.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Toda consulta pasa por <code>_base_qs(request.user)</code> o get_object_or_404 con user.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-6">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">6</span>
+            <h2>Entender la búsqueda con Q</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-6" aria-label="Marcar paso 6 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Revisar el filtro OR sobre nombre, email y empresa.</p>
+          <p class="step-label">Por qué</p>
+          <p><code>Q</code> combina condiciones. Es vocabulario que debes poder explicar.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Fragmento clave
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">contacts = contacts.filter(
+    Q(full_name__icontains=q)
+    | Q(email__icontains=q)
+    | Q(company__icontains=q)
+)</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p>Ya está en <code>contact_list</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>Una sola caja de búsqueda encuentra por tres campos.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Crea un contacto con empresa “Acme” y busca “acme”: debe aparecer.</p>
+            </div>
+          </div>
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Si solo usas filter(full_name=...), no estás demostrando Q. Usa el OR.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-7">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">7</span>
+            <h2>Dashboard con Count</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-7" aria-label="Marcar paso 7 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Entender cómo <code>values().annotate(Count)</code> alimenta el panel.</p>
+          <p class="step-label">Por qué</p>
+          <p>Agregaciones son el puente al Dashboard de Fase 3. Aquí empiezas simple.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Idea de agregación
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">qs.values(&quot;status&quot;).annotate(total=Count(&quot;id&quot;))
+qs.values(&quot;contact_type&quot;).annotate(total=Count(&quot;id&quot;))</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p>Función <code>dashboard</code> en views.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>Con varios contactos ves conteos por estado y tipo.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>El total del KPI coincide con la suma de los conteos por estado.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-8">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">8</span>
+            <h2>URLs</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-8" aria-label="Marcar paso 8 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Conectar rutas bajo <code>/contacts/</code>.</p>
+          <p class="step-label">Por qué</p>
+          <p>Namespace <code>contacts:</code> para templates limpios.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                contacts/urls.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.urls import path
+from . import views
+
+app_name = &quot;contacts&quot;
+
+urlpatterns = [
+    path(&quot;&quot;, views.contact_list, name=&quot;contact_list&quot;),
+    path(&quot;dashboard/&quot;, views.dashboard, name=&quot;dashboard&quot;),
+    path(&quot;nuevo/&quot;, views.contact_create, name=&quot;contact_create&quot;),
+    path(&quot;&lt;int:pk&gt;/&quot;, views.contact_detail, name=&quot;contact_detail&quot;),
+    path(&quot;&lt;int:pk&gt;/editar/&quot;, views.contact_edit, name=&quot;contact_edit&quot;),
+    path(&quot;&lt;int:pk&gt;/eliminar/&quot;, views.contact_delete, name=&quot;contact_delete&quot;),
+]</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                config/urls.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">path(&quot;contacts/&quot;, include(&quot;contacts.urls&quot;)),</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p>App + include en config.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>Rutas registradas.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p><code>dashboard/</code> está antes de <code>&lt;int:pk&gt;/</code> para no capturarlo como pk.</p>
+            </div>
+          </div>
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>dashboard interpretado como pk</strong> — Ordena las URLs: rutas literales primero, luego parámetros.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-9">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">9</span>
+            <h2>Templates del CRM</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-9" aria-label="Marcar paso 9 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear listado, formulario, detalle, confirmación y dashboard.</p>
+          <p class="step-label">Por qué</p>
+          <p>La tabla + pills de estado son tu captura estrella de Fase 2.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                contacts/templates/contacts/contact_list.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends &quot;base.html&quot; %}
+{% block title %}Contactos{% endblock %}
+{% block content %}
+&lt;section class=&quot;crm-header&quot;&gt;
+  &lt;h1&gt;Mini CRM — Contactos&lt;/h1&gt;
+  &lt;p&gt;{{ total }} contacto{{ total|pluralize }}&lt;/p&gt;
+  &lt;div&gt;
+    &lt;a class=&quot;btn&quot; href=&quot;{% url &#x27;contacts:contact_create&#x27; %}&quot;&gt;Nuevo&lt;/a&gt;
+    &lt;a class=&quot;btn btn-secondary&quot; href=&quot;{% url &#x27;contacts:dashboard&#x27; %}&quot;&gt;Dashboard&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+
+&lt;form method=&quot;get&quot; class=&quot;crm-filters&quot;&gt;
+  &lt;input type=&quot;search&quot; name=&quot;q&quot; value=&quot;{{ q }}&quot; placeholder=&quot;Nombre, correo o empresa&quot;&gt;
+  &lt;select name=&quot;type&quot;&gt;
+    &lt;option value=&quot;&quot;&gt;Todos los tipos&lt;/option&gt;
+    {% for value, label in type_choices %}
+      &lt;option value=&quot;{{ value }}&quot; {% if contact_type == value %}selected{% endif %}&gt;{{ label }}&lt;/option&gt;
+    {% endfor %}
+  &lt;/select&gt;
+  &lt;select name=&quot;status&quot;&gt;
+    &lt;option value=&quot;&quot;&gt;Todos los estados&lt;/option&gt;
+    {% for value, label in status_choices %}
+      &lt;option value=&quot;{{ value }}&quot; {% if status == value %}selected{% endif %}&gt;{{ label }}&lt;/option&gt;
+    {% endfor %}
+  &lt;/select&gt;
+  &lt;button type=&quot;submit&quot;&gt;Filtrar&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;table class=&quot;crm-table&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Nombre&lt;/th&gt;&lt;th&gt;Tipo&lt;/th&gt;&lt;th&gt;Estado&lt;/th&gt;&lt;th&gt;Empresa&lt;/th&gt;&lt;th&gt;Acciones&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    {% for c in contacts %}
+      &lt;tr&gt;
+        &lt;td&gt;&lt;a href=&quot;{% url &#x27;contacts:contact_detail&#x27; c.pk %}&quot;&gt;{{ c.full_name }}&lt;/a&gt;&lt;/td&gt;
+        &lt;td&gt;{{ c.get_contact_type_display }}&lt;/td&gt;
+        &lt;td&gt;&lt;span class=&quot;pill pill-{{ c.status }}&quot;&gt;{{ c.get_status_display }}&lt;/span&gt;&lt;/td&gt;
+        &lt;td&gt;{{ c.company|default:&quot;—&quot; }}&lt;/td&gt;
+        &lt;td&gt;
+          &lt;a href=&quot;{% url &#x27;contacts:contact_edit&#x27; c.pk %}&quot;&gt;Editar&lt;/a&gt;
+          &lt;a href=&quot;{% url &#x27;contacts:contact_delete&#x27; c.pk %}&quot;&gt;Eliminar&lt;/a&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    {% empty %}
+      &lt;tr&gt;&lt;td colspan=&quot;5&quot;&gt;Sin contactos con estos filtros.&lt;/td&gt;&lt;/tr&gt;
+    {% endfor %}
+  &lt;/tbody&gt;
+&lt;/table&gt;
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                contacts/templates/contacts/contact_form.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends &quot;base.html&quot; %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+&lt;h1&gt;{{ title }}&lt;/h1&gt;
+&lt;form method=&quot;post&quot; class=&quot;stack-form&quot;&gt;
+  {% csrf_token %}
+  {{ form.as_p }}
+  &lt;button type=&quot;submit&quot;&gt;Guardar&lt;/button&gt;
+  &lt;a href=&quot;{% url &#x27;contacts:contact_list&#x27; %}&quot;&gt;Cancelar&lt;/a&gt;
+&lt;/form&gt;
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                contacts/templates/contacts/contact_detail.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends &quot;base.html&quot; %}
+{% block title %}{{ contact.full_name }}{% endblock %}
+{% block content %}
+&lt;article class=&quot;crm-detail&quot;&gt;
+  &lt;h1&gt;{{ contact.full_name }}&lt;/h1&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Email: {{ contact.email|default:&quot;—&quot; }}&lt;/li&gt;
+    &lt;li&gt;Teléfono: {{ contact.phone|default:&quot;—&quot; }}&lt;/li&gt;
+    &lt;li&gt;Empresa: {{ contact.company|default:&quot;—&quot; }}&lt;/li&gt;
+    &lt;li&gt;Tipo: {{ contact.get_contact_type_display }}&lt;/li&gt;
+    &lt;li&gt;Estado: {{ contact.get_status_display }}&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;h2&gt;Notas&lt;/h2&gt;
+  &lt;div&gt;{{ contact.notes|linebreaks|default:&quot;Sin notas.&quot; }}&lt;/div&gt;
+  &lt;p&gt;
+    &lt;a href=&quot;{% url &#x27;contacts:contact_edit&#x27; contact.pk %}&quot;&gt;Editar&lt;/a&gt;
+    &lt;a href=&quot;{% url &#x27;contacts:contact_list&#x27; %}&quot;&gt;Volver&lt;/a&gt;
+  &lt;/p&gt;
+&lt;/article&gt;
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                contacts/templates/contacts/contact_confirm_delete.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends &quot;base.html&quot; %}
+{% block title %}Eliminar contacto{% endblock %}
+{% block content %}
+&lt;h1&gt;¿Eliminar a {{ contact.full_name }}?&lt;/h1&gt;
+&lt;form method=&quot;post&quot;&gt;
+  {% csrf_token %}
+  &lt;button type=&quot;submit&quot;&gt;Sí, eliminar&lt;/button&gt;
+  &lt;a href=&quot;{% url &#x27;contacts:contact_list&#x27; %}&quot;&gt;Cancelar&lt;/a&gt;
+&lt;/form&gt;
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                contacts/templates/contacts/dashboard.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends &quot;base.html&quot; %}
+{% block title %}Dashboard CRM{% endblock %}
+{% block content %}
+&lt;section class=&quot;crm-dash&quot;&gt;
+  &lt;h1&gt;Dashboard de contactos&lt;/h1&gt;
+  &lt;p class=&quot;crm-kpi&quot;&gt;Total: &lt;strong&gt;{{ total }}&lt;/strong&gt;&lt;/p&gt;
+
+  &lt;div class=&quot;crm-dash-grid&quot;&gt;
+    &lt;div&gt;
+      &lt;h2&gt;Por estado&lt;/h2&gt;
+      &lt;ul&gt;
+        {% for row in by_status %}
+          &lt;li&gt;{{ row.label }}: {{ row.total }}&lt;/li&gt;
+        {% endfor %}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+      &lt;h2&gt;Por tipo&lt;/h2&gt;
+      &lt;ul&gt;
+        {% for row in by_type %}
+          &lt;li&gt;{{ row.label }}: {{ row.total }}&lt;/li&gt;
+        {% endfor %}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;h2&gt;Recientes&lt;/h2&gt;
+  &lt;ul&gt;
+    {% for c in recent %}
+      &lt;li&gt;&lt;a href=&quot;{% url &#x27;contacts:contact_detail&#x27; c.pk %}&quot;&gt;{{ c.full_name }}&lt;/a&gt; — {{ c.get_status_display }}&lt;/li&gt;
+    {% empty %}
+      &lt;li&gt;Aún no hay contactos.&lt;/li&gt;
+    {% endfor %}
+  &lt;/ul&gt;
+  &lt;p&gt;&lt;a href=&quot;{% url &#x27;contacts:contact_list&#x27; %}&quot;&gt;Ir al listado&lt;/a&gt;&lt;/p&gt;
+&lt;/section&gt;
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p><code>contacts/templates/contacts/</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>Con login, /contacts/ muestra tabla.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Usa <code>get_contact_type_display</code> y <code>get_status_display</code> en listado y detalle.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-10">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">10</span>
+            <h2>CSS del CRM</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-10" aria-label="Marcar paso 10 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Estilos para filtros, tabla, pills y dashboard.</p>
+          <p class="step-label">Por qué</p>
+          <p>Un CRM feo se ve de ejercicio. Un CRM claro se ve de producto.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                static/css/crm.css
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-css">.crm-header { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: 1rem; }
+.crm-header h1 { flex: 1; margin: 0; }
+.crm-filters { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem; }
+.crm-filters input, .crm-filters select { padding: 0.45rem 0.7rem; border-radius: 8px; border: 1px solid #c9ced6; }
+.crm-table { width: 100%; border-collapse: collapse; }
+.crm-table th, .crm-table td { text-align: left; padding: 0.6rem; border-bottom: 1px solid #e1e5ec; }
+.pill { display: inline-block; padding: 0.15rem 0.55rem; border-radius: 999px; font-size: 0.75rem; background: #eef1f6; }
+.pill-new { background: #e7f0ff; }
+.pill-contacted { background: #e7f8ee; }
+.pill-pending { background: #fff4e0; }
+.pill-closed { background: #eceff3; }
+.crm-dash-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin: 1rem 0 1.5rem; }
+.crm-kpi { font-size: 1.15rem; }
+.crm-dash &gt; div, .crm-dash-grid &gt; div { background: #f7f8fb; border-radius: 12px; padding: 1rem; }</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                base.html o template
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% load static %}
+&lt;link rel=&quot;stylesheet&quot; href=&quot;{% static &#x27;css/crm.css&#x27; %}&quot;&gt;</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p>Static + link.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>Pills con colores por estado.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Recarga forzada y confirma clases pill-new, pill-pending, etc.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-11">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">11</span>
+            <h2>Admin de Contact</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-11" aria-label="Marcar paso 11 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Registrar el modelo con list_display, filtros y búsqueda.</p>
+          <p class="step-label">Por qué</p>
+          <p>Prepárate para el Blog (09), donde el Admin es protagonista.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                contacts/admin.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.contrib import admin
+from .models import Contact
+
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = (&quot;full_name&quot;, &quot;user&quot;, &quot;contact_type&quot;, &quot;status&quot;, &quot;company&quot;, &quot;created_at&quot;)
+    list_filter = (&quot;contact_type&quot;, &quot;status&quot;, &quot;user&quot;)
+    search_fields = (&quot;full_name&quot;, &quot;email&quot;, &quot;company&quot;)</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p><code>contacts/admin.py</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>Contactos visibles en /admin/.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Filtros por tipo y estado funcionan en el admin.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-12">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">12</span>
+            <h2>Verificación integral</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-12" aria-label="Marcar paso 12 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>CRUD + búsqueda + filtros + dashboard + aislamiento entre usuarios.</p>
+          <p class="step-label">Por qué</p>
+          <p>Cierre de Fase 2 inicial antes del Blog.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py check
+python manage.py runserver</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p>Terminal y navegador.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>Flujo completo sin 500.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Segundo usuario no ve contactos del primero. Dashboard refleja solo sus datos.</p>
+            </div>
+          </div>
+        </article>
+        <section class="tutorial-section" id="errores-comunes">
+          <h2>Errores comunes</h2>
+          <ul>
+            <li><strong>NoReverseMatch contacts:dashboard</strong> — Include faltante o app_name incorrecto.</li>
+            <li><strong>FieldError en Q</strong> — Typo en nombre de campo (full_name vs name).</li>
+            <li><strong>IntegrityError user_id</strong> — Olvidaste assignar <code>contact.user</code> antes de save.</li>
+            <li><strong>Dashboard vacío con datos en lista</strong> — Estás mirando otro usuario o no recargaste tras crear.</li>
+            <li><strong>Choices no muestran label</strong> — Usa <code>get_status_display</code>, no el valor crudo <code>new</code>.</li>
+          </ul>
+        </section>
+        <section class="mini-challenge tutorial-section" id="mini-reto">
+          <h2>Mini retos</h2>
+          <p><strong>Reto A:</strong> Ordenar por <code>-created_at</code> o nombre mediante <code>?sort=</code>.</p>
+          <p><strong>Reto B:</strong> Añadir campo <code>last_contacted</code> DateField opcional y mostrarlo en detalle.</p>
+          <p><strong>Reto C:</strong> Exportar el listado filtrado a CSV simple con una vista que devuelva <code>text/csv</code>.</p>
+        </section>
+        <section class="portfolio-evidence tutorial-section" id="portafolio">
+          <h2>Qué subir a tu portafolio</h2>
+          <p>Este Mini CRM demuestra organización de contactos, estados y estadísticas simples para Fase 2.</p>
+          <div class="portfolio-evidence__grid">
+            <div class="portfolio-evidence__item">
+              <strong>Captura recomendada</strong>
+              <p>Tabla de contactos con pills de estado, filtros activos y captura aparte del dashboard con conteos.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Tecnologías</strong>
+              <p>Python, Django, SQLite, Q objects, agregaciones Count, HTML/CSS, autenticación.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Problema que resuelve</strong>
+              <p>Organizar contactos con seguimiento de estado (nuevo → cerrado) y búsqueda operativa.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Qué aprendí</strong>
+              <p>choices, CRUD seguro, búsqueda OR, filtros GET, dashboard con annotate/Count.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Mejoras futuras</strong>
+              <p>Etiquetas, recordatorios, importación CSV, permisos por equipo.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Repo y demo</strong>
+              <p>Sube el código a GitHub con un README claro. Graba un video de 2–3 minutos mostrando búsqueda, filtros y la captura principal.</p>
+            </div>
+          </div>
+        </section>
+        <section class="tutorial-section" id="checklist-final">
+          <h2>Checklist final</h2>
+          <ul class="checklist">
+            <li>Modelo Contact migrado con choices correctos.</li>
+            <li>CRUD + detalle funcionando con login.</li>
+            <li>Búsqueda Q y filtros tipo/estado.</li>
+            <li>Dashboard con totales por estado y tipo.</li>
+            <li>Aislamiento por usuario verificado.</li>
+            <li>Capturas lista + dashboard listas para portafolio.</li>
+          </ul>
+        </section>
+        <nav class="tutorial-nav" aria-label="Navegación entre tutoriales">
+          <a class="btn btn--secondary" href="07-calculadora-academica.html">Anterior: Calculadora Académica</a>
+          <a class="btn btn--secondary" href="../ruta-portafolio.html">Ruta de portafolio</a>
+          <a class="btn btn--primary" href="09-blog-profesional-admin.html">Siguiente: Blog Profesional</a>
+        </nav>
+      </div>
+
+      <aside class="progress-rail" aria-label="Progreso del tutorial">
+        <div class="progress-rail__card">
+          <h3>Tu progreso</h3>
+          <div class="reading-progress" aria-hidden="true">
+            <div class="reading-progress__bar" data-scroll-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label">Lectura</p>
+          <div class="reading-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="reading-progress__bar" data-reading-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label" data-step-progress-label>0 de 12 pasos (0%)</p>
+          <button class="btn btn--primary complete-tutorial-btn" type="button" data-complete-tutorial>Marcar como completado</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Aprende Django con Teacher Jim</h3>
+          <p>Construido para aprender haciendo. Tutoriales en español para estudiantes que quieren entender Django, no solo copiar código.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tutoriales</h4>
+          <ul>
+            <li><a href="01-instalar-vscode-python.html">Instalar VS Code y Python</a></li>
+            <li><a href="02-entornos-django.html">Entornos + Django</a></li>
+            <li><a href="03-primera-ventana-django.html">Primera ventana</a></li>
+            <li><a href="04-todo-app-autenticacion.html">To-Do + Login</a></li>
+            <li><a href="05-errores-django.html">Errores comunes</a></li>
+            <li><a href="06-notes-app-categorias.html">Notes App</a></li>
+            <li><a href="07-calculadora-academica.html">Calculadora Académica</a></li>
+            <li><a href="08-directorio-contactos-mini-crm.html">Mini CRM</a></li>
+            <li><a href="09-blog-profesional-admin.html">Blog Profesional</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Ruta y repositorio</h4>
+          <ul>
+            <li><a href="../ruta-portafolio.html">Ruta de portafolio</a></li>
+            <li><a href="https://github.com/TU-USUARIO/TU-REPOSITORIO" rel="noopener noreferrer">GitHub</a></li>
+            <li><a href="../index.html#tutoriales">Todos los tutoriales</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span data-current-year>2026</span> Aprende Django con Teacher Jim</p>
+        <a class="back-to-top" href="#" data-back-to-top>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+            <path d="m18 15-6-6-6 6"></path>
+          </svg>
+          Volver arriba
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="search-overlay" data-search-overlay role="dialog" aria-modal="true" aria-label="Búsqueda de tutoriales">
+    <div class="search-box">
+      <input type="search" data-search-input placeholder="Buscar tutoriales..." aria-label="Buscar tutoriales">
+      <div class="search-results" data-search-results></div>
+    </div>
+  </div>
+
+  <div id="copy-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="../assets/js/theme.js" defer></script>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/tutorial-progress.js" defer></script>
+  <script src="../assets/js/code-copy.js" defer></script>
+  <script src="../assets/js/search.js" defer></script>
+  <script src="../assets/js/portfolio-progress.js" defer></script>
+  <script src="../assets/vendor/prism/prism.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-python.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-bash.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-markup.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-css.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-javascript.min.js" defer></script>
+</body>
+</html>

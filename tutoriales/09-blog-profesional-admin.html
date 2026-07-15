@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial 09: Blog Profesional con Django Admin | Aprende Django con Teacher Jim</title>
+  <meta name="description" content="Blog público con categorías, slugs y publicación draft/published administrado desde Django Admin personalizado.">
+  <meta name="author" content="Teacher Jim">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Tutorial 09: Blog Profesional con Django Admin">
+  <meta property="og:description" content="list_display, search_fields, list_filter, prepopulated_fields y vistas públicas solo published.">
+  <meta property="og:locale" content="es_ES">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/tutorial.css">
+  <link rel="stylesheet" href="../assets/css/syntax-theme.css">
+  <link rel="stylesheet" href="../assets/css/portfolio-roadmap.css">
+  <link rel="stylesheet" href="../assets/css/project-cards.css">
+</head>
+<body data-tutorial-id="tutorial-09">
+
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="app-bar">
+    <div class="app-bar__inner">
+      <a class="app-bar__brand" href="../index.html">
+        <img class="app-bar__logo" src="../assets/icons/favicon.svg" alt="" width="36" height="36">
+        Teacher Jim
+      </a>
+      <nav class="app-bar__nav" aria-label="Navegación principal">
+        <a href="../index.html">Inicio</a>
+        <a href="../index.html#tutoriales">Tutoriales</a>
+        <a href="../ruta-portafolio.html">Portafolio</a>
+        <a href="05-errores-django.html">Errores</a>
+      </nav>
+      <div class="app-bar__actions">
+        <button class="icon-btn" type="button" data-search-open aria-label="Buscar tutoriales">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        </button>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro">
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </button>
+        <button class="icon-btn menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Abrir menú de navegación">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" data-mobile-nav aria-label="Navegación móvil">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#tutoriales">Tutoriales</a>
+    <a href="../ruta-portafolio.html">Portafolio</a>
+    <a href="05-errores-django.html">Errores</a>
+  </nav>
+  <main id="main-content">
+    <div class="tutorial-layout">
+
+      <aside class="toc-sidebar">
+        <button class="toc-toggle" type="button" data-toc-toggle aria-expanded="false">Mapa de la misión</button>
+        <nav class="toc-panel" data-toc-panel aria-label="Contenido del tutorial">
+          <h2>Contenido</h2>
+          <ul class="toc-list">
+            <li><a href="#resultado-final">Resultado final</a></li>
+            <li><a href="#antes-de-empezar">Antes de empezar</a></li>
+            <li><a href="#arquitectura">Arquitectura</a></li>
+            <li><a href="#step-1">Paso 1: App blog</a></li>
+            <li><a href="#step-2">Paso 2: Modelos</a></li>
+            <li><a href="#step-3">Paso 3: Migraciones</a></li>
+            <li><a href="#step-4">Paso 4: Qué es Admin</a></li>
+            <li><a href="#step-5">Paso 5: Admin custom</a></li>
+            <li><a href="#step-6">Paso 6: Superusuario</a></li>
+            <li><a href="#step-7">Paso 7: Vistas públicas</a></li>
+            <li><a href="#step-8">Paso 8: URLs</a></li>
+            <li><a href="#step-9">Paso 9: Templates</a></li>
+            <li><a href="#step-10">Paso 10: CSS</a></li>
+            <li><a href="#step-11">Paso 11: Flujo draft/published</a></li>
+            <li><a href="#step-12">Paso 12: Verificar</a></li>
+            <li><a href="#errores-comunes">Errores comunes</a></li>
+            <li><a href="#mini-reto">Mini retos</a></li>
+            <li><a href="#portafolio">Portafolio</a></li>
+            <li><a href="#checklist-final">Checklist final</a></li>
+          </ul>
+        </nav>
+      </aside>
+      <div class="tutorial-main">
+
+        <nav class="breadcrumb" aria-label="Ruta de navegación">
+          <a href="../index.html">Inicio</a>
+          <span aria-hidden="true">/</span>
+          <a href="../index.html#tutoriales">Tutoriales</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Blog Profesional con Django Admin</span>
+        </nav>
+        <header class="tutorial-header">
+          <p class="tutorial-header__number">Tutorial 09 · Fase 2 · Proyecto Guiado</p>
+          <h1>Blog Profesional con Django Admin</h1>
+          <p class="tutorial-header__desc">Creas un blog público. El contenido se gestiona en Django Admin (no inventas un CMS). Aprendes slugs, borrador/publicado, personalización del admin y vistas que solo muestran posts publicados.</p>
+          <div class="tutorial-meta">
+            <span class="chip">Fase 2</span>
+            <span class="chip">3 clases</span>
+            <span class="chip">12 pasos</span>
+            <span class="chip">Django Admin</span>
+          </div>
+        </header>
+        <section class="tutorial-section" id="resultado-final">
+          <h2>Resultado final</h2>
+          <ul>
+            <li>Modelos <code>BlogCategory</code> y <code>Post</code> con slug y estado draft/published.</li>
+            <li>Admin personalizado: list_display, search_fields, list_filter, prepopulated_fields, acción publicar.</li>
+            <li>Sitio público: listado, detalle por slug, filtro por categoría, página de autor, búsqueda.</li>
+            <li>Los borradores nunca aparecen en la web pública.</li>
+          </ul>
+          <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Por qué Admin y no otro panel</p>
+              <p>Django Admin existe para CRUD interno. Para un blog de aprendizaje es la herramienta correcta: configuras, no reinventas. Luego, si el producto crece, evalúas un panel a medida.</p>
+            </div>
+          </div>
+          <div class="tree-structure">blog/
+├── models.py
+├── admin.py
+├── views.py
+├── urls.py
+└── templates/blog/
+    ├── post_list.html
+    ├── post_detail.html
+    └── author_posts.html</div>
+        </section>
+        <section class="tutorial-section" id="antes-de-empezar">
+          <h2>Antes de empezar</h2>
+          <ul class="checklist">
+            <li>Proyecto Django con <code>base.html</code> y static configurados.</li>
+            <li>Sabes crear superusuario (<code>createsuperuser</code>).</li>
+            <li>Idealmente completaste el Mini CRM (choices + filtros).</li>
+          </ul>
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>El error más común aquí es publicar un borrador en la web porque filtraste mal. Si status no es published, no debe existir la URL pública.</p>
+            </div>
+          </div>
+        </section>
+        <section class="tutorial-section" id="arquitectura">
+          <h2>Arquitectura</h2>
+          <p>Escribes contenido en <code>/admin/</code>. El sitio en <code>/blog/</code> solo lee posts <code>status="published"</code>. Detalle por <code>slug</code>, no por id: URLs legibles y estables.</p>
+        </section>
+        <article class="tutorial-step" id="step-1">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">1</span>
+            <h2>Crear la app blog</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-1" aria-label="Marcar paso 1 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear y registrar <code>blog</code>.</p>
+          <p class="step-label">Por qué</p>
+          <p>Separa el contenido público del CRM y las notas privadas.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py startapp blog</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                config/settings.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">&quot;blog&quot;,</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p>Raíz + INSTALLED_APPS.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>Carpeta blog creada.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>App registrada sin errores de sintaxis.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-2">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">2</span>
+            <h2>Modelos BlogCategory y Post</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-2" aria-label="Marcar paso 2 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Definir categoría con slug y posts con excerpt, content, status y published_at.</p>
+          <p class="step-label">Por qué</p>
+          <p>El slug es la URL amigable. El estado controla visibilidad. <code>published_at</code> documenta cuándo salió a producción.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                blog/models.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.conf import settings
+from django.db import models
+from django.utils import timezone
+from django.utils.text import slugify
+
+
+class BlogCategory(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+
+    class Meta:
+        verbose_name_plural = &quot;blog categories&quot;
+        ordering = [&quot;name&quot;]
+
+    def __str__(self):
+        return self.name
+
+
+class Post(models.Model):
+    STATUS_CHOICES = [
+        (&quot;draft&quot;, &quot;Borrador&quot;),
+        (&quot;published&quot;, &quot;Publicado&quot;),
+    ]
+
+    title = models.CharField(max_length=180)
+    slug = models.SlugField(unique=True)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name=&quot;blog_posts&quot;,
+    )
+    category = models.ForeignKey(
+        BlogCategory,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name=&quot;posts&quot;,
+    )
+    excerpt = models.CharField(max_length=250)
+    content = models.TextField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=&quot;draft&quot;)
+    published_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = [&quot;-published_at&quot;, &quot;-created_at&quot;]
+
+    def __str__(self):
+        return self.title
+
+    def publish(self):
+        self.status = &quot;published&quot;
+        if self.published_at is None:
+            self.published_at = timezone.now()
+        self.save(update_fields=[&quot;status&quot;, &quot;published_at&quot;])</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p>Reemplaza models.py.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>Listo para migrar.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>STATUS_CHOICES incluye draft y published. category permite null.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-3">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">3</span>
+            <h2>Migraciones</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-3" aria-label="Marcar paso 3 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear tablas del blog.</p>
+          <p class="step-label">Por qué</p>
+          <p>Sin migrate el admin no tendrá modelos usables.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py makemigrations blog
+python manage.py migrate</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p>Terminal.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>Migración aplicada.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Existe <code>blog/migrations/0001_initial.py</code>.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-4">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">4</span>
+            <h2>Qué es Django Admin (y qué no es)</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-4" aria-label="Marcar paso 4 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Entender el rol pedagógico del Admin antes de personalizarlo.</p>
+          <p class="step-label">Por qué</p>
+          <p>Muchos principiantes quieren “hacer un panel” desde cero. Pierden semanas. Admin cubre alta/baja/cambio de contenido interno.</p>
+          <p class="step-label">Código</p>
+          <p>No hay archivo nuevo. Memoriza estas ideas:</p>
+          <ul>
+            <li>Admin es para staff/superuser, no para el visitante del blog.</li>
+            <li>Registras modelos con <code>@admin.register</code> o <code>admin.site.register</code>.</li>
+            <li>Personalizas listados y formularios del admin sin tocar el sitio público.</li>
+            <li>El sitio público es otra capa: views + templates con filtro <code>published</code>.</li>
+          </ul>
+          <p class="step-label">Dónde va</p><p>Tu cabeza y el README del proyecto.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>Puedes explicar en una frase: “Creo posts en Admin; el blog solo muestra publicados”.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Escribe esa frase en el README antes de seguir.</p>
+            </div>
+          </div>
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Si no puedes explicar qué hace list_display vs list_filter, no digas que “dominas Admin”. Domínalo con este tutorial.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-5">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">5</span>
+            <h2>Personalizar Admin</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-5" aria-label="Marcar paso 5 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Configurar <code>list_display</code>, <code>search_fields</code>, <code>list_filter</code>, <code>prepopulated_fields</code> y una acción para publicar.</p>
+          <p class="step-label">Por qué</p>
+          <p>Estas cuatro opciones son el núcleo que preguntan en evaluaciones y demuestran que no usaste el Admin “en bruto”.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                blog/admin.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.contrib import admin
+from django.utils import timezone
+from .models import BlogCategory, Post
+
+
+@admin.register(BlogCategory)
+class BlogCategoryAdmin(admin.ModelAdmin):
+    list_display = (&quot;name&quot;, &quot;slug&quot;)
+    prepopulated_fields = {&quot;slug&quot;: (&quot;name&quot;,)}
+    search_fields = (&quot;name&quot;,)
+
+
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    list_display = (&quot;title&quot;, &quot;author&quot;, &quot;category&quot;, &quot;status&quot;, &quot;published_at&quot;, &quot;created_at&quot;)
+    list_filter = (&quot;status&quot;, &quot;category&quot;, &quot;author&quot;)
+    search_fields = (&quot;title&quot;, &quot;excerpt&quot;, &quot;content&quot;)
+    prepopulated_fields = {&quot;slug&quot;: (&quot;title&quot;,)}
+    date_hierarchy = &quot;published_at&quot;
+    ordering = (&quot;-created_at&quot;,)
+    readonly_fields = (&quot;created_at&quot;,)
+
+    actions = [&quot;make_published&quot;]
+
+    @admin.action(description=&quot;Marcar seleccionados como publicados&quot;)
+    def make_published(self, request, queryset):
+        updated = 0
+        for post in queryset:
+            if post.status != &quot;published&quot;:
+                post.status = &quot;published&quot;
+                if post.published_at is None:
+                    post.published_at = timezone.now()
+                post.save(update_fields=[&quot;status&quot;, &quot;published_at&quot;])
+                updated += 1
+        self.message_user(request, f&quot;{updated} post(s) publicados.&quot;)</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p><code>blog/admin.py</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>En el admin ves columnas útiles, buscador, filtros laterales y slug autocompletado al escribir el título.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p><code>prepopulated_fields = {"slug": ("title",)}</code> en Post y <code>("name",)</code> en categoría.</p>
+            </div>
+          </div>
+          <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Mapa rápido</p>
+              <p><strong>list_display</strong> columnas · <strong>search_fields</strong> caja de búsqueda · <strong>list_filter</strong> panel lateral · <strong>prepopulated_fields</strong> slug desde otro campo.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-6">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">6</span>
+            <h2>Superusuario y primer contenido</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-6" aria-label="Marcar paso 6 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear superuser (si falta), una categoría y dos posts: uno borrador y uno publicado.</p>
+          <p class="step-label">Por qué</p>
+          <p>Necesitas contraste draft vs published para probar las vistas públicas después.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py createsuperuser
+python manage.py runserver</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p>Terminal; luego <code>http://127.0.0.1:8000/admin/</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>Puedes guardar categorías y posts. Al publicar, rellena <code>published_at</code> (o usa la acción masiva).</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Tienes al menos 1 categoría, 1 post draft y 1 post published.</p>
+            </div>
+          </div>
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>duplicate key / slug unique</strong> — Dos posts no pueden compartir slug. Cambia el slug o el título.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-7">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">7</span>
+            <h2>Vistas públicas (solo published)</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-7" aria-label="Marcar paso 7 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Listado, detalle por slug y página de autor. Todas filtran <code>status="published"</code>.</p>
+          <p class="step-label">Por qué</p>
+          <p>El Admin ve todo. El visitante no. Ese borde de seguridad editorial es el valor del proyecto.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                blog/views.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.db.models import Q
+from django.shortcuts import get_object_or_404, render
+from .models import BlogCategory, Post
+
+
+def post_list(request):
+    posts = Post.objects.filter(status=&quot;published&quot;).select_related(&quot;author&quot;, &quot;category&quot;)
+    category_slug = request.GET.get(&quot;category&quot;, &quot;&quot;).strip()
+    q = request.GET.get(&quot;q&quot;, &quot;&quot;).strip()
+
+    if category_slug:
+        posts = posts.filter(category__slug=category_slug)
+    if q:
+        posts = posts.filter(
+            Q(title__icontains=q) | Q(excerpt__icontains=q) | Q(content__icontains=q)
+        )
+
+    categories = BlogCategory.objects.all()
+    return render(
+        request,
+        &quot;blog/post_list.html&quot;,
+        {
+            &quot;posts&quot;: posts,
+            &quot;categories&quot;: categories,
+            &quot;category_slug&quot;: category_slug,
+            &quot;q&quot;: q,
+        },
+    )
+
+
+def post_detail(request, slug):
+    post = get_object_or_404(
+        Post.objects.select_related(&quot;author&quot;, &quot;category&quot;),
+        slug=slug,
+        status=&quot;published&quot;,
+    )
+    return render(request, &quot;blog/post_detail.html&quot;, {&quot;post&quot;: post})
+
+
+def author_posts(request, username):
+    posts = (
+        Post.objects.filter(status=&quot;published&quot;, author__username=username)
+        .select_related(&quot;author&quot;, &quot;category&quot;)
+    )
+    return render(
+        request,
+        &quot;blog/author_posts.html&quot;,
+        {&quot;posts&quot;: posts, &quot;author_username&quot;: username},
+    )</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p><code>blog/views.py</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>El detalle 404 si el slug es de un borrador.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p><code>get_object_or_404(..., status="published")</code> en el detalle. No confíes solo en el listado.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-8">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">8</span>
+            <h2>URLs del blog</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-8" aria-label="Marcar paso 8 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Montar <code>/blog/</code> con listado, autor y detalle por slug.</p>
+          <p class="step-label">Por qué</p>
+          <p>Orden: rutas literales (<code>autor/...</code>) antes del capturador <code>&lt;slug:slug&gt;</code>.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                blog/urls.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.urls import path
+from . import views
+
+app_name = &quot;blog&quot;
+
+urlpatterns = [
+    path(&quot;&quot;, views.post_list, name=&quot;post_list&quot;),
+    path(&quot;autor/&lt;str:username&gt;/&quot;, views.author_posts, name=&quot;author_posts&quot;),
+    path(&quot;&lt;slug:slug&gt;/&quot;, views.post_detail, name=&quot;post_detail&quot;),
+]</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                config/urls.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">path(&quot;blog/&quot;, include(&quot;blog.urls&quot;)),</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p>App + config.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>Rutas listas.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p><code>autor/&lt;username&gt;/</code> aparece antes de <code>&lt;slug:slug&gt;/</code>.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-9">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">9</span>
+            <h2>Templates públicos</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-9" aria-label="Marcar paso 9 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Listado con filtros, detalle y autor.</p>
+          <p class="step-label">Por qué</p>
+          <p>El visitante nunca usa el Admin. Esta es la cara del portafolio.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                blog/templates/blog/post_list.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends &quot;base.html&quot; %}
+{% block title %}Blog{% endblock %}
+{% block content %}
+&lt;section class=&quot;blog-header&quot;&gt;
+  &lt;h1&gt;Blog&lt;/h1&gt;
+  &lt;p&gt;Solo entradas publicadas. Los borradores viven en el Admin.&lt;/p&gt;
+&lt;/section&gt;
+
+&lt;form method=&quot;get&quot; class=&quot;blog-filters&quot;&gt;
+  &lt;input type=&quot;search&quot; name=&quot;q&quot; value=&quot;{{ q }}&quot; placeholder=&quot;Buscar en el blog&quot;&gt;
+  &lt;select name=&quot;category&quot;&gt;
+    &lt;option value=&quot;&quot;&gt;Todas las categorías&lt;/option&gt;
+    {% for cat in categories %}
+      &lt;option value=&quot;{{ cat.slug }}&quot; {% if category_slug == cat.slug %}selected{% endif %}&gt;{{ cat.name }}&lt;/option&gt;
+    {% endfor %}
+  &lt;/select&gt;
+  &lt;button type=&quot;submit&quot;&gt;Filtrar&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;div class=&quot;blog-list&quot;&gt;
+  {% for post in posts %}
+    &lt;article class=&quot;blog-card&quot;&gt;
+      &lt;p class=&quot;meta&quot;&gt;
+        {% if post.category %}&lt;span&gt;{{ post.category.name }}&lt;/span&gt; · {% endif %}
+        &lt;a href=&quot;{% url &#x27;blog:author_posts&#x27; post.author.username %}&quot;&gt;{{ post.author.username }}&lt;/a&gt;
+        · {{ post.published_at|date:&quot;d M Y&quot; }}
+      &lt;/p&gt;
+      &lt;h2&gt;&lt;a href=&quot;{% url &#x27;blog:post_detail&#x27; post.slug %}&quot;&gt;{{ post.title }}&lt;/a&gt;&lt;/h2&gt;
+      &lt;p&gt;{{ post.excerpt }}&lt;/p&gt;
+    &lt;/article&gt;
+  {% empty %}
+    &lt;p&gt;No hay posts publicados todavía. Crea uno en /admin/ y marca estado Publicado.&lt;/p&gt;
+  {% endfor %}
+&lt;/div&gt;
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                blog/templates/blog/post_detail.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends &quot;base.html&quot; %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+&lt;article class=&quot;blog-detail&quot;&gt;
+  &lt;p class=&quot;meta&quot;&gt;
+    {% if post.category %}{{ post.category.name }} · {% endif %}
+    &lt;a href=&quot;{% url &#x27;blog:author_posts&#x27; post.author.username %}&quot;&gt;{{ post.author.username }}&lt;/a&gt;
+    · {{ post.published_at|date:&quot;d M Y H:i&quot; }}
+  &lt;/p&gt;
+  &lt;h1&gt;{{ post.title }}&lt;/h1&gt;
+  &lt;p class=&quot;excerpt&quot;&gt;{{ post.excerpt }}&lt;/p&gt;
+  &lt;div class=&quot;content&quot;&gt;{{ post.content|linebreaks }}&lt;/div&gt;
+  &lt;p&gt;&lt;a href=&quot;{% url &#x27;blog:post_list&#x27; %}&quot;&gt;← Volver al blog&lt;/a&gt;&lt;/p&gt;
+&lt;/article&gt;
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                blog/templates/blog/author_posts.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends &quot;base.html&quot; %}
+{% block title %}Posts de {{ author_username }}{% endblock %}
+{% block content %}
+&lt;h1&gt;Publicaciones de {{ author_username }}&lt;/h1&gt;
+&lt;div class=&quot;blog-list&quot;&gt;
+  {% for post in posts %}
+    &lt;article class=&quot;blog-card&quot;&gt;
+      &lt;h2&gt;&lt;a href=&quot;{% url &#x27;blog:post_detail&#x27; post.slug %}&quot;&gt;{{ post.title }}&lt;/a&gt;&lt;/h2&gt;
+      &lt;p&gt;{{ post.excerpt }}&lt;/p&gt;
+    &lt;/article&gt;
+  {% empty %}
+    &lt;p&gt;Este autor no tiene posts publicados.&lt;/p&gt;
+  {% endfor %}
+&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;{% url &#x27;blog:post_list&#x27; %}&quot;&gt;Volver al blog&lt;/a&gt;&lt;/p&gt;
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p><code>blog/templates/blog/</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p><p><code>/blog/</code> lista solo publicados.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>El post en borrador no aparece; al abrir su slug manualmente obtienes 404.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-10">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">10</span>
+            <h2>CSS del blog</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-10" aria-label="Marcar paso 10 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Tipografía limpia de lectura: meta, título, excerpt, cuerpo.</p>
+          <p class="step-label">Por qué</p>
+          <p>Un blog se juzga visualmente en 3 segundos en tu portafolio.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                static/css/blog.css
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-css">.blog-header { margin-bottom: 1.25rem; }
+.blog-filters { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; }
+.blog-filters input, .blog-filters select {
+  padding: 0.5rem 0.75rem; border: 1px solid #c9ced6; border-radius: 8px;
+}
+.blog-list { display: grid; gap: 1rem; }
+.blog-card {
+  border-bottom: 1px solid #e4e7ee;
+  padding-bottom: 1rem;
+}
+.blog-card h2 { margin: 0.35rem 0; font-size: 1.35rem; }
+.blog-card .meta, .blog-detail .meta { color: #5c6573; font-size: 0.9rem; }
+.blog-detail .excerpt { font-size: 1.05rem; opacity: 0.9; }
+.blog-detail .content { margin-top: 1.25rem; line-height: 1.7; }</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Link en base o template
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% load static %}
+&lt;link rel=&quot;stylesheet&quot; href=&quot;{% static &#x27;css/blog.css&#x27; %}&quot;&gt;</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p>Static + head.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>Listado legible; detalle con buen line-height.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Captura del detalle con título, meta y dos párrafos de contenido.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-11">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">11</span>
+            <h2>Flujo editorial draft → published</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-11" aria-label="Marcar paso 11 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear un borrador, confirmar que no se ve, publicarlo (acción admin o cambio de estado), confirmar que aparece y que published_at se llenó.</p>
+          <p class="step-label">Por qué</p>
+          <p>Es la historia que cuentas en el video demo del portafolio.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Checklist editorial
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash"># 1. Admin → crear Post status=Borrador
+# 2. /blog/ → no aparece
+# 3. /blog/&lt;slug&gt;/ → 404
+# 4. Admin → acción &quot;Marcar como publicados&quot; o status=Publicado + published_at
+# 5. /blog/ → aparece
+# 6. Detalle OK
+# 7. Filtro por categoría y búsqueda por excerpt</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p>Admin + navegador.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>El cambio de estado controla la visibilidad al instante.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Grabarás esto en el demo de 2–3 minutos.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-12">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">12</span>
+            <h2>Verificación final</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-12" aria-label="Marcar paso 12 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p><code>check</code>, recorrido público y confirmación de personalización Admin.</p>
+          <p class="step-label">Por qué</p>
+          <p>Cierra Fase 2 antes de HelpDesk (10).</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py check
+python manage.py runserver</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p><p>Terminal.</p>
+          <p class="step-label">Qué debería ocurrir</p><p>Sin issues. Blog público + Admin alineados.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Puedes nombrar en voz alta las cuatro personalizaciones del Admin que usaste.</p>
+            </div>
+          </div>
+        </article>
+        <section class="tutorial-section" id="errores-comunes">
+          <h2>Errores comunes</h2>
+          <ul>
+            <li><strong>Borradores visibles en /blog/</strong> — Falta <code>filter(status="published")</code> en la vista.</li>
+            <li><strong>404 en detalle de publicado</strong> — Typo en slug o status aún en draft.</li>
+            <li><strong>autor/ capturado como slug</strong> — Reordena urlpatterns.</li>
+            <li><strong>prepopulated_fields no actúa</strong> — Solo funciona en el formulario del Admin (JS del admin), no en tus forms públicos.</li>
+            <li><strong>IntegrityError slug</strong> — Slug duplicado; hazlo único a propósito.</li>
+            <li><strong>published_at vacío en publicados</strong> — Usa la acción <code>make_published</code> o asigna fecha al guardar.</li>
+          </ul>
+        </section>
+        <section class="mini-challenge tutorial-section" id="mini-reto">
+          <h2>Mini retos</h2>
+          <p><strong>Reto A — Tags:</strong> Modelo Tag M2M en Post y filtro <code>?tag=slug</code>.</p>
+          <p><strong>Reto B — Preview staff:</strong> Vista que permita a <code>is_staff</code> ver borradores con una URL especial.</p>
+          <p><strong>Reto C — Sitemap mental:</strong> Lista en el README todas las URLs públicas y qué queryset usan.</p>
+        </section>
+        <section class="portfolio-evidence tutorial-section" id="portafolio">
+          <h2>Qué subir a tu portafolio</h2>
+          <p>Blog dinámico con panel admin, categorías, slugs y control de publicación — evidencia clara de Fase 2.</p>
+          <div class="portfolio-evidence__grid">
+            <div class="portfolio-evidence__item">
+              <strong>Captura recomendada</strong>
+              <p>Listado público con al menos dos posts y una categoría, más una captura del Admin mostrando list_display y filtros.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Tecnologías</strong>
+              <p>Python, Django Admin, SQLite, slugs, HTML/CSS.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Problema que resuelve</strong>
+              <p>Publicar contenido con flujo editorial (borrador/publicado) y URLs legibles por slug.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Qué aprendí</strong>
+              <p>Personalización de Admin, prepopulated slugs, filtrado published en vistas, página de autor.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Mejoras futuras</strong>
+              <p>Tags, comentarios moderados, preview staff, RSS.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Repo y demo</strong>
+              <p>Sube el código a GitHub con un README claro. Graba un video de 2–3 minutos mostrando búsqueda, filtros y la captura principal.</p>
+            </div>
+          </div>
+        </section>
+        <section class="tutorial-section" id="checklist-final">
+          <h2>Checklist final</h2>
+          <ul class="checklist">
+            <li>Modelos migrados con slug y status.</li>
+            <li>Admin con list_display, search_fields, list_filter, prepopulated_fields.</li>
+            <li>Acción o flujo para publicar con published_at.</li>
+            <li>Listado/detalle/autor solo muestran published.</li>
+            <li>Borrador no es accesible por URL pública.</li>
+            <li>Capturas (web + admin) y README listos.</li>
+          </ul>
+        </section>
+        <nav class="tutorial-nav" aria-label="Navegación entre tutoriales">
+          <a class="btn btn--secondary" href="08-directorio-contactos-mini-crm.html">Anterior: Mini CRM</a>
+          <a class="btn btn--secondary" href="../ruta-portafolio.html">Ruta de portafolio</a>
+          <a class="btn btn--primary" href="10-helpdesk-tickets.html">Siguiente: HelpDesk de Tickets</a>
+        </nav>
+      </div>
+
+      <aside class="progress-rail" aria-label="Progreso del tutorial">
+        <div class="progress-rail__card">
+          <h3>Tu progreso</h3>
+          <div class="reading-progress" aria-hidden="true">
+            <div class="reading-progress__bar" data-scroll-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label">Lectura</p>
+          <div class="reading-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="reading-progress__bar" data-reading-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label" data-step-progress-label>0 de 12 pasos (0%)</p>
+          <button class="btn btn--primary complete-tutorial-btn" type="button" data-complete-tutorial>Marcar como completado</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Aprende Django con Teacher Jim</h3>
+          <p>Construido para aprender haciendo. Tutoriales en español para estudiantes que quieren entender Django, no solo copiar código.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tutoriales</h4>
+          <ul>
+            <li><a href="01-instalar-vscode-python.html">Instalar VS Code y Python</a></li>
+            <li><a href="02-entornos-django.html">Entornos + Django</a></li>
+            <li><a href="03-primera-ventana-django.html">Primera ventana</a></li>
+            <li><a href="04-todo-app-autenticacion.html">To-Do + Login</a></li>
+            <li><a href="05-errores-django.html">Errores comunes</a></li>
+            <li><a href="06-notes-app-categorias.html">Notes App</a></li>
+            <li><a href="07-calculadora-academica.html">Calculadora Académica</a></li>
+            <li><a href="08-directorio-contactos-mini-crm.html">Mini CRM</a></li>
+            <li><a href="09-blog-profesional-admin.html">Blog Profesional</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Ruta y repositorio</h4>
+          <ul>
+            <li><a href="../ruta-portafolio.html">Ruta de portafolio</a></li>
+            <li><a href="https://github.com/TU-USUARIO/TU-REPOSITORIO" rel="noopener noreferrer">GitHub</a></li>
+            <li><a href="../index.html#tutoriales">Todos los tutoriales</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span data-current-year>2026</span> Aprende Django con Teacher Jim</p>
+        <a class="back-to-top" href="#" data-back-to-top>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+            <path d="m18 15-6-6-6 6"></path>
+          </svg>
+          Volver arriba
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="search-overlay" data-search-overlay role="dialog" aria-modal="true" aria-label="Búsqueda de tutoriales">
+    <div class="search-box">
+      <input type="search" data-search-input placeholder="Buscar tutoriales..." aria-label="Buscar tutoriales">
+      <div class="search-results" data-search-results></div>
+    </div>
+  </div>
+
+  <div id="copy-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="../assets/js/theme.js" defer></script>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/tutorial-progress.js" defer></script>
+  <script src="../assets/js/code-copy.js" defer></script>
+  <script src="../assets/js/search.js" defer></script>
+  <script src="../assets/js/portfolio-progress.js" defer></script>
+  <script src="../assets/vendor/prism/prism.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-python.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-bash.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-markup.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-css.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-javascript.min.js" defer></script>
+</body>
+</html>

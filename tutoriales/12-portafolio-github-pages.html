@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial 12: Portafolio en GitHub Pages | Aprende Django con Teacher Jim</title>
+  <meta name="description" content="Crea y publica un portafolio estático en GitHub Pages con cards de todos tus proyectos Django.">
+  <meta name="author" content="Teacher Jim">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Tutorial 12: Portafolio en GitHub Pages">
+  <meta property="og:description" content="Fase 4: HTML/CSS/JS, rutas relativas y despliegue estático.">
+  <meta property="og:locale" content="es_ES">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/tutorial.css">
+  <link rel="stylesheet" href="../assets/css/syntax-theme.css">
+  <link rel="stylesheet" href="../assets/css/portfolio-roadmap.css">
+  <link rel="stylesheet" href="../assets/css/project-cards.css">
+</head>
+<body data-tutorial-id="tutorial-12">
+
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="app-bar">
+    <div class="app-bar__inner">
+      <a class="app-bar__brand" href="../index.html">
+        <img class="app-bar__logo" src="../assets/icons/favicon.svg" alt="" width="36" height="36">
+        Teacher Jim
+      </a>
+      <nav class="app-bar__nav" aria-label="Navegación principal">
+        <a href="../index.html">Inicio</a>
+        <a href="../index.html#tutoriales">Tutoriales</a>
+        <a href="../ruta-portafolio.html">Portafolio</a>
+        <a href="05-errores-django.html">Errores</a>
+      </nav>
+      <div class="app-bar__actions">
+        <button class="icon-btn" type="button" data-search-open aria-label="Buscar tutoriales">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        </button>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro">
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </button>
+        <button class="icon-btn menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Abrir menú de navegación">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" data-mobile-nav aria-label="Navegación móvil">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#tutoriales">Tutoriales</a>
+    <a href="../ruta-portafolio.html">Portafolio</a>
+    <a href="05-errores-django.html">Errores</a>
+  </nav>
+
+  <main id="main-content">
+    <div class="tutorial-layout">
+      <aside class="toc-sidebar">
+        <button class="toc-toggle" type="button" data-toc-toggle aria-expanded="false">Mapa de la misión</button>
+        <nav class="toc-panel" data-toc-panel aria-label="Contenido del tutorial">
+          <h2>Contenido</h2>
+          <ul class="toc-list">
+            <li><a href="#resultado-final">Resultado final</a></li>
+            <li><a href="#antes-de-empezar">Antes de empezar</a></li>
+            <li><a href="#critico-django">Django vs GitHub Pages</a></li>
+            <li><a href="#step-1">Paso 1: Estructura</a></li>
+            <li><a href="#step-2">Paso 2: Rutas relativas</a></li>
+            <li><a href="#step-3">Paso 3: index.html completo</a></li>
+            <li><a href="#step-4">Paso 4: CSS del portafolio</a></li>
+            <li><a href="#step-5">Paso 5: JavaScript</a></li>
+            <li><a href="#step-6">Paso 6: Cards de proyectos</a></li>
+            <li><a href="#step-7">Paso 7: Subir a GitHub</a></li>
+            <li><a href="#step-8">Paso 8: Activar Pages</a></li>
+            <li><a href="#checklist">Checklist</a></li>
+            <li><a href="#errores-comunes">Errores comunes</a></li>
+            <li><a href="#mini-retos">Mini retos</a></li>
+            <li><a href="#portfolio-evidence">Evidencia</a></li>
+          </ul>
+        </nav>
+      </aside>
+      <div class="tutorial-main">
+
+        <nav class="breadcrumb" aria-label="Ruta de navegación">
+          <a href="../index.html">Inicio</a>
+          <span aria-hidden="true">/</span>
+          <a href="../ruta-portafolio.html">Portafolio</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Portafolio GitHub Pages</span>
+        </nav>
+
+        <header class="tutorial-header">
+          <p class="tutorial-header__number">Tutorial 12 · Fase 4 · 4 clases</p>
+          <h1>Proyecto final: Portafolio profesional en GitHub Pages</h1>
+          <p class="tutorial-header__desc">Construyes una página personal estática (HTML/CSS/JS) que muestra todos tus proyectos Django. GitHub Pages la publica gratis. Debes entregarla el <strong>19 de noviembre de 2026 a las 5:00 p. m.</strong> El 1 de diciembre es el día de la graduación, no la fecha de entrega. Importante: Pages no ejecuta Django.</p>
+          <div class="tutorial-meta">
+            <span class="chip">Proyecto final</span>
+            <span class="chip">Fase 4</span>
+            <span class="chip">4 clases</span>
+            <span class="chip">8 pasos</span>
+          </div>
+        </header>
+
+        <section class="tutorial-section" id="resultado-final">
+          <h2>Resultado final</h2>
+          <ul>
+            <li>Sitio estático con hero, sobre mí, skills, proyectos, certificaciones y contacto.</li>
+            <li>Cards para: To-Do, Notes, Calculadora, Mini CRM, Blog, HelpDesk y Dashboard.</li>
+            <li>Publicado en <code>https://TU-USUARIO.github.io/TU-REPO/</code>.</li>
+            <li>Rutas relativas correctas (sin <code>/</code> inicial).</li>
+          </ul>
+        </section>
+
+        <section class="tutorial-section" id="antes-de-empezar">
+          <h2>Antes de empezar</h2>
+          <ul class="checklist">
+            <li>Tienes cuenta de GitHub y Git instalado.</li>
+            <li>Completaste varios proyectos Django locales con capturas de pantalla.</li>
+            <li>Sabes que este tutorial es HTML/CSS/JS, no un nuevo proyecto Django.</li>
+          </ul>
+        </section>
+
+        <section class="tutorial-section" id="critico-django">
+          <h2>Crítico: el portal enseña Django; Pages solo hospeda estáticos</h2>
+                    <div class="callout callout--error">
+            <div>
+              <p class="callout__label">No confundas los dos mundos</p>
+              <p>GitHub Pages sirve archivos estáticos: HTML, CSS, JS, imágenes. <strong>No instala Python. No ejecuta <code>manage.py runserver</code>. No monta SQLite.</strong> Tus apps Django viven en tu computadora (y en repos separados). El portafolio solo las documenta con capturas, textos y enlaces a GitHub.</p>
+            </div>
+          </div>
+                    <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>El portal «Aprende Django con Teacher Jim» también es estático: te enseña a construir. Cuando alguien abre tu portafolio en Pages, ve tu escaparate profesional, no el servidor de desarrollo.</p>
+            </div>
+          </div>
+        </section>
+        <article class="tutorial-step" id="step-1">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">1</span>
+            <h2>Crear la carpeta del portafolio</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-1" aria-label="Marcar paso 1 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear un repositorio/carpeta solo para el portafolio estático.</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Estructura recomendada
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">portfolio/
+├── index.html
+├── assets/
+│   ├── css/
+│   │   └── styles.css
+│   ├── js/
+│   │   └── main.js
+│   └── img/
+│       ├── hero.jpg          (opcional)
+│       ├── todo.png
+│       ├── notes.png
+│       ├── calc.png
+│       ├── crm.png
+│       ├── blog.png
+│       ├── helpdesk.png
+│       └── dashboard.png
+└── README.md</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Por qué</p>
+          <p>Separar el portafolio de tus proyectos Django evita mezclar <code>manage.py</code> con un sitio que Pages sí puede servir.</p>
+
+        </article>
+
+        <article class="tutorial-step" id="step-2">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">2</span>
+            <h2>Rutas relativas: la regla que más rompe Pages</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-2" aria-label="Marcar paso 2 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Entender por qué <code>href="/assets/css/styles.css"</code> falla en project Pages.</p>
+          <p class="step-label">Por qué</p>
+          <p>Tu sitio no vive en la raíz del dominio. Vive en <code>/nombre-del-repo/</code>. Una ruta con <code>/</code> inicial busca en <code>https://usuario.github.io/assets/...</code> (404). La correcta es relativa:</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Bien vs mal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup"><!-- MAL en GitHub Pages de proyecto -->
+<link rel="stylesheet" href="/assets/css/styles.css">
+<img src="/assets/img/todo.png" alt="">
+
+<!-- BIEN -->
+<link rel="stylesheet" href="assets/css/styles.css">
+<img src="assets/img/todo.png" alt="">
+
+<!-- También válido desde una subcarpeta -->
+<link rel="stylesheet" href="../assets/css/styles.css"></code></pre>
+            </div>
+          </div>
+                    <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Prueba local como Pages</p>
+              <p>Abre <code>index.html</code> con Live Server o sube a Pages. Si el CSS no carga, casi siempre es la barra inicial.</p>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-3">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">3</span>
+            <h2>Escribir index.html completo</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-3" aria-label="Marcar paso 3 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear la página con todas las secciones pedidas. Sustituye nombres, enlaces y capturas por los tuyos.</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                portfolio/index.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup"><!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tu Nombre — Portafolio Django</title>
+  <meta name="description" content="Portafolio de proyectos Django: To-Do, Notes, CRM, HelpDesk, Dashboard y más.">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="#inicio">TuNombre</a>
+    <nav>
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#skills">Skills</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#certificaciones">Certificaciones</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <button class="nav-toggle" type="button" aria-label="Abrir menú">Menú</button>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero__content">
+        <p class="eyebrow">Desarrollador Django en formación</p>
+        <h1>Tu Nombre</h1>
+        <p class="lead">Construyo aplicaciones web con Django: autenticación, CRUD, roles y dashboards con datos reales.</p>
+        <div class="hero__actions">
+          <a class="btn btn-primary" href="#proyectos">Ver proyectos</a>
+          <a class="btn btn-ghost" href="https://github.com/TU-USUARIO" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="sobre-mi" class="section">
+      <h2>Sobre mí</h2>
+      <p>Estudiante de programación enfocado en backend con Python y Django. Me gusta transformar problemas cotidianos (tareas, notas, soporte, gastos) en aplicaciones claras y usables.</p>
+      <p>Mi ruta: fundamentos → mini proyectos → proyectos con roles y datos → portafolio público.</p>
+    </section>
+
+    <section id="skills" class="section">
+      <h2>Skills</h2>
+      <ul class="skills">
+        <li>Python</li>
+        <li>Django</li>
+        <li>HTML / CSS</li>
+        <li>JavaScript</li>
+        <li>Git / GitHub</li>
+        <li>SQLite</li>
+        <li>Autenticación y CRUD</li>
+        <li>Chart.js (visualización)</li>
+      </ul>
+    </section>
+
+    <section id="proyectos" class="section">
+      <h2>Proyectos Django</h2>
+      <div class="project-grid">
+        <!-- To-Do -->
+        <article class="project-card">
+          <img src="assets/img/todo.png" alt="Captura de la app To-Do" width="640" height="360">
+          <h3>To-Do + Login</h3>
+          <p>Lista de tareas privada por usuario con registro, login y CRUD completo.</p>
+          <p class="tech">Django · Auth · ModelForm</p>
+          <a href="https://github.com/TU-USUARIO/todo-django" rel="noopener noreferrer">Repositorio</a>
+        </article>
+        <!-- Notes -->
+        <article class="project-card">
+          <img src="assets/img/notes.png" alt="Captura Notes App" width="640" height="360">
+          <h3>Notes App</h3>
+          <p>Notas con categorías, favoritos, búsqueda y filtros.</p>
+          <p class="tech">Django · Q filters · UI cards</p>
+          <a href="https://github.com/TU-USUARIO/notes-django" rel="noopener noreferrer">Repositorio</a>
+        </article>
+        <!-- Calculadora -->
+        <article class="project-card">
+          <img src="assets/img/calc.png" alt="Captura Calculadora Académica" width="640" height="360">
+          <h3>Calculadora Académica</h3>
+          <p>Promedios, estados académicos y recomendaciones según el resultado.</p>
+          <p class="tech">Django · Formularios · Lógica de negocio</p>
+          <a href="https://github.com/TU-USUARIO/calculadora-academica" rel="noopener noreferrer">Repositorio</a>
+        </article>
+        <!-- CRM -->
+        <article class="project-card">
+          <img src="assets/img/crm.png" alt="Captura Mini CRM" width="640" height="360">
+          <h3>Mini CRM de Contactos</h3>
+          <p>Directorio con tipos, estados, búsqueda y estadísticas simples.</p>
+          <p class="tech">Django · CRUD · Dashboard</p>
+          <a href="https://github.com/TU-USUARIO/mini-crm" rel="noopener noreferrer">Repositorio</a>
+        </article>
+        <!-- Blog -->
+        <article class="project-card">
+          <img src="assets/img/blog.png" alt="Captura Blog" width="640" height="360">
+          <h3>Blog profesional</h3>
+          <p>Posts con slug, borrador/publicado y administración vía Django Admin.</p>
+          <p class="tech">Django Admin · Slugs · Listas públicas</p>
+          <a href="https://github.com/TU-USUARIO/blog-django" rel="noopener noreferrer">Repositorio</a>
+        </article>
+        <!-- HelpDesk -->
+        <article class="project-card">
+          <img src="assets/img/helpdesk.png" alt="Captura HelpDesk" width="640" height="360">
+          <h3>HelpDesk de Tickets</h3>
+          <p>Soporte con prioridades, estados y vista distinta para usuario y staff.</p>
+          <p class="tech">Django · is_staff · Agregaciones</p>
+          <a href="https://github.com/TU-USUARIO/helpdesk-django" rel="noopener noreferrer">Repositorio</a>
+        </article>
+        <!-- Dashboard -->
+        <article class="project-card">
+          <img src="assets/img/dashboard.png" alt="Captura Dashboard" width="640" height="360">
+          <h3>Dashboard de gastos</h3>
+          <p>Ingresos y gastos con balance y gráficos Chart.js por categoría y mes.</p>
+          <p class="tech">Django · Decimal · Chart.js</p>
+          <a href="https://github.com/TU-USUARIO/finance-dashboard" rel="noopener noreferrer">Repositorio</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="certificaciones" class="section">
+      <h2>Certificaciones y formación</h2>
+      <ul class="certs">
+        <li>Ruta «Aprende Django con Teacher Jim» — portafolio profesional</li>
+        <li>Completa aquí cursos o talleres relevantes (nombre · institución · año)</li>
+      </ul>
+    </section>
+
+    <section id="contacto" class="section contact">
+      <h2>Contacto</h2>
+      <p>¿Quieres ver una demo o colaborar? Escríbeme.</p>
+      <ul>
+        <li>Email: <a href="mailto:tu@email.com">tu@email.com</a></li>
+        <li>GitHub: <a href="https://github.com/TU-USUARIO" rel="noopener noreferrer">@TU-USUARIO</a></li>
+        <li>LinkedIn: <a href="https://linkedin.com/in/TU-PERFIL" rel="noopener noreferrer">Perfil</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 Tu Nombre · Portafolio estático en GitHub Pages</p>
+  </footer>
+  <script src="assets/js/main.js"></script>
+</body>
+</html></code></pre>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-4">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">4</span>
+            <h2>CSS del portafolio</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-4" aria-label="Marcar paso 4 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                portfolio/assets/css/styles.css
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-css">:root {
+  --bg: #0b1020;
+  --surface: #151b2f;
+  --text: #eef2ff;
+  --muted: #9aa3c7;
+  --accent: #5b8cff;
+  --accent-2: #3dd6c6;
+  --radius: 16px;
+  --font: "Segoe UI", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  background:
+    radial-gradient(ellipse at top, #1a2450 0%, transparent 55%),
+    linear-gradient(180deg, #0b1020, #121826);
+  color: var(--text);
+  line-height: 1.6;
+}
+a { color: var(--accent-2); }
+.site-header {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.85rem 1.5rem;
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #243056;
+}
+.logo { font-weight: 800; text-decoration: none; color: var(--text); letter-spacing: 0.02em; }
+.site-header nav a {
+  color: var(--muted); text-decoration: none; margin-left: 1rem; font-size: 0.95rem;
+}
+.site-header nav a:hover { color: var(--text); }
+.nav-toggle { display: none; }
+.hero {
+  min-height: 78vh;
+  display: grid;
+  place-items: center;
+  padding: 4rem 1.5rem 3rem;
+  text-align: left;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.eyebrow { color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.8rem; }
+.hero h1 { font-size: clamp(2.4rem, 6vw, 4rem); line-height: 1.05; margin: 0.3rem 0 0.8rem; }
+.lead { max-width: 36rem; color: var(--muted); font-size: 1.15rem; }
+.hero__actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.5rem; }
+.btn {
+  display: inline-block; padding: 0.7rem 1.1rem; border-radius: 999px;
+  text-decoration: none; font-weight: 700;
+}
+.btn-primary { background: var(--accent); color: white; }
+.btn-ghost { border: 1px solid #3b4a78; color: var(--text); }
+.section { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem; }
+.section h2 { font-size: 1.8rem; margin-bottom: 1rem; }
+.skills { display: flex; flex-wrap: wrap; gap: 0.6rem; list-style: none; padding: 0; }
+.skills li {
+  background: var(--surface); border: 1px solid #2a365f; border-radius: 999px;
+  padding: 0.4rem 0.85rem; color: var(--muted);
+}
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+.project-card {
+  background: var(--surface);
+  border: 1px solid #2a365f;
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.project-card img {
+  width: 100%; height: 160px; object-fit: cover; background: #0f1528; display: block;
+}
+.project-card h3, .project-card p, .project-card a { margin: 0.4rem 1rem; }
+.project-card a { margin-bottom: 1rem; }
+.tech { color: var(--muted); font-size: 0.85rem; }
+.certs { padding-left: 1.1rem; color: var(--muted); }
+.contact ul { list-style: none; padding: 0; }
+.site-footer {
+  text-align: center; padding: 2rem 1rem; color: var(--muted);
+  border-top: 1px solid #243056;
+}
+@media (max-width: 720px) {
+  .site-header nav { display: none; }
+  .site-header nav.is-open {
+    display: flex; flex-direction: column; position: absolute;
+    top: 100%; left: 0; right: 0; background: var(--bg); padding: 1rem;
+  }
+  .site-header nav a { margin: 0.4rem 0; }
+  .nav-toggle { display: inline-block; background: var(--surface); color: var(--text); border: 1px solid #2a365f; border-radius: 8px; padding: 0.4rem 0.7rem; }
+}</code></pre>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-5">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">5</span>
+            <h2>JavaScript del menú móvil</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-5" aria-label="Marcar paso 5 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                portfolio/assets/js/main.js
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-javascript">(function () {
+  const toggle = document.querySelector(".nav-toggle");
+  const nav = document.querySelector(".site-header nav");
+  if (!toggle || !nav) return;
+  toggle.addEventListener("click", function () {
+    nav.classList.toggle("is-open");
+  });
+})();</code></pre>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-6">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">6</span>
+            <h2>Completar capturas y textos de cada card</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-6" aria-label="Marcar paso 6 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Para cada proyecto Django: captura PNG, descripción, tecnologías, enlace al repo (y video si tienes).</p>
+          <ul>
+            <li>Usa la misma resolución aproximada (por ejemplo 1280×720).</li>
+            <li>No subas datos personales de clientes reales.</li>
+            <li>En la card menciona el problema que resuelve, no solo «app hecha en Django».</li>
+          </ul>
+                    <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Si aún no tienes captura, deja un PNG de color sólido con el nombre del proyecto. Mejor una card completa que una imagen rota (ruta absoluta incorrecta).</p>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-7">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">7</span>
+            <h2>Crear repo, commit y push</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-7" aria-label="Marcar paso 7 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal (dentro de portfolio/)
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">git init
+git branch -M main
+git add .
+git commit -m "Portafolio estático inicial en GitHub Pages"
+# Crea el repo vacío en GitHub, luego:
+git remote add origin https://github.com/TU-USUARIO/TU-REPO-PORTAFOLIO.git
+git push -u origin main</code></pre>
+            </div>
+          </div>
+          <p>Añade un <code>.gitignore</code> mínimo si trabajas con editores (<code>.DS_Store</code>, <code>Thumbs.db</code>). No subas secretos de Django aquí: este repo no debe contener <code>settings.py</code> con claves.</p>
+
+        </article>
+
+        <article class="tutorial-step" id="step-8">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">8</span>
+            <h2>Activar GitHub Pages y verificar</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-8" aria-label="Marcar paso 8 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <ol>
+            <li>En GitHub: Settings → Pages.</li>
+            <li>Source: Deploy from a branch.</li>
+            <li>Branch: <code>main</code> · folder: <code>/ (root)</code>.</li>
+            <li>Save y espera 1–2 minutos.</li>
+            <li>Abre <code>https://TU-USUARIO.github.io/TU-REPO-PORTAFOLIO/</code>.</li>
+          </ol>
+                    <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>El CSS carga, las imágenes se ven, el menú móvil funciona, y ningún enlace apunta a <code>127.0.0.1</code>.</p>
+            </div>
+          </div>
+                    <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>CSS 404 en Pages</strong> — Tenías <code>/assets/...</code> con barra inicial. Cámbialo a <code>assets/...</code> y vuelve a hacer push.</p>
+            </div>
+          </div>
+
+        </article>
+
+        <section class="tutorial-section" id="checklist">
+          <h2>Checklist final</h2>
+          <ul class="checklist">
+            <li>Estructura <code>index.html</code> + <code>assets/css|js|img</code>.</li>
+            <li>Secciones: hero, sobre mí, skills, proyectos, certificaciones, contacto.</li>
+            <li>Siete cards de proyectos Django con rutas relativas.</li>
+            <li>Repo en GitHub y Pages activo con URL pública.</li>
+            <li>Queda claro que Pages no corre Django.</li>
+          </ul>
+        </section>
+
+        <section class="tutorial-section" id="errores-comunes">
+          <h2>Errores comunes</h2>
+          <div class="callout callout--error"><div>
+            <p class="callout__label">Error común</p>
+            <p><strong>Página en blanco / sin estilos</strong> — Rutas absolutas con <code>/</code> o archivos fuera de la carpeta publicada.</p>
+          </div></div>
+          <div class="callout callout--error"><div>
+            <p class="callout__label">Error común</p>
+            <p><strong>Intentar subir el proyecto Django a Pages esperando que funcione</strong> — No funcionará. Publica el portafolio estático; los repos Django quedan aparte.</p>
+          </div></div>
+          <div class="callout callout--error"><div>
+            <p class="callout__label">Error común</p>
+            <p><strong>Enlaces a localhost</strong> — Nunca pongas <code>http://127.0.0.1:8000</code> como demo pública.</p>
+          </div></div>
+        </section>
+
+        <section class="mini-challenge tutorial-step" id="mini-retos">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">+</span>
+            <h2>Mini retos</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-9" aria-label="Marcar mini retos">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Reto A — Modo claro/oscuro</p>
+          <p>Botón que cambia tema guardando preferencia en <code>localStorage</code>.</p>
+          <p class="step-label">Reto B — Página por proyecto</p>
+          <p>Crea <code>proyectos/helpdesk.html</code> con historia, aprendizajes y más capturas (rutas <code>../assets/</code>).</p>
+          <p class="step-label">Reto C — Dominio custom</p>
+          <p>Investiga cómo conectar un dominio propio a GitHub Pages (opcional).</p>
+        </section>
+
+        <section class="portfolio-evidence" id="portfolio-evidence">
+          <h2>Qué demuestra este proyecto</h2>
+          <div class="portfolio-evidence__grid">
+            <div class="portfolio-evidence__item"><strong>Captura</strong><p>Tu URL pública abierta en el navegador (hero + grid de proyectos).</p></div>
+            <div class="portfolio-evidence__item"><strong>Tecnologías</strong><p>HTML5, CSS, JS, GitHub Pages.</p></div>
+            <div class="portfolio-evidence__item"><strong>Problema</strong><p>Tener un escaparate profesional compartible con un enlace.</p></div>
+            <div class="portfolio-evidence__item"><strong>Aprendizajes</strong><p>Rutas relativas, despliegue estático, narrativa de proyectos.</p></div>
+            <div class="portfolio-evidence__item"><strong>Mejoras</strong><p>i18n, blog estático, formulario con Formspree.</p></div>
+            <div class="portfolio-evidence__item"><strong>Siguiente</strong><p>Tutorial 13: README y video demo de graduación.</p></div>
+          </div>
+        </section>
+
+        <nav class="tutorial-nav" aria-label="Navegación entre tutoriales">
+          <a class="btn btn--secondary" href="11-dashboard-datos.html">Anterior: Dashboard</a>
+          <a class="btn btn--secondary" href="../ruta-portafolio.html">Ruta de portafolio</a>
+          <a class="btn btn--primary" href="13-documentacion-demo-final.html">Siguiente: Documentación y demo</a>
+        </nav>
+      </div>
+
+      <aside class="progress-rail" aria-label="Progreso del tutorial">
+        <div class="progress-rail__card">
+          <h3>Tu progreso</h3>
+          <div class="reading-progress" aria-hidden="true">
+            <div class="reading-progress__bar" data-scroll-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label">Lectura</p>
+          <div class="reading-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="reading-progress__bar" data-reading-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label" data-step-progress-label>0 de 9 pasos (0%)</p>
+          <button class="btn btn--primary complete-tutorial-btn" type="button" data-complete-tutorial>Marcar como completado</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Aprende Django con Teacher Jim</h3>
+          <p>Construido para aprender haciendo. Tutoriales en español para estudiantes que quieren entender Django, no solo copiar código.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tutoriales</h4>
+          <ul>
+            <li><a href="09-blog-profesional-admin.html">Blog profesional</a></li>
+            <li><a href="10-helpdesk-tickets.html">HelpDesk de Tickets</a></li>
+            <li><a href="11-dashboard-datos.html">Dashboard de Datos</a></li>
+            <li><a href="12-portafolio-github-pages.html">Portafolio GitHub Pages</a></li>
+            <li><a href="13-documentacion-demo-final.html">Documentación y Demo</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Ruta</h4>
+          <ul>
+            <li><a href="../ruta-portafolio.html">Ruta de portafolio</a></li>
+            <li><a href="../index.html#tutoriales">Todos los tutoriales</a></li>
+            <li><a href="05-errores-django.html">Errores comunes</a></li>
+            <li><a href="https://github.com/TU-USUARIO/TU-REPOSITORIO" rel="noopener noreferrer">GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span data-current-year>2026</span> Aprende Django con Teacher Jim</p>
+        <a class="back-to-top" href="#" data-back-to-top>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+            <path d="m18 15-6-6-6 6"></path>
+          </svg>
+          Volver arriba
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="search-overlay" data-search-overlay role="dialog" aria-modal="true" aria-label="Búsqueda de tutoriales">
+    <div class="search-box">
+      <input type="search" data-search-input placeholder="Buscar tutoriales..." aria-label="Buscar tutoriales">
+      <div class="search-results" data-search-results></div>
+    </div>
+  </div>
+
+  <div id="copy-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="../assets/js/theme.js" defer></script>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/tutorial-progress.js" defer></script>
+  <script src="../assets/js/code-copy.js" defer></script>
+  <script src="../assets/js/search.js" defer></script>
+  <script src="../assets/js/portfolio-progress.js" defer></script>
+  <script src="../assets/vendor/prism/prism.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-python.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-bash.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-markup.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-css.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-javascript.min.js" defer></script>
+</body>
+</html>
+

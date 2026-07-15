@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial 07: Calculadora Académica | Aprende Django con Teacher Jim</title>
+  <meta name="description" content="Calcula promedio final, estado académico y recomendación con formularios Django. Puede empezar sin base de datos.">
+  <meta name="author" content="Teacher Jim">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Tutorial 07: Calculadora Académica">
+  <meta property="og:description" content="Promedios ponderados, estados Excelente/Aprobado/En riesgo/Reprobado y recomendaciones.">
+  <meta property="og:locale" content="es_ES">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/tutorial.css">
+  <link rel="stylesheet" href="../assets/css/syntax-theme.css">
+  <link rel="stylesheet" href="../assets/css/portfolio-roadmap.css">
+  <link rel="stylesheet" href="../assets/css/project-cards.css">
+</head>
+<body data-tutorial-id="tutorial-07">
+
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="app-bar">
+    <div class="app-bar__inner">
+      <a class="app-bar__brand" href="../index.html">
+        <img class="app-bar__logo" src="../assets/icons/favicon.svg" alt="" width="36" height="36">
+        Teacher Jim
+      </a>
+      <nav class="app-bar__nav" aria-label="Navegación principal">
+        <a href="../index.html">Inicio</a>
+        <a href="../index.html#tutoriales">Tutoriales</a>
+        <a href="../ruta-portafolio.html">Portafolio</a>
+        <a href="05-errores-django.html">Errores</a>
+      </nav>
+      <div class="app-bar__actions">
+        <button class="icon-btn" type="button" data-search-open aria-label="Buscar tutoriales">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        </button>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro">
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </button>
+        <button class="icon-btn menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Abrir menú de navegación">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" data-mobile-nav aria-label="Navegación móvil">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#tutoriales">Tutoriales</a>
+    <a href="../ruta-portafolio.html">Portafolio</a>
+    <a href="05-errores-django.html">Errores</a>
+  </nav>
+  <main id="main-content">
+    <div class="tutorial-layout">
+
+      <aside class="toc-sidebar">
+        <button class="toc-toggle" type="button" data-toc-toggle aria-expanded="false">Mapa de la misión</button>
+        <nav class="toc-panel" data-toc-panel aria-label="Contenido del tutorial">
+          <h2>Contenido</h2>
+          <ul class="toc-list">
+            <li><a href="#resultado-final">Resultado final</a></li>
+            <li><a href="#antes-de-empezar">Antes de empezar</a></li>
+            <li><a href="#arquitectura">Arquitectura</a></li>
+            <li><a href="#step-1">Paso 1: App grades</a></li>
+            <li><a href="#step-2">Paso 2: Lógica de cálculo</a></li>
+            <li><a href="#step-3">Paso 3: Formulario</a></li>
+            <li><a href="#step-4">Paso 4: Vista</a></li>
+            <li><a href="#step-5">Paso 5: URLs</a></li>
+            <li><a href="#step-6">Paso 6: Template formulario</a></li>
+            <li><a href="#step-7">Paso 7: Template resultado</a></li>
+            <li><a href="#step-8">Paso 8: CSS</a></li>
+            <li><a href="#step-9">Paso 9: Validaciones</a></li>
+            <li><a href="#step-10">Paso 10: Verificar</a></li>
+            <li><a href="#bonus-modelo">Bonus: GradeItem</a></li>
+            <li><a href="#errores-comunes">Errores comunes</a></li>
+            <li><a href="#mini-reto">Mini retos</a></li>
+            <li><a href="#portafolio">Portafolio</a></li>
+            <li><a href="#checklist-final">Checklist final</a></li>
+          </ul>
+        </nav>
+      </aside>
+      <div class="tutorial-main">
+
+        <nav class="breadcrumb" aria-label="Ruta de navegación">
+          <a href="../index.html">Inicio</a>
+          <span aria-hidden="true">/</span>
+          <a href="../index.html#tutoriales">Tutoriales</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Calculadora Académica</span>
+        </nav>
+        <header class="tutorial-header">
+          <p class="tutorial-header__number">Tutorial 07 · Fase 1 · Mini Proyecto 02</p>
+          <h1>Calculadora Académica</h1>
+          <p class="tutorial-header__desc">Herramienta web para calcular el promedio final a partir de actividades, porcentajes y notas. Empieza sin base de datos: formulario + lógica Python + resultado en plantilla. Ideal para una clase enfocada en validación y cálculos.</p>
+          <div class="tutorial-meta">
+            <span class="chip">Fase 1</span>
+            <span class="chip">1 clase</span>
+            <span class="chip">10 pasos</span>
+            <span class="chip">Sin DB al inicio</span>
+          </div>
+        </header>
+        <section class="tutorial-section" id="resultado-final">
+          <h2>Resultado final</h2>
+          <ul>
+            <li>App <code>grades</code> con calculadora en <code>/calculadora/</code>.</li>
+            <li>Formulario de estudiante, materia y varias actividades (formset).</li>
+            <li>Promedio ponderado, estado (Excelente / Aprobado / En riesgo / Reprobado) y recomendación.</li>
+            <li>Tabla de aportes por actividad y CSS claro para captura de portafolio.</li>
+            <li>Sección bonus opcional con modelo <code>GradeItem</code> si quieres persistir.</li>
+          </ul>
+          <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Por qué sin DB primero</p>
+              <p>Te obliga a dominar formularios, validación y lógica pura. Luego añadir un modelo es opcional, no un requisito para que el proyecto funcione.</p>
+            </div>
+          </div>
+          <div class="tree-structure">mi_primer_django/
+├── grades/
+│   ├── forms.py
+│   ├── services.py
+│   ├── views.py
+│   ├── urls.py
+│   ├── models.py          ← vacío al inicio; bonus al final
+│   └── templates/grades/
+│       └── calculator.html
+└── static/css/calculator.css</div>
+        </section>
+        <section class="tutorial-section" id="antes-de-empezar">
+          <h2>Antes de empezar</h2>
+          <ul class="checklist">
+            <li>Tutoria­les 01–03 listos (proyecto Django corre).</li>
+            <li>Tienes <code>base.html</code> con bloque <code>content</code> (del Tutorial 04 o equivalente).</li>
+            <li>No necesitas login para la versión básica de este proyecto.</li>
+          </ul>
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Este proyecto cabe en una clase si no te dispersas. Primero calcula bien. El bonus con modelo es solo si te sobra tiempo.</p>
+            </div>
+          </div>
+        </section>
+        <section class="tutorial-section" id="arquitectura">
+          <h2>Arquitectura</h2>
+          <p>POST del formulario → validación de Form + FormSet → <code>compute_final()</code> en <code>services.py</code> → contexto con promedio/estado → mismo template muestra resultado. Sin migraciones en el camino principal.</p>
+        </section>
+        <article class="tutorial-step" id="step-1">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">1</span>
+            <h2>Crear la app grades</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-1" aria-label="Marcar paso 1 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear <code>grades</code> y registrarla en <code>INSTALLED_APPS</code>.</p>
+          <p class="step-label">Por qué</p>
+          <p>Mantienes la calculadora separada de notes/tasks. Facilita demostrar el proyecto solo.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py startapp grades</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                config/settings.py (añadir)
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">&quot;grades&quot;,  # dentro de INSTALLED_APPS</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>Raíz del proyecto; settings en la lista de apps instaladas.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Existe <code>grades/</code>.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>La carpeta `grades` aparece junto a `notes` o `tasks`.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-2">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">2</span>
+            <h2>Lógica pura en services.py</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-2" aria-label="Marcar paso 2 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Escribir funciones que calculan el promedio ponderado y clasifican el estado académico.</p>
+          <p class="step-label">Por qué</p>
+          <p>Separar lógica de la vista facilita pruebas mentales y evita plantillas con aritmética. También es un buen talking point en portafolio.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                grades/services.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python"># grades/services.py — lógica pura, fácil de testear sin base de datos
+def classify_average(average: float) -&gt; tuple[str, str]:
+    &quot;&quot;&quot;Devuelve (estado, recomendación) según el promedio 0-100.&quot;&quot;&quot;
+    if average &gt;= 90:
+        return &quot;Excelente&quot;, &quot;Mantén el ritmo. Refuerza con un proyecto práctico.&quot;
+    if average &gt;= 70:
+        return &quot;Aprobado&quot;, &quot;Vas bien. Repasa los temas con menor nota.&quot;
+    if average &gt;= 60:
+        return &quot;En riesgo&quot;, &quot;Prioriza tutorías y práctica guiada esta semana.&quot;
+    return &quot;Reprobado&quot;, &quot;Agenda un plan de recuperación y evalua qué actividades bajarion más.&quot;
+
+
+def compute_final(activities: list[dict]) -&gt; dict:
+    &quot;&quot;&quot;
+    activities: [{name, grade, weight}, ...]
+    grade: 0-100, weight: porcentaje (suma ideal 100).
+    &quot;&quot;&quot;
+    if not activities:
+        raise ValueError(&quot;Debes agregar al menos una actividad.&quot;)
+
+    total_weight = sum(float(a[&quot;weight&quot;]) for a in activities)
+    if total_weight &lt;= 0:
+        raise ValueError(&quot;La suma de porcentajes debe ser mayor que cero.&quot;)
+
+    weighted = 0.0
+    rows = []
+    for item in activities:
+        grade = float(item[&quot;grade&quot;])
+        weight = float(item[&quot;weight&quot;])
+        if grade &lt; 0 or grade &gt; 100:
+            raise ValueError(f&quot;La nota de &#x27;{item[&#x27;name&#x27;]}&#x27; debe estar entre 0 y 100.&quot;)
+        if weight &lt; 0:
+            raise ValueError(f&quot;El porcentaje de &#x27;{item[&#x27;name&#x27;]}&#x27; no puede ser negativo.&quot;)
+        contribution = grade * (weight / 100.0)
+        weighted += contribution
+        rows.append({
+            &quot;name&quot;: item[&quot;name&quot;],
+            &quot;grade&quot;: grade,
+            &quot;weight&quot;: weight,
+            &quot;contribution&quot;: round(contribution, 2),
+        })
+
+    # Normaliza si la suma de pesos no es exactamente 100
+    average = round(weighted * (100.0 / total_weight), 2) if total_weight != 100 else round(weighted, 2)
+    status, recommendation = classify_average(average)
+    return {
+        &quot;rows&quot;: rows,
+        &quot;total_weight&quot;: round(total_weight, 2),
+        &quot;average&quot;: average,
+        &quot;status&quot;: status,
+        &quot;recommendation&quot;: recommendation,
+    }</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>Archivo nuevo <code>grades/services.py</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Puedes probar la función en el shell de Django más adelante.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Estados: ≥90 Excelente, ≥70 Aprobado, ≥60 En riesgo, resto Reprobado.</p>
+            </div>
+          </div>
+          <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Normalización</p>
+              <p>Si los porcentajes suman 80 o 120, normalizamos para no “inflar” o “congelar” el promedio de forma silenciosa. Documenta ese comportamiento en el README.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-3">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">3</span>
+            <h2>Formularios y formset</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-3" aria-label="Marcar paso 3 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear un form de metadatos (estudiante, materia) y un form de actividad para usarlo en un formset.</p>
+          <p class="step-label">Por qué</p>
+          <p>El formset permite varias actividades en un solo POST sin inventar nombres de campos a mano.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                grades/forms.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django import forms
+
+
+class CalculatorMetaForm(forms.Form):
+    student_name = forms.CharField(label=&quot;Nombre del estudiante&quot;, max_length=120)
+    subject_name = forms.CharField(label=&quot;Materia&quot;, max_length=120)
+
+
+class ActivityForm(forms.Form):
+    name = forms.CharField(label=&quot;Actividad&quot;, max_length=100)
+    grade = forms.FloatField(label=&quot;Nota (0-100)&quot;, min_value=0, max_value=100)
+    weight = forms.FloatField(label=&quot;Porcentaje&quot;, min_value=0.01, max_value=100)</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p><code>grades/forms.py</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Importas los forms en la vista sin error.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p><code>grade</code> y <code>weight</code> usan min/max para validación básica de Django.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-4">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">4</span>
+            <h2>Vista calculator</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-4" aria-label="Marcar paso 4 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Conectar formset + meta form, llamar a <code>compute_final</code> y devolver resultado o error.</p>
+          <p class="step-label">Por qué</p>
+          <p>La vista orquesta; no calcula. Eso mantiene el código legible.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                grades/views.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.forms import formset_factory
+from django.shortcuts import render
+from .forms import ActivityForm, CalculatorMetaForm
+from .services import compute_final
+
+
+ActivityFormSet = formset_factory(ActivityForm, extra=3, min_num=1, validate_min=True)
+
+
+def calculator(request):
+    result = None
+    error = None
+
+    if request.method == &quot;POST&quot;:
+        meta = CalculatorMetaForm(request.POST, prefix=&quot;meta&quot;)
+        formset = ActivityFormSet(request.POST, prefix=&quot;acts&quot;)
+        if meta.is_valid() and formset.is_valid():
+            activities = []
+            for form in formset:
+                if not form.cleaned_data or form.cleaned_data.get(&quot;DELETE&quot;):
+                    continue
+                if not form.cleaned_data.get(&quot;name&quot;):
+                    continue
+                activities.append({
+                    &quot;name&quot;: form.cleaned_data[&quot;name&quot;],
+                    &quot;grade&quot;: form.cleaned_data[&quot;grade&quot;],
+                    &quot;weight&quot;: form.cleaned_data[&quot;weight&quot;],
+                })
+            try:
+                computed = compute_final(activities)
+                result = {
+                    **computed,
+                    &quot;student_name&quot;: meta.cleaned_data[&quot;student_name&quot;],
+                    &quot;subject_name&quot;: meta.cleaned_data[&quot;subject_name&quot;],
+                }
+            except ValueError as exc:
+                error = str(exc)
+        else:
+            error = &quot;Revisa los campos marcados. Todas las actividades usadas deben ser válidas.&quot;
+    else:
+        meta = CalculatorMetaForm(prefix=&quot;meta&quot;)
+        formset = ActivityFormSet(prefix=&quot;acts&quot;)
+
+    return render(
+        request,
+        &quot;grades/calculator.html&quot;,
+        {
+            &quot;meta&quot;: meta,
+            &quot;formset&quot;: formset,
+            &quot;result&quot;: result,
+            &quot;error&quot;: error,
+        },
+    )</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>Reemplaza <code>grades/views.py</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>GET muestra formularios vacíos; POST calcula o muestra error.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Usas prefijos <code>meta</code> y <code>acts</code> para no mezclar campos HTML.</p>
+            </div>
+          </div>
+          <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>ManagementForm data is missing</strong> — Olvidaste renderizar <code>{{ formset.management_form }}</code> en el template.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-5">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">5</span>
+            <h2>URLs</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-5" aria-label="Marcar paso 5 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Exponer la calculadora en <code>/calculadora/</code>.</p>
+          <p class="step-label">Por qué</p>
+          <p>URL estable y memorable para demos y captura de pantalla.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                grades/urls.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.urls import path
+from . import views
+
+app_name = &quot;grades&quot;
+
+urlpatterns = [
+    path(&quot;&quot;, views.calculator, name=&quot;calculator&quot;),
+]</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                config/urls.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python"># Añade esta línea en urlpatterns de config/urls.py:
+path(&quot;calculadora/&quot;, include(&quot;grades.urls&quot;)),</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>App urls nuevo; include en config con el resto de rutas.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>La ruta existe; sin template fallará hasta el siguiente paso.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p><code>app_name = "grades"</code> y name <code>calculator</code> para {% url 'grades:calculator' %}.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-6">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">6</span>
+            <h2>Template único formulario + resultado</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-6" aria-label="Marcar paso 6 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear <code>calculator.html</code> que muestra el form y, si hay resultado, la sección de promedio.</p>
+          <p class="step-label">Por qué</p>
+          <p>Un solo template simplifica el flujo de una clase. El usuario calcula y ve el resultado debajo.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                grades/templates/grades/calculator.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends &quot;base.html&quot; %}
+{% load static %}
+{% block title %}Calculadora Académica{% endblock %}
+{% block content %}
+&lt;section class=&quot;calc-hero&quot;&gt;
+  &lt;h1&gt;Calculadora Académica&lt;/h1&gt;
+  &lt;p&gt;Ingresa actividades, porcentajes y notas. Obtén promedio, estado y recomendación.&lt;/p&gt;
+&lt;/section&gt;
+
+{% if error %}
+  &lt;div class=&quot;calc-alert&quot;&gt;{{ error }}&lt;/div&gt;
+{% endif %}
+
+&lt;form method=&quot;post&quot; class=&quot;calc-form&quot; novalidate&gt;
+  {% csrf_token %}
+  &lt;fieldset&gt;
+    &lt;legend&gt;Datos generales&lt;/legend&gt;
+    {{ meta.as_p }}
+  &lt;/fieldset&gt;
+
+  &lt;fieldset&gt;
+    &lt;legend&gt;Actividades&lt;/legend&gt;
+    {{ formset.management_form }}
+    &lt;div class=&quot;calc-activities&quot;&gt;
+      {% for form in formset %}
+        &lt;div class=&quot;calc-activity&quot;&gt;
+          {{ form.as_p }}
+        &lt;/div&gt;
+      {% endfor %}
+    &lt;/div&gt;
+  &lt;/fieldset&gt;
+
+  &lt;button type=&quot;submit&quot;&gt;Calcular promedio&lt;/button&gt;
+&lt;/form&gt;
+
+{% if result %}
+&lt;section class=&quot;calc-result&quot; id=&quot;resultado&quot;&gt;
+  &lt;h2&gt;Resultado&lt;/h2&gt;
+  &lt;p&gt;&lt;strong&gt;{{ result.student_name }}&lt;/strong&gt; — {{ result.subject_name }}&lt;/p&gt;
+  &lt;p class=&quot;calc-average&quot;&gt;Promedio final: &lt;strong&gt;{{ result.average }}&lt;/strong&gt;&lt;/p&gt;
+  &lt;p class=&quot;calc-status status-{{ result.status|slugify }}&quot;&gt;Estado: {{ result.status }}&lt;/p&gt;
+  &lt;p&gt;{{ result.recommendation }}&lt;/p&gt;
+  &lt;p&gt;Suma de porcentajes: {{ result.total_weight }}%&lt;/p&gt;
+  &lt;table class=&quot;calc-table&quot;&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;&lt;th&gt;Actividad&lt;/th&gt;&lt;th&gt;Nota&lt;/th&gt;&lt;th&gt;%&lt;/th&gt;&lt;th&gt;Aporte&lt;/th&gt;&lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      {% for row in result.rows %}
+        &lt;tr&gt;
+          &lt;td&gt;{{ row.name }}&lt;/td&gt;
+          &lt;td&gt;{{ row.grade }}&lt;/td&gt;
+          &lt;td&gt;{{ row.weight }}&lt;/td&gt;
+          &lt;td&gt;{{ row.contribution }}&lt;/td&gt;
+        &lt;/tr&gt;
+      {% endfor %}
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/section&gt;
+{% endif %}
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p><code>grades/templates/grades/calculator.html</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Al abrir <code>/calculadora/</code> ves el formulario.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>El management_form está dentro del <code>&lt;form method="post"&gt;</code> junto al csrf_token.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-7">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">7</span>
+            <h2>Enlazar CSS y pulir el resultado</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-7" aria-label="Marcar paso 7 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Añadir <code>calculator.css</code> y cargarlo en el template o en <code>base.html</code>.</p>
+          <p class="step-label">Por qué</p>
+          <p>Estados con color refuerzan la lectura del resultado en demos.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                static/css/calculator.css
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-css">.calc-hero { margin-bottom: 1.5rem; }
+.calc-form fieldset {
+  border: 1px solid #d5d9e0;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.calc-activities {
+  display: grid;
+  gap: 1rem;
+}
+.calc-activity {
+  background: #f7f8fa;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+}
+.calc-alert {
+  background: #fde8e8;
+  color: #8a1f1f;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+.calc-result {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border-radius: 12px;
+  background: linear-gradient(160deg, #eef7ff, #f7fff0);
+}
+.calc-average { font-size: 1.25rem; }
+.status-excelente { color: #0b7a28; font-weight: 700; }
+.status-aprobado { color: #1a5fb4; font-weight: 700; }
+.status-en-riesgo { color: #b35c00; font-weight: 700; }
+.status-reprobado { color: #a51d2e; font-weight: 700; }
+.calc-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+.calc-table th, .calc-table td {
+  border-bottom: 1px solid #d8dce3;
+  padding: 0.5rem;
+  text-align: left;
+}</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                En calculator.html o base.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% load static %}
+&lt;link rel=&quot;stylesheet&quot; href=&quot;{% static &#x27;css/calculator.css&#x27; %}&quot;&gt;</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>Static del proyecto; link en head.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>El bloque de resultado se distingue del formulario.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Prueba un promedio ≥90 y confirma la clase visual de Excelente.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-8">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">8</span>
+            <h2>Casos de validación manual</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-8" aria-label="Marcar paso 8 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Probar entradas válidas e inválidas: nota fuera de rango, sin actividades, porcentajes raros.</p>
+          <p class="step-label">Por qué</p>
+          <p>Una calculadora sin validación miente. Prefiere un error claro a un promedio absurdo.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Casos de prueba
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash"># Caso OK: Parcial 80 (30%), Proyecto 90 (40%), Examen 70 (30%) → promedio 80
+# Caso riesgo: promedio entre 60 y 69.99 → &quot;En riesgo&quot;
+# Caso error: dejar activities vacías / nota 120 → mensaje de error
+# Caso pesos: 50+50=100 → sin normalización extra relevante</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>Navegador, con runserver activo.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Los casos OK muestran tabla y estado; los inválidos muestran alerta, no 500.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Ningún Traceback en terminal al enviar basura intencional en el form.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-9">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">9</span>
+            <h2>Probar en Django shell (opcional)</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-9" aria-label="Marcar paso 9 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Invocar <code>compute_final</code> desde el shell para confirmar la matemática sin HTML.</p>
+          <p class="step-label">Por qué</p>
+          <p>Separas bugs de lógica vs bugs de template.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py shell</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Shell
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from grades.services import compute_final
+print(compute_final([
+    {&quot;name&quot;: &quot;Parcial&quot;, &quot;grade&quot;: 80, &quot;weight&quot;: 30},
+    {&quot;name&quot;: &quot;Proyecto&quot;, &quot;grade&quot;: 90, &quot;weight&quot;: 40},
+    {&quot;name&quot;: &quot;Examen&quot;, &quot;grade&quot;: 70, &quot;weight&quot;: 30},
+]))</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>Shell interactivo.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Average 80.0 y status Aprobado.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>80*0.3 + 90*0.4 + 70*0.3 = 80. Confirma el diccionario devuelto.</p>
+            </div>
+          </div>
+        </article>
+        <article class="tutorial-step" id="step-10">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">10</span>
+            <h2>Verificación y captura</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-10" aria-label="Marcar paso 10 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Correr check, calcular un caso realista y guardar captura del resultado con estado visible.</p>
+          <p class="step-label">Por qué</p>
+          <p>La evidencia del portafolio es el resultado, no el formulario vacío.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py check
+python manage.py runserver</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>Terminal y navegador en <code>/calculadora/</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Check limpio. Demo completa en menos de un minuto.</p>
+          <p class="step-label">Verifica</p>
+          <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Captura con nombre, materia, tabla, promedio y estado visibles.</p>
+            </div>
+          </div>
+          <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Si alguien te pregunta cómo decidiste los umbrales 90/70/60, debes poder justificarlos. Documéntalos en el README.</p>
+            </div>
+          </div>
+        </article>
+        <section class="tutorial-section" id="bonus-modelo">
+          <h2>Bonus: modelo GradeItem (opcional)</h2>
+          <p>Si te sobra tiempo, persiste cada actividad. No es obligatorio para aprobar el mini proyecto.</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                grades/models.py (bonus)
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.conf import settings
+from django.db import models
+
+
+class GradeItem(models.Model):
+    &quot;&quot;&quot;Bonus opcional: persistir actividades por usuario/sesión de materia.&quot;&quot;&quot;
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name=&quot;grade_items&quot;,
+    )
+    student_name = models.CharField(max_length=120)
+    subject_name = models.CharField(max_length=120)
+    activity_name = models.CharField(max_length=100)
+    grade = models.FloatField()
+    weight = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = [&quot;-created_at&quot;]
+
+    def __str__(self):
+        return f&quot;{self.subject_name}: {self.activity_name}&quot;</code></pre>
+            </div>
+          </div>
+          <p>Después: <code>makemigrations</code> + <code>migrate</code>, registra en admin, y tras calcular guarda filas con <code>GradeItem.objects.create(...)</code> si el usuario está autenticado. La calculadora sigue funcionando sin login.</p>
+        </section>
+        <section class="tutorial-section" id="errores-comunes">
+          <h2>Errores comunes</h2>
+          <ul>
+            <li><strong>ManagementForm data is missing or has been tampered with</strong> — Falta <code>management_form</code> en el HTML.</li>
+            <li><strong>Prefix mismatch</strong> — Creaste el formset con prefix en la vista pero no usas el mismo al re-renderizar errores.</li>
+            <li><strong>Promedio absurdo</strong> — Estás sumando notas sin ponderar, o dividiendo mal por el total de pesos.</li>
+            <li><strong>TemplateDoesNotExist</strong> — Ruta debe ser <code>grades/templates/grades/calculator.html</code>.</li>
+            <li><strong>slugify del estado</strong> — “En riesgo” → clase <code>status-en-riesgo</code>; revisa CSS.</li>
+          </ul>
+        </section>
+        <section class="mini-challenge tutorial-section" id="mini-reto">
+          <h2>Mini retos</h2>
+          <p><strong>Reto A:</strong> Añade un botón “Agregar fila” con JS mínimo que clone un bloque de actividad (o sube <code>extra</code> del formset).</p>
+          <p><strong>Reto B:</strong> Muestra una barra de progreso CSS cuya anchura sea el promedio.</p>
+          <p><strong>Reto C:</strong> Exporta el resultado como texto listo para pegar en un correo (“Estudiante X, materia Y, promedio Z…”).</p>
+        </section>
+        <section class="portfolio-evidence tutorial-section" id="portafolio">
+          <h2>Qué subir a tu portafolio</h2>
+          <p>Sube esta herramienta de promedios con validaciones y recomendaciones como evidencia de Fase 1.</p>
+          <div class="portfolio-evidence__grid">
+            <div class="portfolio-evidence__item">
+              <strong>Captura recomendada</strong>
+              <p>Pantalla con formulario completo y bloque de resultado mostrando promedio, estado en color y tabla de aportes.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Tecnologías</strong>
+              <p>Python, Django forms/formsets, HTML, CSS (SQLite solo si hiciste el bonus).</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Problema que resuelve</strong>
+              <p>Calcular promedios académicos ponderados con retroalimentación automática según el desempeño.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Qué aprendí</strong>
+              <p>Validación de formularios, formsets, lógica de negocio separada, renderizado condicional de resultados.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Mejoras futuras</strong>
+              <p>Persistir historial con GradeItem, graficar evolución, exportar PDF.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Repo y demo</strong>
+              <p>Sube el código a GitHub con un README claro. Graba un video de 2–3 minutos mostrando búsqueda, filtros y la captura principal.</p>
+            </div>
+          </div>
+        </section>
+        <section class="tutorial-section" id="checklist-final">
+          <h2>Checklist final</h2>
+          <ul class="checklist">
+            <li>App <code>grades</code> registrada y ruta <code>/calculadora/</code> funciona.</li>
+            <li>Se ingresan estudiante, materia y varias actividades.</li>
+            <li>Promedio y estado correctos según umbrales.</li>
+            <li>Errores de validación no rompen el servidor.</li>
+            <li>Captura y README listos (incluye umbrales 90/70/60).</li>
+          </ul>
+        </section>
+        <nav class="tutorial-nav" aria-label="Navegación entre tutoriales">
+          <a class="btn btn--secondary" href="06-notes-app-categorias.html">Anterior: Notes App</a>
+          <a class="btn btn--secondary" href="../ruta-portafolio.html">Ruta de portafolio</a>
+          <a class="btn btn--primary" href="08-directorio-contactos-mini-crm.html">Siguiente: Mini CRM</a>
+        </nav>
+      </div>
+
+      <aside class="progress-rail" aria-label="Progreso del tutorial">
+        <div class="progress-rail__card">
+          <h3>Tu progreso</h3>
+          <div class="reading-progress" aria-hidden="true">
+            <div class="reading-progress__bar" data-scroll-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label">Lectura</p>
+          <div class="reading-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="reading-progress__bar" data-reading-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label" data-step-progress-label>0 de 10 pasos (0%)</p>
+          <button class="btn btn--primary complete-tutorial-btn" type="button" data-complete-tutorial>Marcar como completado</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Aprende Django con Teacher Jim</h3>
+          <p>Construido para aprender haciendo. Tutoriales en español para estudiantes que quieren entender Django, no solo copiar código.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tutoriales</h4>
+          <ul>
+            <li><a href="01-instalar-vscode-python.html">Instalar VS Code y Python</a></li>
+            <li><a href="02-entornos-django.html">Entornos + Django</a></li>
+            <li><a href="03-primera-ventana-django.html">Primera ventana</a></li>
+            <li><a href="04-todo-app-autenticacion.html">To-Do + Login</a></li>
+            <li><a href="05-errores-django.html">Errores comunes</a></li>
+            <li><a href="06-notes-app-categorias.html">Notes App</a></li>
+            <li><a href="07-calculadora-academica.html">Calculadora Académica</a></li>
+            <li><a href="08-directorio-contactos-mini-crm.html">Mini CRM</a></li>
+            <li><a href="09-blog-profesional-admin.html">Blog Profesional</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Ruta y repositorio</h4>
+          <ul>
+            <li><a href="../ruta-portafolio.html">Ruta de portafolio</a></li>
+            <li><a href="https://github.com/TU-USUARIO/TU-REPOSITORIO" rel="noopener noreferrer">GitHub</a></li>
+            <li><a href="../index.html#tutoriales">Todos los tutoriales</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span data-current-year>2026</span> Aprende Django con Teacher Jim</p>
+        <a class="back-to-top" href="#" data-back-to-top>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+            <path d="m18 15-6-6-6 6"></path>
+          </svg>
+          Volver arriba
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="search-overlay" data-search-overlay role="dialog" aria-modal="true" aria-label="Búsqueda de tutoriales">
+    <div class="search-box">
+      <input type="search" data-search-input placeholder="Buscar tutoriales..." aria-label="Buscar tutoriales">
+      <div class="search-results" data-search-results></div>
+    </div>
+  </div>
+
+  <div id="copy-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="../assets/js/theme.js" defer></script>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/tutorial-progress.js" defer></script>
+  <script src="../assets/js/code-copy.js" defer></script>
+  <script src="../assets/js/search.js" defer></script>
+  <script src="../assets/js/portfolio-progress.js" defer></script>
+  <script src="../assets/vendor/prism/prism.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-python.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-bash.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-markup.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-css.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-javascript.min.js" defer></script>
+</body>
+</html>

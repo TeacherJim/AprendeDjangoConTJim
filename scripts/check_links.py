@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
-"""Validate internal links in HTML files."""
+"""Validate internal links in HTML files.
 
-import os
+Ignores content inside <pre>/<code> (tutorial code samples often contain
+unescaped Django templates and student-portfolio paths that are not real
+site links).
+"""
+
 import re
 import sys
 from html.parser import HTMLParser
@@ -9,7 +13,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 IGNORE_PREFIXES = ("http://", "https://", "mailto:", "tel:", "javascript:", "#")
-ATTRS = ("href", "src")
+CODE_BLOCK_RE = re.compile(
+    r"<(pre|code|samp|kbd)\b[^>]*>.*?</\1>",
+    re.IGNORECASE | re.DOTALL,
+)
 
 
 class LinkExtractor(HTMLParser):
@@ -19,28 +26,38 @@ class LinkExtractor(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         for name, value in attrs:
-            if name in ATTRS and value:
+            if name in ("href", "src") and value:
                 self.links.append(value.strip())
 
 
-def is_external(url):
-    return any(url.startswith(p) for p in IGNORE_PREFIXES)
+def strip_code_blocks(html: str) -> str:
+    """Remove code samples so educational examples are not treated as links."""
+    previous = None
+    current = html
+    # Nested or adjacent blocks: iterate until stable
+    while previous != current:
+        previous = current
+        current = CODE_BLOCK_RE.sub("", current)
+    return current
 
 
-def resolve_path(html_file, url):
+def is_external(url: str) -> bool:
+    if any(url.startswith(p) for p in IGNORE_PREFIXES):
+        return True
+    if "{%" in url or "{{" in url or "{#" in url:
+        return True
+    return False
+
+
+def resolve_path(html_file: Path, url: str) -> Path:
     if url.startswith("/"):
         return ROOT / url.lstrip("/")
     return (html_file.parent / url).resolve()
 
 
-def check_file(html_path):
-    rel = html_path.relative_to(ROOT)
+def check_file(html_path: Path):
+    content = strip_code_blocks(html_path.read_text(encoding="utf-8"))
     extractor = LinkExtractor()
-    try:
-        content = html_path.read_text(encoding="utf-8")
-    except OSError as e:
-        return [(str(rel), url, f"Cannot read: {e}") for url in []]
-
     extractor.feed(content)
     errors = []
 
@@ -52,7 +69,11 @@ def check_file(html_path):
             continue
         target = resolve_path(html_path, clean)
         if not target.exists():
-            errors.append((str(rel), url, str(target.relative_to(ROOT) if target.is_relative_to(ROOT) else target)))
+            try:
+                missing = str(target.relative_to(ROOT))
+            except ValueError:
+                missing = str(target)
+            errors.append((str(html_path.relative_to(ROOT)), url, missing))
 
     return errors
 

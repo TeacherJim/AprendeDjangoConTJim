@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial 10: HelpDesk de Tickets | Aprende Django con Teacher Jim</title>
+  <meta name="description" content="Sistema de tickets Django con prioridades, estados, roles usuario/staff y dashboard de contadores.">
+  <meta name="author" content="Teacher Jim">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Tutorial 10: HelpDesk de Tickets">
+  <meta property="og:description" content="Proyecto profesional Fase 3: HelpDesk con is_staff, filtros y panel de métricas.">
+  <meta property="og:locale" content="es_ES">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/tutorial.css">
+  <link rel="stylesheet" href="../assets/css/syntax-theme.css">
+  <link rel="stylesheet" href="../assets/css/portfolio-roadmap.css">
+  <link rel="stylesheet" href="../assets/css/project-cards.css">
+</head>
+<body data-tutorial-id="tutorial-10">
+
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="app-bar">
+    <div class="app-bar__inner">
+      <a class="app-bar__brand" href="../index.html">
+        <img class="app-bar__logo" src="../assets/icons/favicon.svg" alt="" width="36" height="36">
+        Teacher Jim
+      </a>
+      <nav class="app-bar__nav" aria-label="Navegación principal">
+        <a href="../index.html">Inicio</a>
+        <a href="../index.html#tutoriales">Tutoriales</a>
+        <a href="../ruta-portafolio.html">Portafolio</a>
+        <a href="05-errores-django.html">Errores</a>
+      </nav>
+      <div class="app-bar__actions">
+        <button class="icon-btn" type="button" data-search-open aria-label="Buscar tutoriales">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        </button>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Cambiar a modo oscuro">
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </button>
+        <button class="icon-btn menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Abrir menú de navegación">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" data-mobile-nav aria-label="Navegación móvil">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#tutoriales">Tutoriales</a>
+    <a href="../ruta-portafolio.html">Portafolio</a>
+    <a href="05-errores-django.html">Errores</a>
+  </nav>
+
+  <main id="main-content">
+    <div class="tutorial-layout">
+      <aside class="toc-sidebar">
+        <button class="toc-toggle" type="button" data-toc-toggle aria-expanded="false">Mapa de la misión</button>
+        <nav class="toc-panel" data-toc-panel aria-label="Contenido del tutorial">
+          <h2>Contenido</h2>
+          <ul class="toc-list">
+            <li><a href="#resultado-final">Resultado final</a></li>
+            <li><a href="#antes-de-empezar">Antes de empezar</a></li>
+            <li><a href="#arquitectura">Arquitectura</a></li>
+            <li><a href="#step-1">Paso 1: Proyecto y app</a></li>
+            <li><a href="#step-2">Paso 2: Modelo Ticket</a></li>
+            <li><a href="#step-3">Paso 3: Migraciones</a></li>
+            <li><a href="#step-4">Paso 4: Admin</a></li>
+            <li><a href="#step-5">Paso 5: Formularios</a></li>
+            <li><a href="#step-6">Paso 6: Vistas y roles</a></li>
+            <li><a href="#step-7">Paso 7: Dashboard</a></li>
+            <li><a href="#step-8">Paso 8: URLs</a></li>
+            <li><a href="#step-9">Paso 9: Plantillas</a></li>
+            <li><a href="#step-10">Paso 10: CSS</a></li>
+            <li><a href="#step-11">Paso 11: Verificar</a></li>
+            <li><a href="#checklist">Checklist</a></li>
+            <li><a href="#errores-comunes">Errores comunes</a></li>
+            <li><a href="#mini-retos">Mini retos</a></li>
+            <li><a href="#portfolio-evidence">Evidencia de portafolio</a></li>
+          </ul>
+        </nav>
+      </aside>
+      <div class="tutorial-main">
+
+        <nav class="breadcrumb" aria-label="Ruta de navegación">
+          <a href="../index.html">Inicio</a>
+          <span aria-hidden="true">/</span>
+          <a href="../ruta-portafolio.html">Portafolio</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">HelpDesk de Tickets</span>
+        </nav>
+
+        <header class="tutorial-header">
+          <p class="tutorial-header__number">Tutorial 10 · Fase 3 · 4 clases</p>
+          <h1>Proyecto profesional: HelpDesk de Tickets</h1>
+          <p class="tutorial-header__desc">Vas a construir un sistema de soporte real: el usuario crea tickets; el staff ve todos y responde. Aprendes prioridades, estados, filtros y la diferencia entre usuario normal y <code>is_staff</code>.</p>
+          <div class="tutorial-meta">
+            <span class="chip">Proyecto profesional</span>
+            <span class="chip">Fase 3</span>
+            <span class="chip">4 clases</span>
+            <span class="chip">11 pasos</span>
+          </div>
+        </header>
+
+        <section class="tutorial-section" id="resultado-final">
+          <h2>Resultado final</h2>
+          <p>Al terminar tendrás una aplicación Django con:</p>
+          <ul>
+            <li>Modelo <code>Ticket</code> con prioridad, estado, categoría y respuesta del staff.</li>
+            <li>Usuarios autenticados que crean tickets y solo ven los suyos.</li>
+            <li>Cuentas <code>is_staff=True</code> que ven todos los tickets y pueden cambiar estado y responder.</li>
+            <li>Lista filtrable por estado, detalle y dashboard con contadores.</li>
+            <li>Formularios POST con CSRF y vistas protegidas con <code>login_required</code>.</li>
+          </ul>
+                    <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Idea clave</p>
+              <p>Un HelpDesk es un CRUD con roles. No necesitamos permisos avanzados todavía: <code>request.user.is_staff</code> basta para ensearte el patrón.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="tutorial-section" id="antes-de-empezar">
+          <h2>Antes de empezar</h2>
+          <ul class="checklist">
+            <li>Completaste autenticación (Tutorial 04) y al menos un CRUD con usuario (Notes o CRM).</li>
+            <li>Sabes crear un proyecto Django nuevo o reutilizar uno con login ya funcionando.</li>
+            <li>Entorno virtual activo y Django instalado.</li>
+            <li>Puedes crear un superusuario con <code>createsuperuser</code>.</li>
+          </ul>
+                    <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Este proyecto brilla en el portafolio porque demuestra roles. En la demo: muestra un usuario normal creando un ticket y luego entra como staff y responde. Ese contraste vale más que mil capturas sin contexto.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="tutorial-section" id="arquitectura">
+          <h2>Arquitectura del proyecto</h2>
+          <p>Carpeta sugerida: <code>helpdesk_project/</code> (o reutiliza tu proyecto con login).</p>
+          <div class="tree-structure">helpdesk_project/
+├── config/
+│   ├── settings.py
+│   └── urls.py
+├── tickets/
+│   ├── models.py
+│   ├── forms.py
+│   ├── views.py
+│   ├── urls.py
+│   ├── admin.py
+│   └── templates/tickets/
+│       ├── base_tickets.html
+│       ├── ticket_list.html
+│       ├── ticket_form.html
+│       ├── ticket_detail.html
+│       └── dashboard.html
+├── templates/registration/login.html
+├── static/css/helpdesk.css
+├── manage.py
+└── requirements.txt</div>
+        </section>
+        <article class="tutorial-step" id="step-1">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">1</span>
+            <h2>Crear proyecto, app y autenticación mínima</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-1" aria-label="Marcar paso 1 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear el proyecto <code>helpdesk_project</code>, la app <code>tickets</code>, registrarla y preparar login + redirects.</p>
+          <p class="step-label">Por qué</p>
+          <p>Sin autenticación no hay roles. El HelpDesk necesita saber quién abre el ticket y si puede ver los de otros.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python -m venv .venv
+# Windows:
+.venv\Scripts\activate
+# macOS/Linux:
+source .venv/bin/activate
+
+pip install django
+django-admin startproject config .
+python manage.py startapp tickets
+python manage.py migrate
+python manage.py createsuperuser</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                config/settings.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">INSTALLED_APPS = [
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "tickets",
+]
+
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "tickets:list"
+LOGOUT_REDIRECT_URL = "login"
+
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
+]
+
+STATIC_URL = "static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>Raíz del proyecto con <code>manage.py</code>. Ajusta <code>INSTALLED_APPS</code>, login redirects, <code>TEMPLATES</code> y estáticos en <code>settings.py</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Existe <code>tickets/</code>. Puedes entrar al admin con el superusuario (ese usuario ya es staff).</p>
+                    <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>En el admin, abre Usuarios y confirma que tu superusuario tiene <code>Staff status</code> marcado.</p>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-2">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">2</span>
+            <h2>Modelo Ticket con prioridades y estados</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-2" aria-label="Marcar paso 2 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Definir el modelo <code>Ticket</code> con <code>PRIORITY_CHOICES</code>, <code>STATUS_CHOICES</code> y campos de respuesta del staff.</p>
+          <p class="step-label">Por qué</p>
+          <p>Los <code>choices</code> evitan valores inventados en la base de datos y muestran etiquetas legibles en formularios y plantillas.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                tickets/models.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.conf import settings
+from django.db import models
+
+
+class Ticket(models.Model):
+    PRIORITY_CHOICES = [
+        ("low", "Baja"),
+        ("medium", "Media"),
+        ("high", "Alta"),
+    ]
+
+    STATUS_CHOICES = [
+        ("open", "Abierto"),
+        ("in_progress", "En proceso"),
+        ("resolved", "Resuelto"),
+        ("closed", "Cerrado"),
+    ]
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="tickets",
+    )
+    title = models.CharField(max_length=180)
+    description = models.TextField()
+    category = models.CharField(max_length=100)
+    priority = models.CharField(
+        max_length=20,
+        choices=PRIORITY_CHOICES,
+        default="medium",
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="open",
+    )
+    staff_response = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"#{self.pk} {self.title}"</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Dónde va</p>
+          <p>Reemplaza el contenido de <code>tickets/models.py</code>.</p>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>El archivo importa sin errores de sintaxis. Aún no hay tablas: faltan migraciones.</p>
+                    <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Usamos <code>settings.AUTH_USER_MODEL</code> en lugar de importar <code>User</code> directo. Es la forma correcta desde el día uno: si algún día cambias el modelo de usuario, las ForeignKey no se rompen.</p>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-3">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">3</span>
+            <h2>Migraciones</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-3" aria-label="Marcar paso 3 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Generar y aplicar la migración del modelo <code>Ticket</code>.</p>
+          <p class="step-label">Por qué</p>
+          <p>Django no crea tablas solo porque escribiste la clase. <code>makemigrations</code> produce el plan; <code>migrate</code> lo aplica.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py makemigrations tickets
+python manage.py migrate</code></pre>
+            </div>
+          </div>
+          <p class="step-label">Qué debería ocurrir</p>
+          <p>Aparece un archivo en <code>tickets/migrations/</code> y la migración se aplica sin errores.</p>
+                    <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Corre <code>python manage.py showmigrations tickets</code> y verifica que la migración está marcada con <code>[X]</code>.</p>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-4">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">4</span>
+            <h2>Registrar Ticket en el admin</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-4" aria-label="Marcar paso 4 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Exponer tickets en Django Admin con filtros útiles para el staff.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                tickets/admin.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.contrib import admin
+from .models import Ticket
+
+
+@admin.register(Ticket)
+class TicketAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "user", "priority", "status", "created_at")
+    list_filter = ("status", "priority", "category")
+    search_fields = ("title", "description", "user__username")
+    readonly_fields = ("created_at", "updated_at")</code></pre>
+            </div>
+          </div>
+                    <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Entra a <code>/admin/</code>, crea un ticket de prueba asignado a tu usuario y confirmalo en la lista.</p>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-5">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">5</span>
+            <h2>Formularios de usuario y de staff</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-5" aria-label="Marcar paso 5 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear <code>TicketForm</code> (usuario) y <code>StaffTicketForm</code> (estado + respuesta).</p>
+          <p class="step-label">Por qué</p>
+          <p>El usuario no debe poder ponerse un ticket en <code>resolved</code> solo. El staff sí puede cambiar estado y escribir <code>staff_response</code>.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                tickets/forms.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django import forms
+from .models import Ticket
+
+
+class TicketForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ["title", "description", "category", "priority"]
+        widgets = {
+            "title": forms.TextInput(attrs={"class": "form-control"}),
+            "description": forms.Textarea(attrs={"class": "form-control", "rows": 5}),
+            "category": forms.TextInput(attrs={"class": "form-control", "placeholder": "Ej: Acceso, Bug, Cuenta"}),
+            "priority": forms.Select(attrs={"class": "form-control"}),
+        }
+
+
+class StaffTicketForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ["status", "staff_response"]
+        widgets = {
+            "status": forms.Select(attrs={"class": "form-control"}),
+            "staff_response": forms.Textarea(attrs={"class": "form-control", "rows": 4}),
+        }</code></pre>
+            </div>
+          </div>
+                    <div class="callout callout--concept">
+            <div>
+              <p class="callout__label">Separación de responsabilidades</p>
+              <p>Dos formularios = dos permisos visuales. Aunque alguien manipule el HTML, en las vistas solo aplicarás el formulario que corresponde al rol.</p>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-6">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">6</span>
+            <h2>Vistas: listar, crear, detalle y regla is_staff</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-6" aria-label="Marcar paso 6 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Implementar las vistas con filtro por usuario o todos si es staff. Incluir respuesta del staff en el detalle.</p>
+          <p class="step-label">Por qué</p>
+          <p>Esta es la regla de oro del HelpDesk. Sin ella, cualquier usuario vería tickets ajenos.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                tickets/views.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.contrib.auth.decorators import login_required
+from django.db.models import Count, Q
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib import messages
+
+from .forms import StaffTicketForm, TicketForm
+from .models import Ticket
+
+
+def _tickets_for(user):
+    """Staff ve todos; usuario normal solo los suyos."""
+    if user.is_staff:
+        return Ticket.objects.select_related("user").all()
+    return Ticket.objects.filter(user=user)
+
+
+@login_required
+def ticket_list(request):
+    qs = _tickets_for(request.user)
+    status = request.GET.get("status", "")
+    if status:
+        qs = qs.filter(status=status)
+    q = request.GET.get("q", "").strip()
+    if q:
+        qs = qs.filter(Q(title__icontains=q) | Q(description__icontains=q) | Q(category__icontains=q))
+    return render(request, "tickets/ticket_list.html", {
+        "tickets": qs,
+        "status": status,
+        "q": q,
+        "status_choices": Ticket.STATUS_CHOICES,
+        "is_staff_view": request.user.is_staff,
+    })
+
+
+@login_required
+def ticket_create(request):
+    if request.method == "POST":
+        form = TicketForm(request.POST)
+        if form.is_valid():
+            ticket = form.save(commit=False)
+            ticket.user = request.user
+            ticket.save()
+            messages.success(request, "Ticket creado correctamente.")
+            return redirect("tickets:detail", pk=ticket.pk)
+    else:
+        form = TicketForm()
+    return render(request, "tickets/ticket_form.html", {"form": form})
+
+
+@login_required
+def ticket_detail(request, pk):
+    base = _tickets_for(request.user)
+    ticket = get_object_or_404(base, pk=pk)
+    staff_form = None
+
+    if request.user.is_staff:
+        if request.method == "POST":
+            staff_form = StaffTicketForm(request.POST, instance=ticket)
+            if staff_form.is_valid():
+                staff_form.save()
+                messages.success(request, "Ticket actualizado por el equipo de soporte.")
+                return redirect("tickets:detail", pk=ticket.pk)
+        else:
+            staff_form = StaffTicketForm(instance=ticket)
+
+    return render(request, "tickets/ticket_detail.html", {
+        "ticket": ticket,
+        "staff_form": staff_form,
+    })
+
+
+@login_required
+def dashboard(request):
+    qs = _tickets_for(request.user)
+    counts = qs.aggregate(
+        total=Count("id"),
+        open=Count("id", filter=Q(status="open")),
+        in_progress=Count("id", filter=Q(status="in_progress")),
+        resolved=Count("id", filter=Q(status="resolved")),
+        closed=Count("id", filter=Q(status="closed")),
+        high=Count("id", filter=Q(priority="high")),
+    )
+    recent = qs[:8]
+    return render(request, "tickets/dashboard.html", {
+        "counts": counts,
+        "recent": recent,
+        "is_staff_view": request.user.is_staff,
+    })</code></pre>
+            </div>
+          </div>
+                    <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>Esta regla con <code>is_staff</code> es una introducción. En producción usarías grupos, permisos custom o un paquete como django-guardian. Por ahora: entiende el patrón, no inventes complejidad.</p>
+            </div>
+          </div>
+                    <div class="callout callout--error">
+            <div>
+              <p class="callout__label">Error común</p>
+              <p><strong>Usuario ve tickets de otros</strong> — Olvidaste filtrar con <code>_tickets_for</code> en <code>ticket_detail</code>. Siempre pasa el queryset filtrado a <code>get_object_or_404</code>, no <code>Ticket.objects.all()</code>.</p>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-7">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">7</span>
+            <h2>Entender el dashboard de contadores</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-7" aria-label="Marcar paso 7 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Repasar la agregación del dashboard: totales por estado y prioridad alta.</p>
+          <p class="step-label">Por qué</p>
+          <p>Un panel con números comunica el estado del soporte mejor que una lista infinita.</p>
+          <p class="step-label">Código clave</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Agregación (ya en views.py)
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">counts = qs.aggregate(
+    total=Count("id"),
+    open=Count("id", filter=Q(status="open")),
+    in_progress=Count("id", filter=Q(status="in_progress")),
+    resolved=Count("id", filter=Q(status="resolved")),
+    closed=Count("id", filter=Q(status="closed")),
+    high=Count("id", filter=Q(priority="high")),
+)</code></pre>
+            </div>
+          </div>
+          <p>Staff ve métricas globales; usuario normal ve solo las suyas, porque <code>qs</code> ya viene filtrado.</p>
+                    <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>Crea 3 tickets con estados distintos y verifica que los números del dashboard coinciden.</p>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-8">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">8</span>
+            <h2>URLs de la app y del proyecto</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-8" aria-label="Marcar paso 8 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Conectar rutas con namespace <code>tickets</code> e incluir login de Django.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                tickets/urls.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.urls import path
+from . import views
+
+app_name = "tickets"
+
+urlpatterns = [
+    path("", views.ticket_list, name="list"),
+    path("nuevo/", views.ticket_create, name="create"),
+    path("dashboard/", views.dashboard, name="dashboard"),
+    path("<int:pk>/", views.ticket_detail, name="detail"),
+]</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                config/urls.py
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-python">from django.contrib import admin
+from django.urls import include, path
+from django.contrib.auth import views as auth_views
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("login/", auth_views.LoginView.as_view(), name="login"),
+    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
+    path("", include("tickets.urls")),
+]</code></pre>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-9">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">9</span>
+            <h2>Plantillas: lista, formulario, detalle y dashboard</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-9" aria-label="Marcar paso 9 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Crear plantillas HTML completas con navegación, filtros y formulario de staff.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                tickets/templates/tickets/base_tickets.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}HelpDesk{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/helpdesk.css' %}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{% url 'tickets:list' %}">HelpDesk TJ</a>
+    <nav>
+      <a href="{% url 'tickets:dashboard' %}">Dashboard</a>
+      <a href="{% url 'tickets:list' %}">Tickets</a>
+      <a href="{% url 'tickets:create' %}">Nuevo</a>
+      {% if user.is_authenticated %}
+        <span class="user">{{ user.username }}{% if user.is_staff %} · staff{% endif %}</span>
+        <form method="post" action="{% url 'logout' %}" class="inline">
+          {% csrf_token %}
+          <button type="submit">Salir</button>
+        </form>
+      {% endif %}
+    </nav>
+  </header>
+  <main class="container">
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html></code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                tickets/templates/tickets/ticket_list.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends "tickets/base_tickets.html" %}
+{% block title %}Tickets · HelpDesk{% endblock %}
+{% block content %}
+<h1>{% if is_staff_view %}Todos los tickets{% else %}Mis tickets{% endif %}</h1>
+
+<form method="get" class="filters">
+  <input type="search" name="q" value="{{ q }}" placeholder="Buscar...">
+  <select name="status">
+    <option value="">Todos los estados</option>
+    {% for value, label in status_choices %}
+      <option value="{{ value }}" {% if status == value %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Filtrar</button>
+</form>
+
+{% if tickets %}
+<table class="table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Título</th>
+      {% if is_staff_view %}<th>Usuario</th>{% endif %}
+      <th>Prioridad</th>
+      <th>Estado</th>
+      <th>Creado</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for t in tickets %}
+    <tr>
+      <td><a href="{% url 'tickets:detail' t.pk %}">{{ t.pk }}</a></td>
+      <td><a href="{% url 'tickets:detail' t.pk %}">{{ t.title }}</a></td>
+      {% if is_staff_view %}<td>{{ t.user.username }}</td>{% endif %}
+      <td><span class="badge badge-{{ t.priority }}">{{ t.get_priority_display }}</span></td>
+      <td>{{ t.get_status_display }}</td>
+      <td>{{ t.created_at|date:"d/m/Y H:i" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No hay tickets con esos filtros.</p>
+{% endif %}
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                tickets/templates/tickets/ticket_form.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends "tickets/base_tickets.html" %}
+{% block title %}Nuevo ticket{% endblock %}
+{% block content %}
+<h1>Abrir ticket de soporte</h1>
+<form method="post" class="card-form">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Enviar ticket</button>
+  <a href="{% url 'tickets:list' %}">Cancelar</a>
+</form>
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                tickets/templates/tickets/ticket_detail.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends "tickets/base_tickets.html" %}
+{% block title %}Ticket #{{ ticket.pk }}{% endblock %}
+{% block content %}
+<article class="ticket-detail">
+  <h1>#{{ ticket.pk }} — {{ ticket.title }}</h1>
+  <p class="meta">
+    <span class="badge badge-{{ ticket.priority }}">{{ ticket.get_priority_display }}</span>
+    · {{ ticket.get_status_display }}
+    · {{ ticket.category }}
+    · {{ ticket.created_at|date:"d/m/Y H:i" }}
+    · por {{ ticket.user.username }}
+  </p>
+  <h2>Descripción</h2>
+  <p>{{ ticket.description|linebreaks }}</p>
+
+  {% if ticket.staff_response %}
+  <section class="staff-box">
+    <h2>Respuesta del soporte</h2>
+    <p>{{ ticket.staff_response|linebreaks }}</p>
+    <p class="meta">Actualizado: {{ ticket.updated_at|date:"d/m/Y H:i" }}</p>
+  </section>
+  {% endif %}
+
+  {% if staff_form %}
+  <section class="staff-actions">
+    <h2>Panel de staff</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ staff_form.as_p }}
+      <button type="submit">Guardar respuesta</button>
+    </form>
+  </section>
+  {% endif %}
+</article>
+<a href="{% url 'tickets:list' %}">Volver a la lista</a>
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                tickets/templates/tickets/dashboard.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% extends "tickets/base_tickets.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Dashboard {% if is_staff_view %}global{% else %}personal{% endif %}</h1>
+<div class="stats">
+  <div class="stat"><strong>{{ counts.total }}</strong><span>Total</span></div>
+  <div class="stat"><strong>{{ counts.open }}</strong><span>Abiertos</span></div>
+  <div class="stat"><strong>{{ counts.in_progress }}</strong><span>En proceso</span></div>
+  <div class="stat"><strong>{{ counts.resolved }}</strong><span>Resueltos</span></div>
+  <div class="stat"><strong>{{ counts.closed }}</strong><span>Cerrados</span></div>
+  <div class="stat danger"><strong>{{ counts.high }}</strong><span>Prioridad alta</span></div>
+</div>
+
+<h2>Recientes</h2>
+<ul class="recent">
+  {% for t in recent %}
+  <li>
+    <a href="{% url 'tickets:detail' t.pk %}">#{{ t.pk }} {{ t.title }}</a>
+    — {{ t.get_status_display }}
+  </li>
+  {% empty %}
+  <li>Sin tickets todavía.</li>
+  {% endfor %}
+</ul>
+{% endblock %}</code></pre>
+            </div>
+          </div>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                templates/registration/login.html
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup"><!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Login · HelpDesk</title>
+  <link rel="stylesheet" href="/static/css/helpdesk.css">
+</head>
+<body class="auth">
+  <form method="post" class="card-form">
+    <h1>Iniciar sesión</h1>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Entrar</button>
+  </form>
+</body>
+</html></code></pre>
+            </div>
+          </div>
+          <p>En la plantilla de login, cambia la ruta del CSS a <code>&#123;% static 'css/helpdesk.css' %&#125;</code> y añade <code>&#123;% load static %&#125;</code> arriba (en el ejemplo de arriba se usó una ruta absoluta solo como borrador visual; usa <code>static</code> en tu archivo real).</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                templates/registration/login.html (correcto)
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-markup">{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Login · HelpDesk</title>
+  <link rel="stylesheet" href="{% static 'css/helpdesk.css' %}">
+</head>
+<body class="auth">
+  <form method="post" class="card-form">
+    <h1>Iniciar sesión</h1>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Entrar</button>
+  </form>
+</body>
+</html></code></pre>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-10">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">10</span>
+            <h2>CSS del HelpDesk</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-10" aria-label="Marcar paso 10 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Dar estilo legible al panel: topbar, tabla, badges de prioridad y tarjetas de estadísticas.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                static/css/helpdesk.css
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-css">:root {
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --accent: #38bdf8;
+  --danger: #f87171;
+  --ok: #4ade80;
+  --warn: #fbbf24;
+  --font: "Segoe UI", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: linear-gradient(160deg, #0f172a, #1e293b 40%, #0b1220);
+  color: var(--text);
+  min-height: 100vh;
+}
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: rgba(15, 23, 42, 0.9);
+  border-bottom: 1px solid #334155;
+}
+.topbar a { color: var(--text); text-decoration: none; margin-right: 1rem; }
+.brand { font-weight: 700; color: var(--accent) !important; }
+.container { max-width: 960px; margin: 0 auto; padding: 1.5rem; }
+.filters { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; }
+input, select, textarea, button {
+  font: inherit;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #475569;
+  background: var(--surface);
+  color: var(--text);
+}
+button { background: var(--accent); color: #0f172a; border: none; cursor: pointer; font-weight: 600; }
+.table { width: 100%; border-collapse: collapse; }
+.table th, .table td { padding: 0.75rem; border-bottom: 1px solid #334155; text-align: left; }
+.badge { padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.8rem; }
+.badge-low { background: #334155; }
+.badge-medium { background: #854d0e; color: var(--warn); }
+.badge-high { background: #7f1d1d; color: var(--danger); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.75rem; margin: 1rem 0 2rem; }
+.stat {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  border: 1px solid #334155;
+}
+.stat strong { display: block; font-size: 1.6rem; }
+.stat.danger strong { color: var(--danger); }
+.staff-box, .staff-actions, .card-form {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  border: 1px solid #334155;
+  margin: 1rem 0;
+}
+.auth { display: grid; place-items: center; min-height: 100vh; }
+.inline { display: inline; }
+.messages { list-style: none; padding: 0; }
+.messages li { background: #14532d; padding: 0.5rem 0.75rem; border-radius: 8px; margin-bottom: 0.5rem; }
+.empty, .meta, .user { color: var(--muted); }</code></pre>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="tutorial-step" id="step-11">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">11</span>
+            <h2>Crear usuario normal, probar roles y verificar</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-11" aria-label="Marcar paso 11 como completado">
+              <span>Hecho</span>
+            </label>
+          </div>
+
+          <p class="step-label">Qué vamos a hacer</p>
+          <p>Arrancar el servidor, crear un segundo usuario (no staff) y validar el aislamiento.</p>
+          <p class="step-label">Código</p>
+          <div class="code-window">
+            <header class="code-window__header">
+              <div class="code-window__filename">
+                <img src="../assets/icons/vscode.svg" alt="" width="16" height="16">
+                Terminal
+              </div>
+              <div class="code-window__actions">
+                <button class="copy-btn" type="button" data-copy-btn aria-label="Copiar código">
+                  <span class="copy-btn__text">Copiar</span>
+                </button>
+                <span class="code-window__vscode">
+                  <img src="../assets/icons/vscode.svg" alt="" width="18" height="18">
+                </span>
+              </div>
+            </header>
+            <div class="code-window__body">
+              <pre><code class="language-bash">python manage.py check
+python manage.py runserver</code></pre>
+            </div>
+          </div>
+          <p>En el admin, crea un usuario <code>cliente1</code> <strong>sin</strong> marcar Staff. Con el superusuario abre tickets; cierra sesión e inicia con <code>cliente1</code>.</p>
+                    <div class="callout callout--check">
+            <div>
+              <p class="callout__label">Comprueba</p>
+              <p>cliente1 solo ve sus tickets. El superusuario ve todos y puede guardar <code>staff_response</code>.</p>
+            </div>
+          </div>
+
+        </article>
+
+        <section class="tutorial-section" id="checklist">
+          <h2>Checklist final</h2>
+          <ul class="checklist">
+            <li>Modelo <code>Ticket</code> con <code>PRIORITY_CHOICES</code> y <code>STATUS_CHOICES</code>.</li>
+            <li>Usuario crea ticket con título, descripción, categoría y prioridad.</li>
+            <li>Usuario normal solo ve sus tickets en lista y detalle.</li>
+            <li>Staff ve todos, filtra por estado y responde.</li>
+            <li>Dashboard muestra totales coherentes con la vista del rol.</li>
+            <li>Logout por POST con CSRF.</li>
+            <li>Repositorio limpio, sin <code>.venv</code> ni secretos en Git.</li>
+          </ul>
+        </section>
+
+        <section class="tutorial-section" id="errores-comunes">
+          <h2>Errores comunes</h2>
+          <div class="callout callout--error"><div>
+            <p class="callout__label">Error común</p>
+            <p><strong>403 Forbidden en logout</strong> — El logout debe ser POST con <code>&#123;% csrf_token %&#125;</code>, no un enlace GET.</p>
+          </div></div>
+          <div class="callout callout--error"><div>
+            <p class="callout__label">Error común</p>
+            <p><strong>AttributeError: get_priority_display</strong> — El método existe solo si el campo tiene <code>choices</code>. Revisa el nombre del campo.</p>
+          </div></div>
+          <div class="callout callout--error"><div>
+            <p class="callout__label">Error común</p>
+            <p><strong>Staff ve poco / usuario ve de más</strong> — Revisa <code>_tickets_for</code> en lista Y detalle. El fallo suele estar en el detalle.</p>
+          </div></div>
+        </section>
+
+        <section class="mini-challenge tutorial-step" id="mini-retos">
+          <div class="tutorial-step__header">
+            <span class="tutorial-step__number">+</span>
+            <h2>Mini retos</h2>
+            <label class="step-checkbox">
+              <input type="checkbox" data-step-check="step-12" aria-label="Marcar mini retos como completados">
+              <span>Hecho</span>
+            </label>
+          </div>
+          <p class="step-label">Reto A — Comentarios internos</p>
+          <p>Crea un modelo <code>TicketComment</code> ligado al ticket y muestra el historial en el detalle.</p>
+          <p><em>Pista:</em> ForeignKey a Ticket + ForeignKey a User; solo staff puede crear comentarios internos.</p>
+          <p class="step-label">Reto B — SLA visual</p>
+          <p>Resalta en rojo tickets abiertos con más de 48 horas.</p>
+          <p><em>Pista:</em> Compara <code>timezone.now() - ticket.created_at</code> en la vista o con un método del modelo.</p>
+          <p class="step-label">Reto C — Adjuntar archivo</p>
+          <p>Añade <code>FileField</code> opcional al ticket y configura <code>MEDIA_URL</code>.</p>
+        </section>
+
+        <section class="portfolio-evidence" id="portfolio-evidence">
+          <h2>Qué subir a tu portafolio</h2>
+          <p>Prepara evidencia clara para la card de HelpDesk en tu sitio estático.</p>
+          <div class="portfolio-evidence__grid">
+            <div class="portfolio-evidence__item">
+              <strong>Captura</strong>
+              <p>Dashboard con contadores + lista staff con varios usuarios.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Tecnologías</strong>
+              <p>Django, auth, ModelForm, Q filters, agregaciones Count.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Problema que resuelve</strong>
+              <p>Canalizar solicitudes de soporte con prioridad y seguimiento.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Aprendizajes</strong>
+              <p>Roles con is_staff, aislamiento de datos, paneles de métricas.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Mejoras futuras</strong>
+              <p>Grupos de agentes, correo al resolver, adjuntos, API.</p>
+            </div>
+            <div class="portfolio-evidence__item">
+              <strong>Repositorio</strong>
+              <p>README con cómo crear usuario staff vs cliente y probar el flujo.</p>
+            </div>
+          </div>
+                    <div class="callout callout--teacher">
+            <div>
+              <p class="callout__label">Nota de Teacher Jim</p>
+              <p>En tu portafolio escribe: «HelpDesk con roles usuario/staff, estados y dashboard». Esa frase es más profesional que «hice una app de tickets».</p>
+            </div>
+          </div>
+        </section>
+
+        <nav class="tutorial-nav" aria-label="Navegación entre tutoriales">
+          <a class="btn btn--secondary" href="09-blog-profesional-admin.html">Anterior: Blog profesional</a>
+          <a class="btn btn--secondary" href="../ruta-portafolio.html">Ruta de portafolio</a>
+          <a class="btn btn--primary" href="11-dashboard-datos.html">Siguiente: Dashboard de datos</a>
+        </nav>
+
+      </div>
+
+      <aside class="progress-rail" aria-label="Progreso del tutorial">
+        <div class="progress-rail__card">
+          <h3>Tu progreso</h3>
+          <div class="reading-progress" aria-hidden="true">
+            <div class="reading-progress__bar" data-scroll-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label">Lectura</p>
+          <div class="reading-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="reading-progress__bar" data-reading-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="reading-progress__label" data-step-progress-label>0 de 12 pasos (0%)</p>
+          <button class="btn btn--primary complete-tutorial-btn" type="button" data-complete-tutorial>Marcar como completado</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Aprende Django con Teacher Jim</h3>
+          <p>Construido para aprender haciendo. Tutoriales en español para estudiantes que quieren entender Django, no solo copiar código.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tutoriales</h4>
+          <ul>
+            <li><a href="09-blog-profesional-admin.html">Blog profesional</a></li>
+            <li><a href="10-helpdesk-tickets.html">HelpDesk de Tickets</a></li>
+            <li><a href="11-dashboard-datos.html">Dashboard de Datos</a></li>
+            <li><a href="12-portafolio-github-pages.html">Portafolio GitHub Pages</a></li>
+            <li><a href="13-documentacion-demo-final.html">Documentación y Demo</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Ruta</h4>
+          <ul>
+            <li><a href="../ruta-portafolio.html">Ruta de portafolio</a></li>
+            <li><a href="../index.html#tutoriales">Todos los tutoriales</a></li>
+            <li><a href="05-errores-django.html">Errores comunes</a></li>
+            <li><a href="https://github.com/TU-USUARIO/TU-REPOSITORIO" rel="noopener noreferrer">GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span data-current-year>2026</span> Aprende Django con Teacher Jim</p>
+        <a class="back-to-top" href="#" data-back-to-top>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+            <path d="m18 15-6-6-6 6"></path>
+          </svg>
+          Volver arriba
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="search-overlay" data-search-overlay role="dialog" aria-modal="true" aria-label="Búsqueda de tutoriales">
+    <div class="search-box">
+      <input type="search" data-search-input placeholder="Buscar tutoriales..." aria-label="Buscar tutoriales">
+      <div class="search-results" data-search-results></div>
+    </div>
+  </div>
+
+  <div id="copy-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="../assets/js/theme.js" defer></script>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/tutorial-progress.js" defer></script>
+  <script src="../assets/js/code-copy.js" defer></script>
+  <script src="../assets/js/search.js" defer></script>
+  <script src="../assets/js/portfolio-progress.js" defer></script>
+  <script src="../assets/vendor/prism/prism.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-python.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-bash.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-markup.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-css.min.js" defer></script>
+  <script src="../assets/vendor/prism/prism-javascript.min.js" defer></script>
+</body>
+</html>
+

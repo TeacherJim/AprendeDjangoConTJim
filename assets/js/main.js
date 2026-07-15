@@ -70,7 +70,15 @@
             "tutorial-02": "tutoriales/02-entornos-django.html",
             "tutorial-03": "tutoriales/03-primera-ventana-django.html",
             "tutorial-04": "tutoriales/04-todo-app-autenticacion.html",
-            "tutorial-05": "tutoriales/05-errores-django.html"
+            "tutorial-05": "tutoriales/05-errores-django.html",
+            "tutorial-06": "tutoriales/06-notes-app-categorias.html",
+            "tutorial-07": "tutoriales/07-calculadora-academica.html",
+            "tutorial-08": "tutoriales/08-directorio-contactos-mini-crm.html",
+            "tutorial-09": "tutoriales/09-blog-profesional-admin.html",
+            "tutorial-10": "tutoriales/10-helpdesk-tickets.html",
+            "tutorial-11": "tutoriales/11-dashboard-datos.html",
+            "tutorial-12": "tutoriales/12-portafolio-github-pages.html",
+            "tutorial-13": "tutoriales/13-documentacion-demo-final.html"
           };
           lastUrl = urls[lastTutorial];
           if (lastUrl) {
